@@ -1,0 +1,183 @@
+.card {
+    border: none;
+    border: 1px solid rgb(243, 243, 243);
+    padding: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    margin-bottom: 10px ;
+}
+
+.ellipsis {
+    color: #a09c9c;
+}
+
+hr {
+    color: #a09c9c;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+.muted-color {
+    color: #a09c9c;
+    font-size: 13px;
+}
+
+.ellipsis i {
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.icons i {
+    font-size: 25px;
+}
+
+.icons .fa-heart {
+    color: red;
+}
+
+.icons .fa-smile-o {
+    color: yellow;
+    font-size: 29px;
+}
+
+.rounded-image {
+    border-radius: 50% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+}
+
+.name {
+    font-weight: 600;
+}
+
+.comment-text {
+    font-size: 12px;
+}
+
+.status small {
+    margin-right: 10px;
+    color: blue;
+}
+
+.form-control {
+    border-radius: 26px;
+}
+
+.comment-input {
+    position: relative;
+}
+
+.fonts {
+    position: absolute;
+    right: 13px;
+    top: 8px;
+    color: #a09c9c;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #8bbafe;
+    outline: 0;
+    box-shadow: none;
+}
+
+.btn-like {
+    padding: 10px;
+}
+
+.btn-like:hover {
+    background-color: rgb(231, 231, 231);
+}
+
+
+
+p {
+    font-size: 15px;
+}
+
+
+#flash_message_success {
+    display: none; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #28a745; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_success.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+audio{
+    width: 100%;
+}
+
+audio::-webkit-media-controls-panel, video::-webkit-media-controls-panel {
+    background-color: white;
+
+}
+
+audio::-webkit-media-controls-enclosure {
+    border-radius: 0px;
+}

@@ -1,0 +1,22 @@
+/* Import Google Font - Poppins */
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(#00C6FF, #0078FF);
+}
+::selection{
+  color: #fff;
+  background: #1a81ff;
+}
+.container{
+  
+  height: 480px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 10px;
+  transition: height 0.2s ease;
+}
+

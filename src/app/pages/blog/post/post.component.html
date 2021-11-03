@@ -1,0 +1,112 @@
+<!-- preloader
+    ================================================== -->
+<app-preloader></app-preloader>
+
+<!-- page wrap
+        ================================================== -->
+<div id="page" class="s-pagewrap ss-home">
+
+
+    <!-- # site header 
+            ================================================== -->
+    <app-header></app-header>
+
+    <div id="flash_message_success"><i class="fas fa-check"></i> Post enregistré</div>
+
+
+
+    <!-- # site-content
+            ================================================== -->
+    <section id="content" class="s-content">
+
+
+        <!--  masonry -->
+        <div id="bricks" class="bricks">
+
+            <div *ngIf="!s_aPost" class=" d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <input (click)="o_s_apost()" type="text" placeholder="Quoi de neuf?" name="" id="">
+                    </div>
+                </div>
+            </div>
+
+            <app-addpost *ngIf="s_aPost" [section_o]="s_aPost" (messageEvent)="receiveMessage($event)"></app-addpost>
+
+            <br>
+            <div *ngFor="let post of posts; let i = index" class="d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="d-flex justify-content-between p-2 px-3">
+
+                            <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{post.create_date }}</small> <i
+                                    class="fa fa-ellipsis-h"></i>
+
+                            </div>
+
+
+                        </div>
+                        <p>{{post.content}},</p>
+                        <img src="{{post.img_url}}" class="img-fluid">
+
+                        <audio controlsList="nodownload"  src="{{post.audio_url}}" controls ></audio>
+
+                        <div class="p-2">
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div class="d-flex flex-row icons d-flex align-items-center ">
+                                    <i class="far fa-thumbs-up" style="font-size: 12px;"></i>
+                                    &nbsp; 13
+                                </div>
+                                <div class="d-flex flex-row icons d-flex align-items-center">
+                                    <i class="fa fa-eye" style="font-size: 12px;"></i>
+                                    &nbsp; 13
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div class="d-flex  flex-row icons d-flex align-items-center btn-like">
+                                    <i class="far fa-thumbs-up" style="font-size: 12px;"></i>
+                                    &nbsp; J'aime
+                                </div>
+                                <div class="d-flex flex-row icons d-flex align-items-center btn-like">
+                                    <i class="fa fa-share" style="font-size: 12px;"></i>
+                                    &nbsp; Partager
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- <div class="comments">
+                                        <div class="d-flex flex-row mb-2"> <img src="https://i.imgur.com/9AZ2QX1.jpg"
+                                                width="40" class="rounded-image">
+                                            <div class="d-flex flex-column ml-2"> <span class="name">Daniel Frozer</span>
+                                                <small class="comment-text">I like this alot! thanks alot</small>
+                                                <div class="d-flex flex-row align-items-center status"> <small>Like</small>
+                                                    <small>Reply</small> <small>Translate</small> <small>18 mins</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row mb-2"> <img src="https://i.imgur.com/1YrCKa1.jpg"
+                                                width="40" class="rounded-image">
+                                            <div class="d-flex flex-column ml-2"> <span class="name">Elizabeth
+                                                    goodmen</span> <small class="comment-text">Thanks for sharing!</small>
+                                                <div class="d-flex flex-row align-items-center status"> <small>Like</small>
+                                                    <small>Reply</small> <small>Translate</small> <small>8 mins</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-input"> <input type="text" class="form-control">
+                                            <div class="fonts"> <i class="fa fa-camera"></i> </div>
+                                        </div>
+                                    </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </section> <!-- end s-content -->
+
+
+    <app-mobilemenu></app-mobilemenu>
