@@ -23,7 +23,7 @@
         <!--  masonry -->
         <div id="bricks" class="bricks">
 
-            <div *ngIf="!s_aPost" class=" d-flex align-items-center justify-content-center">
+            <div *ngIf="!s_aPost && getAuth()" class=" d-flex align-items-center justify-content-center">
                 <div class="col-md-6">
                     <div class="card">
                         <input (click)="o_s_apost()" type="text" placeholder="Quoi de neuf?" name="" id="">

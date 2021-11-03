@@ -324,7 +324,27 @@ audio::-webkit-media-controls-enclosure {
     display: none;
 }
 
+.s-header__search-close {
+    display: none;
+}
+
+
 @media screen and (max-width: 580px) {
+
+    .s-header__search-close {
+        display          : block;
+        
+        font             : 0/0 a;
+        text-shadow      : none;
+        color            : transparent;
+        transform        : translateY(-50%);
+        position         : absolute;
+        top              : 100%;
+        right            : 2.8rem;
+    }
+
+
+
     .tabbar {
         --background: rgb(255, 255, 255);
         --icon-active: #fff;

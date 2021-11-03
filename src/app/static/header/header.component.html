@@ -2,7 +2,7 @@
 
     <div class="s-header__branding">
         <p class="site-title">
-            <a href="index.html" rel="home">EndOfTheAge</a>
+            <a href="index.html" rel="home">EndOfTheAge </a>
         </p>
     </div>
 
@@ -16,6 +16,7 @@
 
     </div> <!-- end s-header__navigation -->
 
-    
+    <a *ngIf="getAuth()" (click)="logout()" title="Close Search" class="s-header__search-close"><i style="color: black; font-size: 20px;" class="fas fa-sign-out-alt"></i></a>
+
 
 </header> <!-- end s-header -->

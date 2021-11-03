@@ -5,4 +5,6 @@
         <li><a routerLink="/" title="">Accueil</a></li>
         <li><a routerLink="/post" title="">Publication</a></li>
         <li><a routerLink="/contact" title="">Contact</a></li>
+        <li style="cursor: pointer;" *ngIf="getAuth()"><a (click)="logout()" title="">Deconnexion</a></li>
+
     </ul> <!-- end s-header__nav -->

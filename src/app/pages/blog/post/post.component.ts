@@ -8,6 +8,7 @@ import { Post } from 'src/app/model/post';
 import { Subscription } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
 import { DatePipe } from '@angular/common';
+import { AuthService } from 'src/app/services/authservice.service';
 
 
 @Component({
@@ -30,11 +31,14 @@ export class PostComponent implements OnInit {
 
   @ViewChild(AddpostComponent) child: any ;
 
+  private auth : Boolean = false;
+
 
 
   constructor(private title: Title,
     public dialog: MatDialog,
-    private postService : PostService
+    private postService : PostService,
+    private authService : AuthService
     ) { }
 
   ngOnInit() {
@@ -85,8 +89,9 @@ export class PostComponent implements OnInit {
     this.s_aPost = !this.s_aPost;
   }
 
-
-
+  getAuth(){
+    return this.authService.getisLogged();
+  }
 
 
 }

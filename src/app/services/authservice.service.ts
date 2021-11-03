@@ -84,6 +84,13 @@ export class AuthService {
     return (user !== null ) ? true : false;
   }
 
+  getisLogged(){
+
+    const user = firebase.auth().currentUser;
+    return (user !== null ) ? true : false;
+
+  }
+
   // Sign in with Google
   GoogleAuth() {
     return this.AuthLogin(new firebase.auth.GoogleAuthProvider());
@@ -123,7 +130,7 @@ export class AuthService {
   SignOut() {
     return firebase.auth().signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['/sing-in']);
+      this.router.navigate(['/sign-in']);
     })
   }
 

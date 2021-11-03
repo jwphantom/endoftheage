@@ -3587,22 +3587,9 @@ body.search-is-visible .s-header__search-inner {
 /* ------------------------------------------------------------------- 
  * ## close button for search 
  * ------------------------------------------------------------------- */
-.s-header__search-close {
-    display          : block;
-    background-color : var(--color-gray-18);
-    width            : 36px;
-    height           : 36px;
-    border-radius    : 50%;
-    font             : 0/0 a;
-    text-shadow      : none;
-    color            : transparent;
-    transform        : translateY(-50%);
-    position         : absolute;
-    top              : 100%;
-    right            : 2.8rem;
-}
 
-.s-header__search-close::before,
+
+/* .s-header__search-close::before,
 .s-header__search-close::after {
     content          : '';
     display          : inline-block;
@@ -3620,7 +3607,7 @@ body.search-is-visible .s-header__search-inner {
 
 .s-header__search-close::after {
     transform : rotate(-45deg);
-}
+} */
 
 /* -------------------------------------------------------------------
  * ## search triggers
