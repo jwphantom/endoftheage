@@ -104,7 +104,6 @@ export class AddpostComponent implements OnInit {
 
   onAudioUrlChange(event :any){
 
-    console.log(event.target.value);
 
     if(event.target.value.length >= 1 ){
       this.b_aPdf = false
@@ -118,7 +117,6 @@ export class AddpostComponent implements OnInit {
 
   onImageUrlChange(event :any){
 
-    console.log(event.target.value);
 
     if(event.target.value.length >= 1 ){
       this.b_aPdf = false
@@ -131,8 +129,6 @@ export class AddpostComponent implements OnInit {
   }
 
   onVideoUrlChange(event :any){
-
-    console.log(event.target.value);
 
     if(event.target.value.length >= 1 ){
       this.b_aAudio = false
@@ -149,7 +145,6 @@ export class AddpostComponent implements OnInit {
 
   onPdfUrlChange(event :any){
 
-    console.log(event.target.value);
 
     if(event.target.value.length >= 1 ){
       this.b_aAudio = false

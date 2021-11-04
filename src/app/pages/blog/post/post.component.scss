@@ -72,9 +72,15 @@ hr {
 
 .fonts {
     position: absolute;
-    right: 13px;
-    top: 8px;
+    right: 20px;
+    top: 15px;
     color: #a09c9c;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding-top: 7px;
+
 }
 
 .form-control:focus {
@@ -100,3 +106,6 @@ p {
 }
 
 
+.divComment{
+    width: 100%;
+}

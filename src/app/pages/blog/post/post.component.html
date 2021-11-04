@@ -48,8 +48,8 @@
                                 </span>
 
                                 <mat-menu #menu="matMenu">
-                                    <button mat-menu-item  (click)="dPost(post.uid)">
-                                        <i class="fas fa-trash"></i> 
+                                    <button mat-menu-item (click)="dPost(post.uid)">
+                                        <i class="fas fa-trash"></i>
                                         <span> Supprimer</span>
                                     </button>
                                     <!-- <button mat-menu-item disabled>
@@ -60,9 +60,9 @@
                                       <mat-icon>notifications_off</mat-icon>
                                       <span>Disable alerts</span>
                                     </button> -->
-                                  </mat-menu>
+                                </mat-menu>
 
-                
+
 
                             </div>
 
@@ -108,35 +108,36 @@
                                     <i class="far fa-thumbs-up" style="font-size: 12px;"></i>
                                     &nbsp; J'aime
                                 </div>
-                                <div class="d-flex flex-row icons d-flex align-items-center btn-like">
-                                    <i class="fa fa-share" style="font-size: 12px;"></i>
-                                    &nbsp; Partager
+                                <div data-toggle="modal" data-target="#commentModal"
+                                    class="d-flex flex-row icons d-flex align-items-center btn-like">
+                                    <i class="fa fa-comment" style="font-size: 12px;"></i>
+                                    &nbsp; Commenter
                                 </div>
                             </div>
                             <hr>
-                            <!-- <div class="comments">
-                                        <div class="d-flex flex-row mb-2"> <img src="https://i.imgur.com/9AZ2QX1.jpg"
-                                                width="40" class="rounded-image">
-                                            <div class="d-flex flex-column ml-2"> <span class="name">Daniel Frozer</span>
-                                                <small class="comment-text">I like this alot! thanks alot</small>
-                                                <div class="d-flex flex-row align-items-center status"> <small>Like</small>
-                                                    <small>Reply</small> <small>Translate</small> <small>18 mins</small>
-                                                </div>
+                            <div class="comments">
+                                <div *ngFor="let comment of comments; let i = index">
+                                    <div  *ngIf="comment.postId === post.uid"  class="d-flex flex-row mb-2">
+
+                                        <!-- <template [ngIf]="comment.postId === post.uid"> -->
+                                            <img src="assets/images/icons/account.png" width="40" class="rounded-image">
+    
+                                            <div class="d-flex flex-column ml-2"> <span class="name">{{ comment.pseudo
+                                                    }}</span>
+                                                <small class="comment-text">{{ comment.comment }} </small>
+    
                                             </div>
-                                        </div>
-                                        <div class="d-flex flex-row mb-2"> <img src="https://i.imgur.com/1YrCKa1.jpg"
-                                                width="40" class="rounded-image">
-                                            <div class="d-flex flex-column ml-2"> <span class="name">Elizabeth
-                                                    goodmen</span> <small class="comment-text">Thanks for sharing!</small>
-                                                <div class="d-flex flex-row align-items-center status"> <small>Like</small>
-                                                    <small>Reply</small> <small>Translate</small> <small>8 mins</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="comment-input"> <input type="text" class="form-control">
-                                            <div class="fonts"> <i class="fa fa-camera"></i> </div>
-                                        </div>
-                                    </div> -->
+    
+                                        <!-- </template> -->
+                                    </div>
+                                </div>
+                                
+                                <div class="comment-input"> <input (change)="onCommentChange($event)"
+                                        [(ngModel)]="pcomment" type="text" class="form-control">
+                                    <div class="fonts" (click)="sendComment(post.uid)"> <i
+                                            class="fa fa-paper-plane"></i> </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -147,6 +148,9 @@
 
 
     </section> <!-- end s-content -->
+
+
+
 
 
     <app-mobilemenu></app-mobilemenu>

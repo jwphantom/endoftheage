@@ -5,7 +5,9 @@ import { PublishComponent } from 'src/app/static/publish/publish.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddpostComponent } from '../../modal/addpost/addpost.component';
 import { Post } from 'src/app/model/post';
-import { Subscription } from 'rxjs';
+import { Comment } from 'src/app/model/comment';
+
+import { Subscriber, Subscription } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/services/authservice.service';
@@ -32,6 +34,13 @@ export class PostComponent implements OnInit {
   postsSubscription!: Subscription;
 
 
+  comments!: Comment[];
+  commentsSubscription!: Subscription;
+
+  pcomment!: string;
+
+
+
   @ViewChild(AddpostComponent) child: any;
 
   private auth: Boolean = false;
@@ -53,7 +62,18 @@ export class PostComponent implements OnInit {
         this.posts = posts;
       }
     );
+
+    this.commentsSubscription = this.postService.commentsSubject.subscribe(
+      (comments: Comment[]) => {
+        this.comments = comments;
+      }
+    );
+
+  
+    
     this.postService.emitPosts();
+    this.postService.emitcomments();
+
 
 
     this.loadScript('../assets/js/plugins.js');
@@ -99,6 +119,19 @@ export class PostComponent implements OnInit {
 
   dPost(uid: string) {
     this.postService.deletePost(uid);
+  }
+
+  onCommentChange(event :any){
+
+    console.log(event.target.value);
+
+  }
+
+  sendComment(postId: string){
+
+    this.postService.sendComment(this.pcomment,postId);
+    this.pcomment = '';
+
   }
 
 
