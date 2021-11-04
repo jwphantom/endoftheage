@@ -13,6 +13,7 @@
 
     <div id="flash_message_success"><i class="fas fa-check"></i> Post enregistré</div>
 
+    <div id="flash_message_delete"><i class="fas fa-trash"></i> Post Supprimé</div>
 
 
     <!-- # site-content
@@ -39,17 +40,56 @@
                     <div class="card">
                         <div class="d-flex justify-content-between p-2 px-3">
 
-                            <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{post.create_date }}</small> <i
-                                    class="fa fa-ellipsis-h"></i>
+                            <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{post.create_date
+                                    }}</small>
+                                <span mat-icon-button [matMenuTriggerFor]="menu"
+                                    aria-label="Example icon-button with a menu">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </span>
+
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item  (click)="dPost(post.uid)">
+                                        <i class="fas fa-trash"></i> 
+                                        <span> Supprimer</span>
+                                    </button>
+                                    <!-- <button mat-menu-item disabled>
+                                      <mat-icon>voicemail</mat-icon>
+                                      <span>Check voice mail</span>
+                                    </button>
+                                    <button mat-menu-item>
+                                      <mat-icon>notifications_off</mat-icon>
+                                      <span>Disable alerts</span>
+                                    </button> -->
+                                  </mat-menu>
+
+                
 
                             </div>
 
 
                         </div>
                         <p>{{post.content}},</p>
-                        <img src="{{post.img_url}}" class="img-fluid">
 
-                        <audio controlsList="nodownload"  src="{{post.audio_url}}" controls ></audio>
+                        <div *ngIf="post.img_url!.length > 0">
+                            <img src="{{post.img_url}}" class="img-fluid">
+
+                            <audio controlsList="nodownload" [src]="post.img_url! | safe" controls></audio>
+
+                        </div>
+
+                        <div *ngIf="post.video_url!.length > 0">
+
+                            <iframe width="100%" height="315" [src]="post.video_url! | safe"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+
+                        <div *ngIf="post.pdf_url!.length > 0">
+                            <iframe [src]="post.pdf_url! | safe" width="100%" height="500px">
+                            </iframe>
+                        </div>
+
 
                         <div class="p-2">
                             <div class="d-flex justify-content-between align-items-center ">

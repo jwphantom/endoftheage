@@ -14,7 +14,7 @@ import DataSnapshot = firebase.database.DataSnapshot;
 export class PostService {
 
   posts: any;
-  dataSource : any;
+  dataSource: any;
 
   postsSubject = new Subject<Post[]>();
 
@@ -42,8 +42,8 @@ export class PostService {
   getPosts() {
 
     this.afs.collection('posts', ref => ref.orderBy('timestamp', 'desc')).snapshotChanges().subscribe((data) => {
-      this.posts = data.map(item => 
-        Object.assign({id : item.payload.doc.id}, item.payload.doc.data())
+      this.posts = data.map(item =>
+        Object.assign({ id: item.payload.doc.id }, item.payload.doc.data())
       );
       this.emitPosts();
     })
@@ -70,6 +70,18 @@ export class PostService {
     this.posts.push(newPost);
     this.savePosts();
     this.emitPosts();
+  }
+
+  deletePost(uid: String) {
+    
+    this.afs.doc(`posts/${uid}`).delete();
+
+    $('#flash_message_delete').show();
+
+      setTimeout(function () {
+        $('#flash_message_delete').hide();
+      }, 5000);
+      
   }
 
 

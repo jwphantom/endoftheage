@@ -30,6 +30,30 @@ body { margin: 0; font-family: Prompt, "Helvetica Neue", sans-serif; }
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
+#flash_message_delete {
+    display: none; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #a72828; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_delete.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
     from {
@@ -234,7 +258,7 @@ audio::-webkit-media-controls-enclosure {
   }
   .audience header .arrow-back{
     position: absolute;
-    left: 25px;
+    //left: 25px;
     width: 35px;
     height: 35px;
     cursor: pointer;
@@ -242,6 +266,7 @@ audio::-webkit-media-controls-enclosure {
     color: #747474;
     border-radius: 50%;
     background: #E4E6EB;
+    margin-top: -07px;
   }
   .audience header p{
     font-size: 22px;

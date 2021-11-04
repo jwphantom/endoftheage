@@ -27,7 +27,10 @@ import { PostService } from './services/post.service';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { AddpostComponent } from './pages/modal/addpost/addpost.component';
 import { DatePipe } from '@angular/common';
+import { SafePipe } from './pipe/safe.pipe';
 
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,9 @@ import { DatePipe } from '@angular/common';
     MobilemenuComponent,
     PreloaderComponent,
     PublishComponent,
-    AddpostComponent
+    AddpostComponent,
+    SafePipe,
+    
   ],
   imports: [
     BrowserModule,
@@ -58,6 +63,8 @@ import { DatePipe } from '@angular/common';
     AngularFireAuthModule,
     AngularFirestoreModule,
     HttpClientModule,
+    MatMenuModule,
+    MatIconModule
 
   ],
   providers: [AuthService, PostService,DatePipe],

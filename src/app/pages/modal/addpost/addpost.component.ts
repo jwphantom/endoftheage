@@ -27,9 +27,14 @@ export class AddpostComponent implements OnInit {
   @Output() messageEvent = new EventEmitter<Boolean>();
 
 
-  img_url!: string;
+  img_url: string = '';
 
-  audio_url!: string;
+  audio_url: string = '';
+
+  video_url: string ='';
+
+  pdf_url: string ='';
+
 
   currentDate = new Date();
 
@@ -37,6 +42,14 @@ export class AddpostComponent implements OnInit {
 
   s_aImage: Boolean = false;
   s_aAudio: Boolean = false;
+  s_aVideo: Boolean = false;
+  s_aPdf : Boolean = false;
+
+  b_aImage: Boolean = true;
+  b_aAudio: Boolean = true;
+  b_aVideo: Boolean = true;
+  b_aPdf : Boolean = true;
+
 
   postForm!: FormGroup;
 
@@ -52,6 +65,7 @@ export class AddpostComponent implements OnInit {
 
     this.addPostForm();
     console.log(this.section_o);
+
   }
 
   close() {
@@ -68,20 +82,97 @@ export class AddpostComponent implements OnInit {
     this.s_aAudio = !this.s_aAudio;
   }
 
+  o_s_Video() {
+    this.s_aVideo = !this.s_aVideo;
+  }
+
+  o_s_Pdf() {
+    this.s_aPdf = !this.s_aPdf;
+  }
+
   addPostForm() {
     this.postForm = this.formBuilder.group({
       title: ['', Validators.required],
       content: ['', Validators.required],
-      img_url: ['', Validators.required],
-      audio_url: ['', Validators.required]
+      img_url: [''],
+      audio_url: [''],
+      video_url: [''],
+      pdf_url: ['']
     });
   }
+
+
+  onAudioUrlChange(event :any){
+
+    console.log(event.target.value);
+
+    if(event.target.value.length >= 1 ){
+      this.b_aPdf = false
+      this.b_aVideo = false
+    }else{
+      this.b_aPdf = true
+      this.b_aVideo = true
+    }
+
+  }
+
+  onImageUrlChange(event :any){
+
+    console.log(event.target.value);
+
+    if(event.target.value.length >= 1 ){
+      this.b_aPdf = false
+      this.b_aVideo = false
+    }else{
+      this.b_aPdf = true
+      this.b_aVideo = true
+    }
+
+  }
+
+  onVideoUrlChange(event :any){
+
+    console.log(event.target.value);
+
+    if(event.target.value.length >= 1 ){
+      this.b_aAudio = false
+      this.b_aPdf = false
+      this.b_aImage = false
+
+    }else{
+      this.b_aAudio = true
+      this.b_aPdf = true
+      this.b_aImage = true
+    }
+
+  }
+
+  onPdfUrlChange(event :any){
+
+    console.log(event.target.value);
+
+    if(event.target.value.length >= 1 ){
+      this.b_aAudio = false
+      this.b_aVideo = false
+      this.b_aImage = false
+
+    }else{
+      this.b_aAudio = true
+      this.b_aVideo = true
+      this.b_aImage = true
+    }
+
+  }
+
 
   onSavePost() {
     const title = this.postForm.get('title')?.value;
     const content = this.postForm.get('content')?.value;
     const audio_url = this.postForm.get('audio_url')?.value;
     const img_url = this.postForm.get('img_url')?.value;
+    const video_url = this.postForm.get('video_url')?.value;
+    const pdf_url = this.postForm.get('pdf_url')?.value;
+
     
 
     //const post =  new Post(title,content,audio_url,img_url);
@@ -98,6 +189,8 @@ export class AddpostComponent implements OnInit {
       content: content,
       img_url: img_url,
       audio_url: audio_url,
+      video_url: video_url,
+      pdf_url: pdf_url,
       create_date : this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
       timestamp : Date.now()
       

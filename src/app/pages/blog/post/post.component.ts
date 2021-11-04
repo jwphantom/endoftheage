@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PublishComponent } from 'src/app/static/publish/publish.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddpostComponent } from '../../modal/addpost/addpost.component';
@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/services/authservice.service';
+import getMAC, { isMAC } from 'getmac'
 
 
 @Component({
@@ -18,30 +19,33 @@ import { AuthService } from 'src/app/services/authservice.service';
 })
 export class PostComponent implements OnInit {
 
+
+
   closeResult = '';
 
-  s_aPost : Boolean = false;
+  s_aPost: Boolean = false;
 
-  message:string | undefined;
+  message: string | undefined;
 
 
   posts!: Post[];
   postsSubscription!: Subscription;
 
 
-  @ViewChild(AddpostComponent) child: any ;
+  @ViewChild(AddpostComponent) child: any;
 
-  private auth : Boolean = false;
+  private auth: Boolean = false;
 
 
 
   constructor(private title: Title,
     public dialog: MatDialog,
-    private postService : PostService,
-    private authService : AuthService
-    ) { }
+    private postService: PostService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
+
     this.title.setTitle("EndOfTheAge - Post");
 
     this.postsSubscription = this.postService.postsSubject.subscribe(
@@ -65,7 +69,7 @@ export class PostComponent implements OnInit {
     this.s_aPost = $event
     console.log(this.message);
   }
-  
+
 
   public loadScript(url: string) {
     const body = <HTMLDivElement>document.body;
@@ -81,16 +85,20 @@ export class PostComponent implements OnInit {
     const dialogRef = this.dialog.open(PublishComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-     
+
     });
   }
 
-  o_s_apost(){
+  o_s_apost() {
     this.s_aPost = !this.s_aPost;
   }
 
-  getAuth(){
+  getAuth() {
     return this.authService.getisLogged();
+  }
+
+  dPost(uid: string) {
+    this.postService.deletePost(uid);
   }
 
 
