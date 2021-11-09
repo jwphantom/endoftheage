@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import { CountryService } from 'src/app/services/country.service';
 
 @Component({
   selector: 'app-contact',
@@ -8,10 +10,22 @@ import { Title } from '@angular/platform-browser';
 })
 export class ContactComponent implements OnInit {
 
-  constructor(private title: Title) { }
+  countries: any[] | undefined;
+  countriesSubscription: Subscription | undefined;
+  country = 'Canada';
+
+
+
+
+  constructor(private title: Title,
+    private countryService: CountryService) { }
 
   ngOnInit() {
     this.title.setTitle("EndOfTheAge - Contact");
+
+    this.storeCountries();
+
+
 
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/main.js');
@@ -30,5 +44,8 @@ export class ContactComponent implements OnInit {
     body.appendChild(script);
   }
 
+  storeCountries() {
+    this.countries = this.countryService.countries;
+  }
 
 }

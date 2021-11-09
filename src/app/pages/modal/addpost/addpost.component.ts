@@ -168,44 +168,31 @@ export class AddpostComponent implements OnInit {
     const video_url = this.postForm.get('video_url')?.value;
     const pdf_url = this.postForm.get('pdf_url')?.value;
 
-    
 
-    //const post =  new Post(title,content,audio_url,img_url);
-    //this.postService.createNewPost(post);
-
-    // this.router.navigate(['/post']);
-
-    const id = this.afs.createId()
-
-    const postRef: AngularFirestoreDocument<any> = this.afs.doc(`posts/${id}`);
     const postData: Post = {
-      uid: id,
       title: title,
       content: content,
       img_url: img_url,
       audio_url: audio_url,
       video_url: video_url,
       pdf_url: pdf_url,
+      comments: null, 
+      likes : null,
       create_date : this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
       timestamp : Date.now()
       
     }
 
-    if (postRef) {
+    if (postData) {
       this.close();
-      
-      $('#flash_message_success').show();
-
-      setTimeout(function () {
-        $('#flash_message_success').hide();
-      }, 5000);
+      this.postService.createNewPost(postData);
 
     }
 
-    return postRef.set(postData, {
-      merge: true
+    // return postRef.set(postData, {
+    //   merge: true
 
-    });
+    // });
 
 
   }

@@ -63,7 +63,7 @@ hr {
 }
 
 .form-control {
-    border-radius: 26px;
+    border-radius: 6px;
 }
 
 .comment-input {
@@ -108,4 +108,8 @@ p {
 
 .divComment{
     width: 100%;
+}
+
+#lComments{
+    display: none;
 }

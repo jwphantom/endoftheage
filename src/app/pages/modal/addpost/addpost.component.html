@@ -6,14 +6,14 @@
                     <section class="audience">
                         <header>
                             <div class="arrow-back" (click)="close()"><i class="fas fa-arrow-left"></i></div>
-                            <p>Ajout d'un Post</p>
+                            <p>Add a Post</p>
                         </header>
 
                         <br>
 
-                        <input formControlName="title" type="text" class="col-12" placeholder="Titre de la Publication">
+                        <input formControlName="title" type="text" class="col-12" placeholder="Title of the Post">
 
-                        <textarea formControlName="content" placeholder="Que voulez partager?"
+                        <textarea formControlName="content" placeholder="What do you want to share ?"
                             spellcheck="false"></textarea>
 
                         <div class="options">
@@ -56,17 +56,17 @@
                     <section class="audience">
                         <header>
                             <div class="arrow-back" (click)="o_s_aImage()"><i class="fas fa-arrow-left"></i></div>
-                            <p>Ajouter une Image</p>
+                            <p>Add an Picture</p>
                         </header>
                         <br>
 
                         <input (change)="onImageUrlChange($event)" [(ngModel)]="img_url" formControlName="img_url" type="text" class="col-12"
-                            placeholder="Entrer le lien de l'image">
+                            placeholder="Enter link image">
 
                         <br>
 
 
-                        <button (click)="o_s_aImage()"> <i class="fas fa-arrow-left"></i> Revenir</button>
+                        <button (click)="o_s_aImage()"> <i class="fas fa-arrow-left"></i> Back</button>
                     </section>
                 </div>
             </div>
@@ -76,17 +76,17 @@
                     <section class="audience">
                         <header>
                             <div class="arrow-back" (click)="o_s_aAudio()"><i class="fas fa-arrow-left"></i></div>
-                            <p>Ajouter un audio</p>
+                            <p>Add an audio</p>
                         </header>
                         <br>
 
                         <input (change)="onAudioUrlChange($event)" [(ngModel)]="audio_url" formControlName="audio_url" type="text" class="col-12"
-                            placeholder="Entrer le lien de l'audio">
+                            placeholder="Entern link of your audio">
 
                         <br>
 
 
-                        <button (click)="o_s_aAudio()"> <i class="fas fa-arrow-left"></i>Revenir</button>
+                        <button (click)="o_s_aAudio()"> <i class="fas fa-arrow-left"></i>Come Back</button>
                     </section>
                 </div>
 
@@ -97,17 +97,17 @@
                     <section class="audience">
                         <header>
                             <div class="arrow-back" (click)="o_s_Video()"><i class="fas fa-arrow-left"></i></div>
-                            <p>Ajouter un lien video</p>
+                            <p>Add a video</p>
                         </header>
                         <br>
 
                         <input (change)="onVideoUrlChange($event)" [(ngModel)]="video_url" formControlName="video_url" type="text" class="col-12"
-                            placeholder="Entrer le lien video">
+                            placeholder="Enter link of your video">
 
                         <br>
 
 
-                        <button (click)="o_s_Video()"> <i class="fas fa-arrow-left"></i>Revenir</button>
+                        <button (click)="o_s_Video()"> <i class="fas fa-arrow-left"></i>Come Back</button>
                     </section>
                 </div>
 
@@ -118,17 +118,17 @@
                     <section class="audience">
                         <header>
                             <div class="arrow-back" (click)="o_s_Pdf()"><i class="fas fa-arrow-left"></i></div>
-                            <p>Ajouter un lien pdf</p>
+                            <p>Ajouter a PDF file</p>
                         </header>
                         <br>
 
                         <input (change)="onPdfUrlChange($event)" [(ngModel)]="pdf_url" formControlName="pdf_url" type="text" class="col-12"
-                            placeholder="Entrer le lien de l'audio">
+                            placeholder="Enter a link PDF">
 
                         <br>
 
 
-                        <button (click)="o_s_Pdf()"> <i class="fas fa-arrow-left"></i>Revenir</button>
+                        <button (click)="o_s_Pdf()"> <i class="fas fa-arrow-left"></i>Come Back</button>
                     </section>
                 </div>
 

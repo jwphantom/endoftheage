@@ -31,6 +31,11 @@ import { SafePipe } from './pipe/safe.pipe';
 
 import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
+import { PseudoComponent } from './static/pseudo/pseudo.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
+
 
 @NgModule({
   declarations: [
@@ -48,6 +53,7 @@ import {MatIconModule} from '@angular/material/icon';
     PublishComponent,
     AddpostComponent,
     SafePipe,
+    PseudoComponent,
     
   ],
   imports: [
@@ -64,7 +70,9 @@ import {MatIconModule} from '@angular/material/icon';
     AngularFirestoreModule,
     HttpClientModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    SocketIoModule.forRoot(config),
+
 
   ],
   providers: [AuthService, PostService,DatePipe],

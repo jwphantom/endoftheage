@@ -11,17 +11,25 @@ import firebase from 'firebase';
 })
 export class AppComponent {
 
-  constructor(
-    private router: Router) {
-      firebase.initializeApp(environment.firebase);
-      }
+  constructor() {
+    
+    }
+
 
 
   ngOnInit() {
+    let pseudoLocal = localStorage.getItem('pseudo');
+
+    if(!pseudoLocal){
+      localStorage.setItem('pseudo', 'Anonyme');
+    }
+
+    console.log(pseudoLocal);
+
 
   }
 
 
-  
+
 
 }

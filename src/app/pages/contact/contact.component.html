@@ -34,18 +34,16 @@
                             <div class="column">
                                 <h4>Where to Find Us</h4>
                                 <p>
-                                    1600 Amphitheatre Parkway<br>
-                                    Mountain View, CA<br>
-                                    94043 US
+                                    1600 AmpMonthitheatre Montreal<br>
+                                    Quebec, Canada<br>
                                 </p>
                             </div>
 
                             <div class="column">
                                 <h4>Contact Info</h4>
                                 <p>
-                                    someone@yourdomain.com<br>
-                                    info@yourdomain.com <br>
-                                    Phone: (+63) 555 1212
+                                    Support Français : (+1) 514 996-9835<br>
+                                    Support English :  (+1) 873 339-2560<br>
                                 </p>
                             </div>
                         </div>
@@ -65,9 +63,16 @@
                                         value="" type="text">
                                 </div>
 
-                                <div class="column lg-12 form-field">
+                                <div class="column lg-6 form-field">
                                     <input name="cWebsite" id="cWebsite" class="u-fullwidth" placeholder="Website"
                                         value="" type="text">
+                                </div>
+
+                                <div class="column lg-6 form-field">
+                                    <select class="select-active"  class="u-fullwidth">
+                                        <option *ngFor="let c of countries" value="{{c.name}}">{{ c.name }}
+                                        </option>
+                                    </select>
                                 </div>
 
                                 <div class="column lg-12 message form-field">
