@@ -33,8 +33,10 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import { PseudoComponent } from './static/pseudo/pseudo.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
-const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
+//const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
+const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/", options: {} };
 
 
 @NgModule({
@@ -54,6 +56,7 @@ const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
     AddpostComponent,
     SafePipe,
     PseudoComponent,
+    TruncatePipe,
     
   ],
   imports: [

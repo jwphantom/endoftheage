@@ -74,7 +74,8 @@
 
 
                         </div>
-                        <p>{{post.content}},</p>
+                        <h6>{{ post.title }}</h6>
+                        <p>{{post.content}}, {{post.video_url | truncate:[19] }}</p>
 
                         <div >
                             <img *ngIf="post.img_url!.length > 0" src="{{post.img_url}}" class="img-fluid">
@@ -83,7 +84,16 @@
 
                         </div>
 
-                        <div *ngIf="post.video_url!.length > 0">
+                        <div *ngIf="post.video_url!.length > 0 &&  (post.video_url | truncate:[19]) == 'https://www.youtube'">
+
+
+                            <iframe width="100%" height="315" [src]="post.video_url! | safe"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+
+                        <div *ngIf="post.video_url!.length > 0 &&  (post.video_url | truncate:[19]) != 'https://www.youtube'">
 
                             <video width="100%" style="height: 300px;" controls>
                                 <source src="{{post.video_url}}">
@@ -155,7 +165,7 @@
                                 <div *ngIf="!authcomment" class="comment-input">
                                     <form [formGroup]="commentForm" (ngSubmit)="sendComment(post,post._id)">
 
-                                    <input type="text" 
+                                    <input type="text" data-toggle="modal" data-target="#addpseudo"
                                         class="form-control" formControlName="pcomment">
                                     <div class="fonts" (click)="sendComment(post,post._id)" >
                                          <i class="fa fa-paper-plane"></i>
