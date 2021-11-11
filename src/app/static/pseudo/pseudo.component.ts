@@ -24,8 +24,6 @@ export class PseudoComponent implements OnInit {
     this.authService.storePseudo(this.email,this.pseudo);
     this.email = '';
     this.pseudo = '';
-
-
   }
 
 }

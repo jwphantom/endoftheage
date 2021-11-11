@@ -75,6 +75,13 @@ export class PostComponent implements OnInit {
 
     this.title.setTitle("EndOfTheAge - Post");
 
+    if (localStorage.getItem('email')) {
+      this.authcomment = true
+    } else {
+      this.authcomment = false;
+
+    }
+
     //this.posts = this.postService.getPosts().valueChanges();
 
 
@@ -86,9 +93,7 @@ export class PostComponent implements OnInit {
     this.upLike();
     this.addCommentForm()
 
-    if (localStorage.getItem('email')) {
-      this.authcomment = true
-    }
+    this.upPseudoCreate();
 
 
     this.loadScript('../assets/js/plugins.js');
@@ -116,6 +121,21 @@ export class PostComponent implements OnInit {
 
     this.postService.emitPosts();
   }
+
+  upPseudoCreate() {
+
+    this.socket.on(`get-update-pseudo`, (email: any) => {
+
+      if (localStorage.getItem('email') == email.email[0]) {
+        this.authcomment = true
+      } else {
+        this.authcomment = false;
+
+      }
+    })
+
+  }
+
 
   upPostafterCreate() {
     this.socket.on('send-posts-afterCreate', (newPost: any) => {
@@ -281,7 +301,7 @@ export class PostComponent implements OnInit {
 
     const comment = this.commentForm.get('pcomment')?.value;
 
-    
+
     if (comment.length == 0) {
       $('#flash_message_comment_empty').show();
 
@@ -289,8 +309,8 @@ export class PostComponent implements OnInit {
         $('#flash_message_comment_empty').hide();
       }, 5000);
 
-      
-    }else{
+
+    } else {
       console.log(comment.length);
 
       let _id = id;
@@ -300,7 +320,7 @@ export class PostComponent implements OnInit {
         $(`.dComment-${_id}`).show();
         this.postService.sendComment(comment, post, id);
         this.commentForm.reset();
-      }else{
+      } else {
         this.postService.sendComment(comment, post, id);
         this.commentForm.reset();
 
@@ -318,7 +338,7 @@ export class PostComponent implements OnInit {
   }
 
   dComment(_id: string) {
-    
+
     if ($(`.dComment-${_id}`).hasClass(`.dComment-${_id}-true`)) {
       $(`.dComment-${_id}`).removeClass(`.dComment-${_id}-true`);
       $(`.dComment-${_id}`).hide();
@@ -331,9 +351,9 @@ export class PostComponent implements OnInit {
 
   }
 
-  delComment(comments:any,pId:string, i:number){
+  delComment(comments: any, pId: string, i: number) {
 
-    this.postService.deleteComment(comments,pId,i);
+    this.postService.deleteComment(comments, pId, i);
 
   }
 

@@ -32,8 +32,8 @@ export class PostService {
 
   countCommentsSubject = new Subject<Number>();
 
-  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
-  //private baseUrl = 'http://localhost:3001/api';
+  //private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
+  private baseUrl = 'http://localhost:3001/api';
 
 
   constructor(
