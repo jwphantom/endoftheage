@@ -24,9 +24,6 @@ export class AppComponent {
       localStorage.setItem('pseudo', 'Anonyme');
     }
 
-    console.log(pseudoLocal);
-
-
   }
 
 

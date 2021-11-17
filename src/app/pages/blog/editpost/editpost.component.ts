@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../../../services/post.service';
 import { Post } from '../../../model/post';
@@ -6,71 +6,91 @@ import { NgZone } from '@angular/core';
 
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import * as $ from 'jquery';
 import { DatePipe } from '@angular/common';
-
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-addpost',
-  templateUrl: './addpost.component.html',
-  styleUrls: ['./addpost.component.scss']
+  selector: 'app-editpost',
+  templateUrl: './editpost.component.html',
+  styleUrls: ['./editpost.component.scss']
 })
-export class AddpostComponent implements OnInit {
+export class EditpostComponent implements AfterViewInit {
+
+  public id!: string;
+
+  display: boolean = false;
+
+
+  post: any;
+  postOneSubscription: Subscription | undefined;
+
+
 
   @Input() section_o!: Boolean;
 
   close_section: Boolean | undefined;
-
-  message: Boolean = false;
-
-  @Output() messageEvent = new EventEmitter<Boolean>();
 
 
   img_url: string = '';
 
   audio_url: string = '';
 
-  video_url: string ='';
+  video_url: string = '';
 
-  pdf_url: string ='';
+  pdf_url: string = '';
 
 
   currentDate = new Date();
 
+  postForm!: FormGroup;
 
 
   s_aImage: Boolean = false;
   s_aAudio: Boolean = false;
   s_aVideo: Boolean = false;
-  s_aPdf : Boolean = false;
+  s_aPdf: Boolean = false;
 
   b_aImage: Boolean = true;
   b_aAudio: Boolean = true;
   b_aVideo: Boolean = true;
-  b_aPdf : Boolean = true;
+  b_aPdf: Boolean = true;
 
-
-  postForm!: FormGroup;
-
-  constructor(private formBuilder: FormBuilder, private postService: PostService,
+  constructor(private formBuilder: FormBuilder,
+    private postService: PostService,
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
     public ngZone: NgZone,
     private datePipe: DatePipe,
-    ) { }
+    private route: ActivatedRoute,
 
-  ngOnInit() {
+  ) { }
 
-    this.addPostForm();
-    console.log(this.section_o);
+  ngOnInit(): void {
+
+    this.id = this.route.snapshot.paramMap.get('id')!;
+
+
+    this.postService.getSinglePosts(this.id);
+    this.storeOnePost();
+  }
+
+  ngAfterViewInit() {
+
+    setTimeout(() => {
+      this.display = true;
+      this.editPostForm(this.post);
+
+    }, 1000);
 
   }
 
+
   close() {
     this.close_section = false;
-    this.messageEvent.emit(this.message);
+    //this.messageEvent.emit(this.message);
 
   }
 
@@ -90,53 +110,61 @@ export class AddpostComponent implements OnInit {
     this.s_aPdf = !this.s_aPdf;
   }
 
-  addPostForm() {
+  editPostForm(post: any) {
+    this.img_url = post.img_url;
+
+    this.audio_url = post.audio_url;
+
+    this.video_url = post.video_url;
+
+    this.pdf_url = post.pdf_url;
+
     this.postForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      content: ['', Validators.required],
-      type: ['video', Validators.required],
-      img_url: [''],
-      audio_url: [''],
-      video_url: [''],
-      pdf_url: ['']
+      title: [post.title, Validators.required],
+      content: [post.content, Validators.required],
+      type: [post.type, Validators.required],
+      img_url: [post.img_url],
+      audio_url: [post.audio_url],
+      video_url: [post.video_url],
+      pdf_url: [post.pdf_url]
     });
   }
 
 
-  onAudioUrlChange(event :any){
+  onAudioUrlChange(event: any) {
 
 
-    if(event.target.value.length >= 1 ){
+    if (event.target.value.length >= 1) {
       this.b_aPdf = false
       this.b_aVideo = false
-    }else{
+    } else {
       this.b_aPdf = true
       this.b_aVideo = true
     }
 
   }
 
-  onImageUrlChange(event :any){
+  onImageUrlChange(event: any) {
 
 
-    if(event.target.value.length >= 1 ){
+    if (event.target.value.length >= 1) {
       this.b_aPdf = false
       this.b_aVideo = false
-    }else{
+    } else {
       this.b_aPdf = true
       this.b_aVideo = true
     }
 
   }
 
-  onVideoUrlChange(event :any){
+  onVideoUrlChange(event: any) {
 
-    if(event.target.value.length >= 1 ){
+    if (event.target.value.length >= 1) {
       this.b_aAudio = false
       this.b_aPdf = false
       this.b_aImage = false
 
-    }else{
+    } else {
       this.b_aAudio = true
       this.b_aPdf = true
       this.b_aImage = true
@@ -144,22 +172,21 @@ export class AddpostComponent implements OnInit {
 
   }
 
-  onPdfUrlChange(event :any){
+  onPdfUrlChange(event: any) {
 
 
-    if(event.target.value.length >= 1 ){
+    if (event.target.value.length >= 1) {
       this.b_aAudio = false
       this.b_aVideo = false
       this.b_aImage = false
 
-    }else{
+    } else {
       this.b_aAudio = true
       this.b_aVideo = true
       this.b_aImage = true
     }
 
   }
-
 
   onSavePost() {
     const title = this.postForm.get('title')?.value;
@@ -174,21 +201,21 @@ export class AddpostComponent implements OnInit {
     const postData: Post = {
       title: title,
       content: content,
-      type : type,
+      type: type,
       img_url: img_url,
       audio_url: audio_url,
       video_url: video_url,
       pdf_url: pdf_url,
-      comments: null, 
-      likes : null,
-      create_date : this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
-      timestamp : Date.now()
-      
+      comments: null,
+      likes: null,
+      create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
+      timestamp: Date.now()
+
     }
 
     if (postData) {
       this.close();
-      this.postService.createNewPost(postData);
+      this.postService.updatePost(postData,this.id);
 
     }
 
@@ -199,5 +226,15 @@ export class AddpostComponent implements OnInit {
 
 
   }
+
+  storeOnePost() {
+    this.postOneSubscription = this.postService.PostOneSubject.subscribe(
+      (post: Post[]) => {
+        this.post = post;
+      }
+    );
+    this.postService.emitOnePost();
+  }
+
 
 }

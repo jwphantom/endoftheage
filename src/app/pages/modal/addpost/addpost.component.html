@@ -12,14 +12,26 @@
                         <br>
 
                         <input formControlName="title" type="text" class="col-12" placeholder="Title of the Post">
+                        
+                        <br>
 
+                        <select class="select-active" formControlName="type" class="u-fullwidth">
+                            <option value="video" selected>Vidéo</option>
+                            <option value="image" selected>Image</option>
+                            <option value="audio">Audio</option>
+                            <option value="pdf">PDF</option>
+
+                        </select>
+
+                        
                         <textarea formControlName="content" placeholder="What do you want to share ?"
                             spellcheck="false"></textarea>
 
+                        
                         <div class="options">
                             <p>Add to Your Post</p>
                             <ul class="list">
-                                <li (click)="o_s_aImage()"  *ngIf="b_aImage"  class="image">
+                                <li (click)="o_s_aImage()" *ngIf="b_aImage" class="image">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="#80c46d" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">
@@ -38,11 +50,29 @@
                                     </svg>
                                 </li>
                                 <li (click)="o_s_Video()" *ngIf="b_aVideo" class="video_button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 24 24" fill="none" stroke="#2586ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 24 24"
+                                        fill="none" stroke="#2586ff" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                                        <line x1="7" y1="2" x2="7" y2="22"></line>
+                                        <line x1="17" y1="2" x2="17" y2="22"></line>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <line x1="2" y1="7" x2="7" y2="7"></line>
+                                        <line x1="2" y1="17" x2="7" y2="17"></line>
+                                        <line x1="17" y1="17" x2="22" y2="17"></line>
+                                        <line x1="17" y1="7" x2="22" y2="7"></line>
+                                    </svg>
                                 </li>
 
-                                <li (click)="o_s_Pdf()"  *ngIf="b_aPdf" class="pdf_button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 24 24" fill="none" stroke="#d625ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>                                </li>
+                                <li (click)="o_s_Pdf()" *ngIf="b_aPdf" class="pdf_button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 24 24"
+                                        fill="none" stroke="#d625ff" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48">
+                                        </path>
+                                    </svg>
+                                </li>
 
                             </ul>
                         </div>
@@ -60,8 +90,8 @@
                         </header>
                         <br>
 
-                        <input (change)="onImageUrlChange($event)" [(ngModel)]="img_url" formControlName="img_url" type="text" class="col-12"
-                            placeholder="Enter link image">
+                        <input (change)="onImageUrlChange($event)" [(ngModel)]="img_url" formControlName="img_url"
+                            type="text" class="col-12" placeholder="Enter link image">
 
                         <br>
 
@@ -80,8 +110,8 @@
                         </header>
                         <br>
 
-                        <input (change)="onAudioUrlChange($event)" [(ngModel)]="audio_url" formControlName="audio_url" type="text" class="col-12"
-                            placeholder="Entern link of your audio">
+                        <input (change)="onAudioUrlChange($event)" [(ngModel)]="audio_url" formControlName="audio_url"
+                            type="text" class="col-12" placeholder="Entern link of your audio">
 
                         <br>
 
@@ -101,8 +131,8 @@
                         </header>
                         <br>
 
-                        <input (change)="onVideoUrlChange($event)" [(ngModel)]="video_url" formControlName="video_url" type="text" class="col-12"
-                            placeholder="Enter link of your video">
+                        <input (change)="onVideoUrlChange($event)" [(ngModel)]="video_url" formControlName="video_url"
+                            type="text" class="col-12" placeholder="Enter link of your video">
 
                         <br>
 
@@ -122,8 +152,8 @@
                         </header>
                         <br>
 
-                        <input (change)="onPdfUrlChange($event)" [(ngModel)]="pdf_url" formControlName="pdf_url" type="text" class="col-12"
-                            placeholder="Enter a link PDF">
+                        <input (change)="onPdfUrlChange($event)" [(ngModel)]="pdf_url" formControlName="pdf_url"
+                            type="text" class="col-12" placeholder="Enter a link PDF">
 
                         <br>
 

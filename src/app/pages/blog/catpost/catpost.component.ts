@@ -1,42 +1,30 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { PublishComponent } from 'src/app/static/publish/publish.component';
-import { MatDialog } from '@angular/material/dialog';
-import { AddpostComponent } from '../../modal/addpost/addpost.component';
-import { Post } from 'src/app/model/post';
-import { Comment } from 'src/app/model/comment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, observable, Subject, Subscriber, Subscription } from 'rxjs';
-import { PostService } from 'src/app/services/post.service';
-import { DatePipe } from '@angular/common';
-import { AuthService } from 'src/app/services/authservice.service';
-import getMAC, { isMAC } from 'getmac'
+import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { data, post } from 'jquery';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { Router } from '@angular/router';
-
+import { Subscription } from 'rxjs';
+import { Post } from 'src/app/model/post';
+import { AuthService } from 'src/app/services/authservice.service';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
-  selector: 'app-post',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.scss']
+  selector: 'app-catpost',
+  templateUrl: './catpost.component.html',
+  styleUrls: ['./catpost.component.scss']
 })
-export class PostComponent implements OnInit {
+export class CatpostComponent implements OnInit {
 
+  public cat! : string;
 
-
-  closeResult = '';
+  postsSubscription!: Subscription;
+  public posts: any;
 
   s_aPost: Boolean = false;
 
   message: string | undefined;
-
-
-  //posts!: Post[];
-  postsSubscription!: Subscription;
-
 
   comments!: Comment[];
   commentsSubscription!: Subscription;
@@ -47,12 +35,7 @@ export class PostComponent implements OnInit {
 
   pseudo: string = '';
 
-  public posts: any;
-
   countLike!: number;
-
-
-  @ViewChild(AddpostComponent) child: any;
 
   private auth: Boolean = false;
 
@@ -61,21 +44,22 @@ export class PostComponent implements OnInit {
 
 
 
-
-  constructor(private title: Title,
-    public dialog: MatDialog,
-    private router : Router,
-    private formBuilder: FormBuilder,
+  
+  constructor(private route: ActivatedRoute,
     private postService: PostService,
+    private title: Title,
+    public dialog: MatDialog,
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     public afs: AngularFirestore,
-    private socket: Socket  // Inject Firestore service
+    private socket: Socket) { }
 
-  ) { }
+  ngOnInit(): void {
 
-  ngOnInit() {
+    this.cat = this.route.snapshot.paramMap.get('cat')!;
 
-    this.title.setTitle("EndOfTheAge - Post");
+
+    this.title.setTitle("EndOfTheAge - EndTime : "+this.cat);
 
     if (localStorage.getItem('email')) {
       this.authcomment = true
@@ -84,11 +68,9 @@ export class PostComponent implements OnInit {
 
     }
 
-    //this.posts = this.postService.getPosts().valueChanges();
 
 
-    this.storePost();
-
+    this.storePost(this.cat);
     this.upPostafterCreate();
     this.upPostafterDelete();
     this.upComment();
@@ -99,30 +81,57 @@ export class PostComponent implements OnInit {
 
 
     this.loadScript('../assets/js/plugins.js');
-    this.loadScript('../assets/js/mobilemenu.js');
     this.loadScript('../assets/js/main.js');
     this.loadScript('../assets/js/vendor/jquery-3.5.1.min.js');
     this.loadScript('../assets/js/vendor/jquery-migrate-3.3.0.min.js');
     this.loadScript('../assets/js/vendor/bootstrap.min.js');
 
-  }
 
-  addCommentForm() {
-    this.commentForm = this.formBuilder.group({
-      pcomment: ['', Validators.required],
-    });
   }
 
 
-  storePost() {
-    this.postsSubscription = this.postService.postsSubject.subscribe(
+  public loadScript(url: string) {
+    const body = <HTMLDivElement>document.body;
+    const script = document.createElement('script');
+    script.innerHTML = '';
+    script.src = url;
+    script.async = false;
+    script.defer = true;
+    body.appendChild(script);
+  }
+
+
+  storePost(cat: string) {
+
+    this.postsSubscription = this.postService.postsByCatSubject.subscribe(
       (posts: Post[]) => {
         this.posts = posts;
       }
     );
 
-    this.postService.getPosts();
-    this.postService.emitPosts();
+    this.postService.getPostsByCat(cat)
+
+    this.postService.emitPostsByCat();
+  }
+
+  getAuth() {
+    return this.authService.getisLogged();
+  }
+
+
+  o_s_apost() {
+    this.s_aPost = !this.s_aPost;
+  }
+
+  dPost(uid: string) {
+    this.postService.deletePost(uid);
+  }
+
+
+  addCommentForm() {
+    this.commentForm = this.formBuilder.group({
+      pcomment: ['', Validators.required],
+    });
   }
 
   upPseudoCreate() {
@@ -138,7 +147,6 @@ export class PostComponent implements OnInit {
     })
 
   }
-
 
   upPostafterCreate() {
     this.socket.on('send-posts-afterCreate', (newPost: any) => {
@@ -163,7 +171,6 @@ export class PostComponent implements OnInit {
     })
 
   }
-
 
   upComment() {
     this.socket.on('get-update-comment', (comment: any) => {
@@ -253,53 +260,34 @@ export class PostComponent implements OnInit {
 
   }
 
-  storeCountLike() {
-
-  }
-
-
   receiveMessage($event: Boolean) {
     this.s_aPost = $event
   }
 
+  dComment(_id: string) {
 
-  public loadScript(url: string) {
-    const body = <HTMLDivElement>document.body;
-    const script = document.createElement('script');
-    script.innerHTML = '';
-    script.src = url;
-    script.async = false;
-    script.defer = true;
-    body.appendChild(script);
+    if ($(`.dComment-${_id}`).hasClass(`.dComment-${_id}-true`)) {
+      $(`.dComment-${_id}`).removeClass(`.dComment-${_id}-true`);
+      $(`.dComment-${_id}`).hide();
+
+    } else {
+      $(`.dComment-${_id}`).addClass(`.dComment-${_id}-true`);
+      $(`.dComment-${_id}`).show();
+
+    }
+
   }
 
-  modalPost() {
-    const dialogRef = this.dialog.open(PublishComponent);
+  delComment(comments: any, pId: string, i: number) {
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.postService.deleteComment(comments, pId, i);
 
-    });
   }
 
-  o_s_apost() {
-    this.s_aPost = !this.s_aPost;
-  }
 
-  getAuth() {
-    return this.authService.getisLogged();
-  }
+  like(post: Post, _id: string) {
 
-  dPost(uid: string) {
-    this.postService.deletePost(uid);
-  }
-
-  ePost(uid: string) {
-    this.router.navigate(['/post/edit',uid])
-    //this.postService.deletePost(uid);
-  }
-
-  onCommentChange(event: any) {
-
+    this.postService.sendLike(post, _id);
 
   }
 
@@ -332,33 +320,6 @@ export class PostComponent implements OnInit {
       }
     }
 
-
-  }
-
-
-  like(post: Post, _id: string) {
-
-    this.postService.sendLike(post, _id);
-
-  }
-
-  dComment(_id: string) {
-
-    if ($(`.dComment-${_id}`).hasClass(`.dComment-${_id}-true`)) {
-      $(`.dComment-${_id}`).removeClass(`.dComment-${_id}-true`);
-      $(`.dComment-${_id}`).hide();
-
-    } else {
-      $(`.dComment-${_id}`).addClass(`.dComment-${_id}-true`);
-      $(`.dComment-${_id}`).show();
-
-    }
-
-  }
-
-  delComment(comments: any, pId: string, i: number) {
-
-    this.postService.deleteComment(comments, pId, i);
 
   }
 

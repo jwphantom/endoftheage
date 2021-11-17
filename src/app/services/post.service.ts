@@ -19,7 +19,9 @@ import { Socket } from 'ngx-socket-io';
 })
 export class PostService {
 
+  post: any;
   posts: any;
+  postsbycat: any;
   comments: any;
   commentsByGroup!: any[];
   countComments!: Number
@@ -27,6 +29,11 @@ export class PostService {
   dataSource: any;
 
   postsSubject = new Subject<Post[]>();
+  PostOneSubject = new Subject<Post[]>();
+
+
+  postsByCatSubject = new Subject<Post[]>();
+
 
   commentsSubject = new Subject<Comment[]>();
 
@@ -52,6 +59,15 @@ export class PostService {
 
   emitPosts() {
     this.postsSubject.next(this.posts);
+  }
+
+  emitOnePost() {
+    this.PostOneSubject.next(this.post);
+  }
+
+
+  emitPostsByCat() {
+    this.postsByCatSubject.next(this.postsbycat);
   }
 
 
@@ -88,19 +104,39 @@ export class PostService {
 
   }
 
+  getPostsByCat(cat: string) {
 
-  getSinglePosts(id: number) {
-    return new Promise(
-      (resolve, reject) => {
-        firebase.database().ref('/posts/' + id).once('value').then(
-          (data: DataSnapshot) => {
-            resolve(data.val());
-          }, (error) => {
-            reject(error);
-          }
-        );
-      }
-    );
+    this.http
+      .get<any[]>(`${this.baseUrl}/posts/${cat}`)
+      .subscribe(
+        (response) => {
+
+          this.postsbycat = response;
+          this.emitPostsByCat();
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
+  }
+
+
+  getSinglePosts(id: string) {
+    this.http
+      .get<any[]>(`${this.baseUrl}/post/${id}`)
+      .subscribe(
+        (response) => {
+          this.post = response;
+          this.emitOnePost();
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
   }
 
   createNewPost(newPost: Post) {
@@ -126,24 +162,21 @@ export class PostService {
 
   }
 
-  deletePost(id: String) {
+  updatePost(post: any, id:string) {
 
-    var user = firebase.auth().currentUser;
-
-    console.log(user);
-
-    if(user){
-      this.http
-      .delete<any[]>(`${this.baseUrl}/del-posts/${id}`)
+    this.http
+      .put(this.baseUrl + `/update-post/${id}`, post)
       .subscribe(
-        (response) => {
+        (res) => {
 
-          $('#flash_message_delete').show();
+          $('#flash_message_update_comments').show();
 
           setTimeout(function () {
-            $('#flash_message_delete').hide();
+            $('#flash_message_update_comments').hide();
           }, 5000);
-          this.socket.emit('get-posts-afterDelete', id);
+
+          this.router.navigate(['/post'])
+
 
 
         },
@@ -152,9 +185,37 @@ export class PostService {
         }
       );
 
+
+  }
+
+
+
+  deletePost(id: String) {
+
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      this.http
+        .delete<any[]>(`${this.baseUrl}/del-posts/${id}`)
+        .subscribe(
+          (response) => {
+
+            $('#flash_message_delete').show();
+
+            setTimeout(function () {
+              $('#flash_message_delete').hide();
+            }, 5000);
+            this.socket.emit('get-posts-afterDelete', id);
+
+
+          },
+          (error) => {
+            console.log('Erreur ! : ' + error);
+          }
+        );
+
     }
-    else{
-      console.log("ok");
+    else {
       $('#flash_message_notGranted').show();
 
       setTimeout(function () {
@@ -163,7 +224,7 @@ export class PostService {
 
     }
 
-    
+
   }
 
   sendComment(comment: string, post: Post, _id: string) {
@@ -266,16 +327,14 @@ export class PostService {
             if (nL.pseudo == localStorage.getItem('email')) {
               nLike.splice(i, 1);
             }
-         }
+          }
 
-         console.log(nLike)
 
 
           //nLike.push(likeData);
           ulike = nLike;
 
 
-          console.log('ok');
         }
         else {
           for (let i = 0; i < post.likes!.length; i++) {
@@ -309,21 +368,21 @@ export class PostService {
     //this.socket.emit('update-like', [ulike, _id, localStorage.getItem('email')]);
 
     this.http
-    .put(this.baseUrl + `/like-post/${_id}`, ulike)
-    .subscribe(
-      (res) => {
-        this.socket.emit('update-like', [ulike, _id, localStorage.getItem('email')]);
-      },
-      (error) => {
-        console.log('Erreur ! : ' + error);
-      }
-    );
+      .put(this.baseUrl + `/like-post/${_id}`, ulike)
+      .subscribe(
+        (res) => {
+          this.socket.emit('update-like', [ulike, _id, localStorage.getItem('email')]);
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
 
   }
 
-  deleteComment(comments:any,pId:any, i:number){
+  deleteComment(comments: any, pId: any, i: number) {
 
-    comments.splice(i,1);
+    comments.splice(i, 1);
     this.http
       .put(this.baseUrl + `/del-comment/${pId}`, comments)
       .subscribe(
@@ -331,16 +390,16 @@ export class PostService {
 
           $('#flash_message_delete_comments').show();
 
-            setTimeout(function () {
-              $('#flash_message_delete_comments').hide();
-            }, 5000);
+          setTimeout(function () {
+            $('#flash_message_delete_comments').hide();
+          }, 5000);
 
         },
         (error) => {
           console.log('Erreur ! : ' + error);
         }
       );
-    
+
 
   }
 

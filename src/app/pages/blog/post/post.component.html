@@ -20,7 +20,11 @@
     <div id="flash_message_notGranted"><i class="fas fa-info-circle"></i> Utilisateur Non Autorisé </div>
 
     <div id="flash_message_delete_comments"><i class="fas fa-info-circle"></i> Commentaire Supprimé </div>
+    
+    <div id="flash_message_update_comments"><i class="fas fa-info-circle"></i> Post Modifié </div>
 
+
+    
     <!-- # site-content
             ================================================== -->
     <section id="content" class="s-content">
@@ -58,6 +62,12 @@
                                         <i class="fas fa-trash"></i>
                                         <span> Supprimer</span>
                                     </button>
+
+                                    <button mat-menu-item (click)="ePost(post._id)">
+                                        <i class="fas fa-edit"></i>
+                                        <span> Modifier</span>
+                                    </button>
+
                                     <!-- <button mat-menu-item disabled>
                                       <mat-icon>voicemail</mat-icon>
                                       <span>Check voice mail</span>
