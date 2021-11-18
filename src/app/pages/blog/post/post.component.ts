@@ -143,7 +143,7 @@ export class PostComponent implements OnInit {
   upPostafterCreate() {
     this.socket.on('send-posts-afterCreate', (newPost: any) => {
 
-      this.posts.push(newPost['newPost']);
+      this.posts.unshift(newPost['newPost']);
 
       this.postService.emitPosts();
     })

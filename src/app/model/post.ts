@@ -1,6 +1,7 @@
 export interface Post {
   title: string;
   content: string;
+  theme: string;
   type: string;
   img_url: string  | null;
   audio_url: string | null;

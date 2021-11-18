@@ -9,6 +9,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { Router } from "@angular/router";
 import * as $ from 'jquery';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -17,6 +18,10 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./addpost.component.scss']
 })
 export class AddpostComponent implements OnInit {
+
+  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
+  //private baseUrl = 'http://localhost:3001/api';
+
 
   @Input() section_o!: Boolean;
 
@@ -31,9 +36,9 @@ export class AddpostComponent implements OnInit {
 
   audio_url: string = '';
 
-  video_url: string ='';
+  video_url: string = '';
 
-  pdf_url: string ='';
+  pdf_url: string = '';
 
 
   currentDate = new Date();
@@ -43,12 +48,19 @@ export class AddpostComponent implements OnInit {
   s_aImage: Boolean = false;
   s_aAudio: Boolean = false;
   s_aVideo: Boolean = false;
-  s_aPdf : Boolean = false;
+  s_aPdf: Boolean = false;
 
   b_aImage: Boolean = true;
   b_aAudio: Boolean = true;
   b_aVideo: Boolean = true;
-  b_aPdf : Boolean = true;
+  b_aPdf: Boolean = true;
+
+
+  type: string =""; 
+
+  theme: string =""; 
+  cTheme: Boolean = false;
+  lTheme: any;
 
 
   postForm!: FormGroup;
@@ -59,12 +71,15 @@ export class AddpostComponent implements OnInit {
     public router: Router,
     public ngZone: NgZone,
     private datePipe: DatePipe,
-    ) { }
+    private http: HttpClient,
+
+  ) { }
 
   ngOnInit() {
 
     this.addPostForm();
     console.log(this.section_o);
+    this.getTheme();
 
   }
 
@@ -94,6 +109,7 @@ export class AddpostComponent implements OnInit {
     this.postForm = this.formBuilder.group({
       title: ['', Validators.required],
       content: ['', Validators.required],
+      theme: ['', Validators.required],
       type: ['video', Validators.required],
       img_url: [''],
       audio_url: [''],
@@ -103,40 +119,40 @@ export class AddpostComponent implements OnInit {
   }
 
 
-  onAudioUrlChange(event :any){
+  onAudioUrlChange(event: any) {
 
 
-    if(event.target.value.length >= 1 ){
+    if (event.target.value.length >= 1) {
       this.b_aPdf = false
       this.b_aVideo = false
-    }else{
+    } else {
       this.b_aPdf = true
       this.b_aVideo = true
     }
 
   }
 
-  onImageUrlChange(event :any){
+  onImageUrlChange(event: any) {
 
 
-    if(event.target.value.length >= 1 ){
+    if (event.target.value.length >= 1) {
       this.b_aPdf = false
       this.b_aVideo = false
-    }else{
+    } else {
       this.b_aPdf = true
       this.b_aVideo = true
     }
 
   }
 
-  onVideoUrlChange(event :any){
+  onVideoUrlChange(event: any) {
 
-    if(event.target.value.length >= 1 ){
+    if (event.target.value.length >= 1) {
       this.b_aAudio = false
       this.b_aPdf = false
       this.b_aImage = false
 
-    }else{
+    } else {
       this.b_aAudio = true
       this.b_aPdf = true
       this.b_aImage = true
@@ -144,15 +160,15 @@ export class AddpostComponent implements OnInit {
 
   }
 
-  onPdfUrlChange(event :any){
+  onPdfUrlChange(event: any) {
 
 
-    if(event.target.value.length >= 1 ){
+    if (event.target.value.length >= 1) {
       this.b_aAudio = false
       this.b_aVideo = false
       this.b_aImage = false
 
-    }else{
+    } else {
       this.b_aAudio = true
       this.b_aVideo = true
       this.b_aImage = true
@@ -164,6 +180,7 @@ export class AddpostComponent implements OnInit {
   onSavePost() {
     const title = this.postForm.get('title')?.value;
     const content = this.postForm.get('content')?.value;
+    const theme = this.postForm.get('theme')?.value.toLowerCase();
     const type = this.postForm.get('type')?.value;
     const audio_url = this.postForm.get('audio_url')?.value;
     const img_url = this.postForm.get('img_url')?.value;
@@ -174,16 +191,17 @@ export class AddpostComponent implements OnInit {
     const postData: Post = {
       title: title,
       content: content,
-      type : type,
+      theme: theme,
+      type: type,
       img_url: img_url,
       audio_url: audio_url,
       video_url: video_url,
       pdf_url: pdf_url,
-      comments: null, 
-      likes : null,
-      create_date : this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
-      timestamp : Date.now()
-      
+      comments: null,
+      likes: null,
+      create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
+      timestamp: Date.now()
+
     }
 
     if (postData) {
@@ -192,11 +210,33 @@ export class AddpostComponent implements OnInit {
 
     }
 
-    // return postRef.set(postData, {
-    //   merge: true
+  }
 
-    // });
+  getValueTheme(event: any) {
+    console.log(event.target.value);
 
+    if (event.target.value == 'create') {
+      this.theme = '';
+      this.cTheme = true;
+    } else {
+      this.cTheme = false;
+    }
+  }
+
+  getTheme() {
+    this.http
+      .get<any[]>(`${this.baseUrl}/themes`)
+      .subscribe(
+        (response) => {
+
+          this.lTheme = response;
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
 
   }
 

@@ -18,6 +18,7 @@ import { PostService } from 'src/app/services/post.service';
 export class CatpostComponent implements OnInit {
 
   public cat! : string;
+  public theme! : string;
 
   postsSubscription!: Subscription;
   public posts: any;
@@ -57,6 +58,7 @@ export class CatpostComponent implements OnInit {
   ngOnInit(): void {
 
     this.cat = this.route.snapshot.paramMap.get('cat')!;
+    this.theme = this.route.snapshot.paramMap.get('theme')!;
 
 
     this.title.setTitle("EndOfTheAge - EndTime : "+this.cat);
@@ -70,7 +72,7 @@ export class CatpostComponent implements OnInit {
 
 
 
-    this.storePost(this.cat);
+    this.storePost(this.cat,this.theme);
     this.upPostafterCreate();
     this.upPostafterDelete();
     this.upComment();
@@ -101,7 +103,7 @@ export class CatpostComponent implements OnInit {
   }
 
 
-  storePost(cat: string) {
+  storePost(cat: string,theme:string) {
 
     this.postsSubscription = this.postService.postsByCatSubject.subscribe(
       (posts: Post[]) => {
@@ -109,7 +111,7 @@ export class CatpostComponent implements OnInit {
       }
     );
 
-    this.postService.getPostsByCat(cat)
+    this.postService.getPostsByCatTheme(cat,theme)
 
     this.postService.emitPostsByCat();
   }

@@ -5,15 +5,84 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     margin: 10px;
-    text-align: center;   
 }
 
 .card:hover{
     cursor: pointer;
 }
 
-.title{
+span{
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
 }
+
+.tree {
+    position: relative;
+    background: white;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    
+    span {
+      font-size: 13px;
+      letter-spacing: .4px;
+    }
+    
+    .fa-folder-open, .fa-folder {
+      color: #007bff;
+    }
+    
+    .fa-html5 {
+      color: #f21f10;
+    }
+    
+    ul {
+      padding-left: 5px;
+      list-style: none;
+      
+      li {
+        position: relative;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 15px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        
+        &:before {
+          position: absolute;
+          top: 15px;
+          left: 0;
+          width: 10px;
+          height: 1px;
+          margin: auto;
+          content: '';
+          background-color: #666;
+        }
+        
+        &:after {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 1px;
+          height: 100%;
+          content: '';
+          background-color: #666;
+        }
+        
+        &:last-child:after {
+          height: 15px;
+        }
+      }
+      
+      a {
+        cursor: pointer;
+        
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }

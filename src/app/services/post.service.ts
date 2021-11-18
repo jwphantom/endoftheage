@@ -104,15 +104,28 @@ export class PostService {
 
   }
 
-  getPostsByCat(cat: string) {
+  getPostsByCatTheme(cat: string, theme: string) {
 
     this.http
-      .get<any[]>(`${this.baseUrl}/posts/${cat}`)
+      .get<any[]>(`${this.baseUrl}/posts/${cat}/${theme}`)
       .subscribe(
         (response) => {
 
-          this.postsbycat = response;
-          this.emitPostsByCat();
+
+          if (response.length == 0) {
+            $('#flash_message_theme_empty').show();
+
+            setTimeout( ()=> {
+              $('#flash_message_theme_empty').hide();
+              this.router.navigate(['/endTime-menu']);
+
+            }, 3000);
+
+
+          } else {
+            this.postsbycat = response;
+            this.emitPostsByCat();
+          }
 
         },
         (error) => {
@@ -162,7 +175,7 @@ export class PostService {
 
   }
 
-  updatePost(post: any, id:string) {
+  updatePost(post: any, id: string) {
 
     this.http
       .put(this.baseUrl + `/update-post/${id}`, post)

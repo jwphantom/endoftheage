@@ -11,7 +11,7 @@ import { HomeComponent } from './pages/home/home.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'endTime-menu', component: BlogComponent },
-  { path: 'endTime-menu/:cat', component: CatpostComponent },
+  { path: 'endTime-menu/:cat/:theme', component: CatpostComponent },
   { path: 'post/edit/:id', component: EditpostComponent },
   { path: 'sign-in', component: LoginComponent },
   { path: 'contact', component: ContactComponent },

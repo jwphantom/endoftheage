@@ -15,13 +15,25 @@
                         
                         <br>
 
-                        <select class="select-active" formControlName="type" class="u-fullwidth">
+                        <select class="select-active" formControlName="type" class="u-fullwidth" [(ngModel)]="type">
+                            <option value="" disabled selected>Select Your Type</option>
                             <option value="video" selected>Vidéo</option>
                             <option value="image" selected>Image</option>
                             <option value="audio">Audio</option>
                             <option value="pdf">PDF</option>
-
+                            <option value="news">News</option>
                         </select>
+
+                        <br>
+
+                        <select *ngIf="!cTheme" class="select-active" (change)="getValueTheme($event)" [(ngModel)]="theme" formControlName="theme" class="u-fullwidth" place>
+                            <option value="" disabled selected>Select Your Theme</option>
+                            <option *ngFor="let theme of lTheme" value="{{theme.name}}" selected>{{theme.name | titlecase }}</option>
+                            <option value="create">Create</option>
+                        </select>
+
+                        <input *ngIf="cTheme" formControlName="theme" type="text" class="col-12" placeholder="Title of the Post">
+
 
                         
                         <textarea formControlName="content" placeholder="What do you want to share ?"

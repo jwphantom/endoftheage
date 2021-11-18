@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import * as $ from 'jquery';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-editpost',
@@ -17,6 +18,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./editpost.component.scss']
 })
 export class EditpostComponent implements AfterViewInit {
+
+  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
+  //private baseUrl = 'http://localhost:3001/api';
 
   public id!: string;
 
@@ -57,6 +61,12 @@ export class EditpostComponent implements AfterViewInit {
   b_aVideo: Boolean = true;
   b_aPdf: Boolean = true;
 
+  type!: string;
+
+  theme!: string;
+  cTheme: Boolean = false;
+  lTheme: any;
+
   constructor(private formBuilder: FormBuilder,
     private postService: PostService,
     public afs: AngularFirestore,   // Inject Firestore service
@@ -65,6 +75,8 @@ export class EditpostComponent implements AfterViewInit {
     public ngZone: NgZone,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
+    private http: HttpClient,
+
 
   ) { }
 
@@ -75,6 +87,7 @@ export class EditpostComponent implements AfterViewInit {
 
     this.postService.getSinglePosts(this.id);
     this.storeOnePost();
+    this.getTheme();
   }
 
   ngAfterViewInit() {
@@ -111,6 +124,11 @@ export class EditpostComponent implements AfterViewInit {
   }
 
   editPostForm(post: any) {
+
+    this.type = post.type;
+
+    this.theme = post.theme;
+
     this.img_url = post.img_url;
 
     this.audio_url = post.audio_url;
@@ -123,6 +141,7 @@ export class EditpostComponent implements AfterViewInit {
       title: [post.title, Validators.required],
       content: [post.content, Validators.required],
       type: [post.type, Validators.required],
+      theme: [post.theme, Validators.required],
       img_url: [post.img_url],
       audio_url: [post.audio_url],
       video_url: [post.video_url],
@@ -191,6 +210,7 @@ export class EditpostComponent implements AfterViewInit {
   onSavePost() {
     const title = this.postForm.get('title')?.value;
     const content = this.postForm.get('content')?.value;
+    const theme = this.postForm.get('theme')?.value;
     const type = this.postForm.get('type')?.value;
     const audio_url = this.postForm.get('audio_url')?.value;
     const img_url = this.postForm.get('img_url')?.value;
@@ -202,6 +222,7 @@ export class EditpostComponent implements AfterViewInit {
       title: title,
       content: content,
       type: type,
+      theme: theme,
       img_url: img_url,
       audio_url: audio_url,
       video_url: video_url,
@@ -215,7 +236,7 @@ export class EditpostComponent implements AfterViewInit {
 
     if (postData) {
       this.close();
-      this.postService.updatePost(postData,this.id);
+      this.postService.updatePost(postData, this.id);
 
     }
 
@@ -234,6 +255,34 @@ export class EditpostComponent implements AfterViewInit {
       }
     );
     this.postService.emitOnePost();
+  }
+
+  getValueTheme(event: any) {
+    console.log(event.target.value);
+
+    if (event.target.value == 'create') {
+      this.theme = '';
+      this.cTheme = true;
+    } else {
+      this.cTheme = false;
+    }
+  }
+
+  getTheme() {
+    this.http
+      .get<any[]>(`${this.baseUrl}/themes`)
+      .subscribe(
+        (response) => {
+
+          this.lTheme = response;
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
   }
 
 

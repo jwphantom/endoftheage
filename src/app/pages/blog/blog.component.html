@@ -19,6 +19,8 @@
     <app-header></app-header>
 
 
+
+
     <!-- # site-content
         ================================================== -->
     <section id="content" class="s-content">
@@ -27,71 +29,98 @@
         <!--  masonry -->
         <div id="bricks" class="bricks">
 
-            <div class="masonry">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
 
-                <div class="bricks-wrapper ss-animated">
+                        <div class="tree">
 
-                    <div class="grid-sizer"></div>
+                            <ul>
+                                <li>
+                                    <span (click)="oFileETV()">
+                                        <i class="fa fa-folder-open"></i>
+                                        End Times Video
 
-                    <article routerLink="video" class="brick entry">
-
-                        <div class="entry__text card">
-
-                            <div class="entry__excerpt">
-                                <span>
-                                    ENDTIME VIDEO
-                                </span>
-                            </div>
-                        </div> <!-- end entry__text -->
-
-                    </article> <!-- end article -->
-
-                    <article routerLink="audio" class="brick entry" data-animate-el>
-
-                        <div class="entry__text card">
-
-                            <div class="entry__excerpt">
-                                <span class="title">
-                                    ENDTIME AUDIO
-                                </span>
-                            </div>
-                        </div> <!-- end entry__text -->
-
-                    </article> <!-- end article -->
-
-                    <article routerLink="pdf" class="brick entry" data-animate-el>
+                                    </span>
 
 
-                        <div class="entry__text card">
+                                    <ul *ngIf="dETV">
+                                        <li *ngFor="let theme of lTheme" routerLink="video/{{theme.name}}">
+                                            <i class="fa fa-folder-open"></i> {{theme.name}} <span></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <span (click)="oFileETI()">
+                                        <i class="fa fa-folder-open"></i>
+                                        End Times Image
 
-                            <div class="entry__excerpt">
-                                <span>
-                                    ENDTIME PDF
-                                </span>
-                            </div>
-                        </div> <!-- end entry__text -->
-
-                    </article> <!-- end article -->
-
-
-                    <article routerLink="image" class="brick entry" data-animate-el>
-
-
-                        <div class="entry__text card">
-
-                            <div class="entry__excerpt">
-                                <span>
-                                    ENDTIME IMAGE
-                                </span>
-                            </div>
-                        </div> <!-- end entry__text -->
-
-                    </article> <!-- end article -->
+                                    </span>
 
 
-                </div> <!-- end bricks-wrapper -->
+                                    <ul *ngIf="dETI">
+                                        <li *ngFor="let theme of lTheme" routerLink="image/{{theme.name}}">
+                                            <i class="fa fa-folder-open"></i> {{theme.name}} <span></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <span (click)="oFileETA()">
+                                        <i class="fa fa-folder-open"></i>
+                                        End Times Audio
 
-            </div> <!-- end masonry-->
+                                    </span>
+
+
+                                    <ul *ngIf="dETA">
+                                        <li *ngFor="let theme of lTheme" routerLink="audio/{{theme.name}}">
+                                            <i class="fa fa-folder-open"></i> {{theme.name}} <span></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <span (click)="oFileETP()">
+                                        <i class="fa fa-folder-open"></i>
+                                        End Times Pdf
+
+                                    </span>
+
+
+                                    <ul *ngIf="dETP">
+                                        <li *ngFor="let theme of lTheme" routerLink="pdf/{{theme.name}}">
+                                            <i class="fa fa-folder-open"></i> {{theme.name}} <span></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <span (click)="oFileETN()">
+                                        <i class="fa fa-folder-open"></i>
+                                        End Times News
+
+                                    </span>
+
+
+                                    <ul *ngIf="dETN">
+                                        <li *ngFor="let theme of lTheme" routerLink="news/{{theme.name}}">
+                                            <i class="fa fa-folder-open"></i> {{theme.name}} <span></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
 
         </div>
 

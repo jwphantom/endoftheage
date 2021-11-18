@@ -21,6 +21,9 @@
     
         <div id="flash_message_delete_comments"><i class="fas fa-info-circle"></i> Commentaire Supprimé </div>
     
+        <div id="flash_message_theme_empty"><i class="fas fa-info-circle"></i> Thème Vide Pour le moment </div>
+
+
         <!-- # site-content
                 ================================================== -->
         <section id="content" class="s-content">
@@ -28,17 +31,7 @@
     
             <!--  masonry -->
             <div id="bricks" class="bricks">
-    
-                <div *ngIf="!s_aPost && getAuth()" class=" d-flex align-items-center justify-content-center">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <input (click)="o_s_apost()" type="text" placeholder="Quoi de neuf?" name="" id="">
-                        </div>
-                    </div>
-                </div>
-    
-                <app-addpost *ngIf="s_aPost" [section_o]="s_aPost" (messageEvent)="receiveMessage($event)"></app-addpost>
-    
+        
                 <br>
                 <div *ngFor="let post of posts  ; let i = index" class="d-flex align-items-center justify-content-center">
                     <div class="col-md-6">
