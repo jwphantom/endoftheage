@@ -16,6 +16,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { data, post } from 'jquery';
 import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
+import firebase from 'firebase';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Component({
@@ -23,7 +25,7 @@ import { Router } from '@angular/router';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements AfterViewInit {
 
 
 
@@ -57,19 +59,21 @@ export class PostComponent implements OnInit {
   private auth: Boolean = false;
 
   commentForm!: FormGroup;
-  pseudoUser = localStorage.getItem('pseudo');
+  emailUser = localStorage.getItem('email');
+  roleUser = localStorage.getItem('role');
 
 
 
 
   constructor(private title: Title,
     public dialog: MatDialog,
-    private router : Router,
+    private router: Router,
     private formBuilder: FormBuilder,
     private postService: PostService,
     private authService: AuthService,
     public afs: AngularFirestore,
-    private socket: Socket  // Inject Firestore service
+    private socket: Socket,  // Inject Firestore service
+    public afAuth: AngularFireAuth, // Inject Firebase auth service
 
   ) { }
 
@@ -78,7 +82,8 @@ export class PostComponent implements OnInit {
     this.title.setTitle("EndOfTheAge - Post");
 
     if (localStorage.getItem('email')) {
-      this.authcomment = true
+      this.authcomment = true;
+      console.log(this.roleUser)
     } else {
       this.authcomment = false;
 
@@ -92,11 +97,10 @@ export class PostComponent implements OnInit {
     this.upPostafterCreate();
     this.upPostafterDelete();
     this.upComment();
-    this.upLike();
     this.addCommentForm()
 
     this.upPseudoCreate();
-
+    this.flash_message_success_auth();
 
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/mobilemenu.js');
@@ -104,6 +108,11 @@ export class PostComponent implements OnInit {
     this.loadScript('../assets/js/vendor/jquery-3.5.1.min.js');
     this.loadScript('../assets/js/vendor/jquery-migrate-3.3.0.min.js');
     this.loadScript('../assets/js/vendor/bootstrap.min.js');
+
+  }
+
+  ngAfterViewInit() {
+    this.upLike();
 
   }
 
@@ -123,6 +132,55 @@ export class PostComponent implements OnInit {
 
     this.postService.getPosts();
     this.postService.emitPosts();
+  }
+
+
+  flash_message_success_auth() {
+
+    // this.socket.on(`get_flash_message_success_auth`, (email : any) => {   
+      
+    //   const user = firebase.auth().currentUser;
+
+    //   if(email.email == user?.email){
+    //     $('#flash_message_success_auth').show();
+
+    //       setTimeout(function () {
+    //         $('#flash_message_success_auth').hide();
+    //       }, 5000);
+
+    //   }
+
+      
+    // })
+
+
+
+
+    this.socket.on(`get_flash_message_success_auth`, (email : any) => {   
+      
+      console.log(email);
+
+      this.afAuth.authState.subscribe(user => {
+        if (user?.email == email.email.email ) { 
+          console.log('ok');
+          $('#flash_message_success_auth').show();
+
+          setTimeout(function () {
+            $('#flash_message_success_auth').hide();
+          }, 5000);
+
+          
+        }
+      });
+
+
+      
+    })
+
+
+
+    
+
   }
 
   upPseudoCreate() {
@@ -178,6 +236,7 @@ export class PostComponent implements OnInit {
               uid: comment.comment[0][comment.comment[0].length - 1].uid,
               pseudo: comment.comment[0][comment.comment[0].length - 1].pseudo,
               comment: comment.comment[0][comment.comment[0].length - 1].comment,
+              email: comment.comment[0][comment.comment[0].length - 1].email,
               create_date: comment.comment[0][comment.comment[0].length - 1].create_date,
               timestamp: comment.comment[0][comment.comment[0].length - 1].timestamp
             }
@@ -191,6 +250,7 @@ export class PostComponent implements OnInit {
             let commentData = {
               uid: comment.comment[0][0].uid,
               pseudo: comment.comment[0][0].pseudo,
+              email: comment.comment[0][0].email,
               comment: comment.comment[0][0].comment,
               create_date: comment.comment[0][0].create_date,
               timestamp: comment.comment[0][0].timestamp
@@ -209,47 +269,64 @@ export class PostComponent implements OnInit {
 
   upLike() {
 
-    if (localStorage.getItem('email')) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        if (user.email) {
 
-      this.socket.on(`get-update-like-${localStorage.getItem('email')}`, (like: any) => {
-        let ulike: any | undefined;
-        if (like.like[0].length > 1) {
+          this.socket.on(`get-update-like`, (like: any) => {
 
-          if (like.like[0][like.like[0].length - 1].pseudo == localStorage.getItem('email')) {
+            let ulike: any | undefined;
 
             let found = this.posts.filter(function (item: { _id: string; }) { return item._id === like.like[1]; });
-            found[0].likes.push(like.like[0][like.like[0].length - 1])
-          }
+            found[0].likes = like.like[0];
+
+            // if (like.like[0].length >= 1) {
+
+            //   console.log(like.like[0]);
+
+            //   if (like.like[0][like.like[0].length - 1].pseudo == user?.email) {
+            //     console.log('ok');
+            //     let found = this.posts.filter(function (item: { _id: string; }) { return item._id === like.like[1]; });
+            //     found[0].likes.push(like.like[0][like.like[0].length - 1])
+            //   }
+            //   else{
+            //     console.log(like.like[0]);
+            //   }
+            // }
+            // else {
+            //   for (let i = 0; i < this.posts.length; i++) {
+
+            //     if (this.posts[i]._id == like.like[1]) {
+
+
+            //       if (!this.posts[i].likes || this.posts[i].likes.length == 0) {
+            //         let likeData = {
+            //           uid: like.like[0].uid,
+            //           pseudo: like.like[0].pseudo,
+            //         }
+
+            //         ulike = likeData;
+            //         this.posts[i].likes = [ulike];
+
+            //       } else {
+
+            //         for (let j = 0; j < this.posts[i].likes.length; j++) {
+            //           if (this.posts[i].likes[j].pseudo == like.like[0].pseudo) {
+            //             this.posts[i].likes.splice(j, 1);
+            //             //console.log(like.like[0].pseudo)
+            //           }
+            //         }
+            //       }
+            //     }
+            //   }
+            // }
+          })
         }
-        else {
-          for (let i = 0; i < this.posts.length; i++) {
-
-            if (this.posts[i]._id == like.like[1]) {
+      }
+    })
 
 
-              if (!this.posts[i].likes || this.posts[i].likes.length == 0) {
-                let likeData = {
-                  uid: like.like[0].uid,
-                  pseudo: like.like[0].pseudo,
-                }
 
-                ulike = likeData;
-                this.posts[i].likes = [ulike];
-
-              } else {
-
-                for (let j = 0; j < this.posts[i].likes.length; j++) {
-                  if (this.posts[i].likes[j].pseudo == like.like[0].pseudo) {
-                    this.posts[i].likes.splice(j, 1);
-                    //console.log(like.like[0].pseudo)
-                  }
-                }
-              }
-            }
-          }
-        }
-      })
-    }
 
   }
 
@@ -294,7 +371,7 @@ export class PostComponent implements OnInit {
   }
 
   ePost(uid: string) {
-    this.router.navigate(['/post/edit',uid])
+    this.router.navigate(['/post/edit', uid])
     //this.postService.deletePost(uid);
   }
 
@@ -338,7 +415,12 @@ export class PostComponent implements OnInit {
 
   like(post: Post, _id: string) {
 
-    this.postService.sendLike(post, _id);
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      this.postService.sendLike(post, _id);
+    }
+
 
   }
 

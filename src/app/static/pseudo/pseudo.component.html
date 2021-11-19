@@ -5,21 +5,22 @@
           <h3 class="modal-title" id="addpseudo">Voulez vous Commenter?</h3>
         </div>
         <div class="modal-body">
+          <h2>Inscription Rapide</h2>
             <div class="form-group">
-                <input [(ngModel)]="email" type="email" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" placeholder="Enter email"  required>
+              <input type="email" class="form-control" id="exampleInputEmail1"
+              aria-describedby="emailHelp" placeholder="Enter email" #email required>
 
             </div>
 
             <div class="form-group">
-                <input [(ngModel)]="pseudo" type="text" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" placeholder="Enter Pseudo" required>
+              <input type="text" class="form-control" id="exampleInputEmail1"
+              aria-describedby="emailHelp" placeholder="Your Pseudo" #pseudo required>
 
             </div>
         </div>
         <div class="modal-footer">
           <!-- <button  type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-          <button (click)="sendPseudo()" data-dismiss="modal" type="button" class="btn btn-primary">Save changes</button>
+          <button (click)="signUp(pseudo.value,email.value)" data-dismiss="modal" type="button" class="btn btn-primary">Approuver</button>
         </div>
       </div>
     </div>

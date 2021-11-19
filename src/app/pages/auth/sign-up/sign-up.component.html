@@ -1,0 +1,84 @@
+<!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader" class="dots-fade">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    
+    
+    <!-- page wrap
+        ================================================== -->
+    <div id="page" class="s-pagewrap ss-home">
+    
+    
+        <!-- # site header 
+            ================================================== -->
+        <app-header></app-header>
+    
+    
+        <!-- # site-content
+            ================================================== -->
+        <section id="content" class="s-content">
+    
+    
+            <!-- hero -->
+            <div class="hero">
+    
+                <div class="hero__slider swiper-container">
+    
+                    <div class="swiper-wrapper">
+                        <article class="hero__slide swiper-slide">
+                            <div class="hero__entry-image"
+                                style="background-image: url('assets/images/apocalypse/bg9.jpg');"></div>
+                            <div class="hero__entry-text">
+                                <div class="hero__entry-text-inner">
+                                    <div class="hero__entry-meta">
+                                        <span class="cat-links">
+                                            <a>Register</a>
+                                        </span>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" placeholder="Enter email" #email required>
+    
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" placeholder="Enter Pseudo" #pseudo required>
+    
+                                    </div>
+                                    
+                                    <div  class="entry__excerpt" >
+                                        <button class="btn btn-primary col-12" (click)="signUp(pseudo.value, email.value)">Suivant</button>
+    
+                                    </div>
+    
+    
+                                    <div class="entry__excerpt" style="visibility:hidden">
+                                        <p>
+                                            Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id
+                                            et sit proident dolor nulla sed
+                                            commodo est ad minim elit reprehenderit nisi officia aute incididunt velit sint
+                                            in aliqua cillum in consequat.
+                                        </p>
+                                    </div>
+    
+    
+                                </div>
+                            </div>
+                        </article>
+    
+                    </div> <!-- swiper-wrapper -->
+    
+                </div> <!-- end hero slider -->
+    
+    
+            </div> <!-- end hero -->
+    
+    
+        </section> <!-- end s-content -->

@@ -37,6 +37,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { CatpostComponent } from './pages/blog/catpost/catpost.component';
 import { EditpostComponent } from './pages/blog/editpost/editpost.component';
 import { TitlecasePipe } from './pipes/titlecase.pipe';
+import { SignUpComponent } from './pages/auth/sign-up/sign-up.component';
 
 //const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
 const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/", options: {} };
@@ -63,6 +64,7 @@ const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/
     CatpostComponent,
     EditpostComponent,
     TitlecasePipe,
+    SignUpComponent,
     
   ],
   imports: [

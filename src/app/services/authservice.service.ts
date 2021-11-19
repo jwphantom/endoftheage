@@ -7,12 +7,18 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
 import { Socket } from 'ngx-socket-io';
+import { HttpClient } from '@angular/common/http';
+import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
+
+  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
+  //private baseUrl = 'http://localhost:3001/api';
 
   userData: any; // Save logged in user data
 
@@ -22,7 +28,10 @@ export class AuthService {
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
-    private socket: Socket
+    private socket: Socket,
+    private http: HttpClient,
+
+
 
   ) {
     /* Saving user data in localstorage when 
@@ -53,14 +62,15 @@ export class AuthService {
       })
   }
 
-  // Sign up with email/password
-  SignUp(email: string, password: string) {
-    return firebase.auth().createUserWithEmailAndPassword(email, password)
+  NewSignIn(email: string, password: string) {
+    return firebase.auth().signInWithEmailAndPassword(email, password)
       .then((result) => {
-        /* Call the SendVerificaitonMail() function when new user sign 
-        up and returns promise */
-        this.SendVerificationMail();
+        this.ngZone.run(() => {
+          this.socket.emit('send_flash_message_success_auth', { email: email });
+          this.router.navigate(['post']);
+        });
         this.SetUserData(result.user);
+        console.log(result.user);
       }).catch((error) => {
         window.alert(error.message)
       })
@@ -94,6 +104,38 @@ export class AuthService {
 
     const user = firebase.auth().currentUser;
     return (user !== null) ? true : false;
+
+  }
+
+  getIsAdmin() {
+
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.http
+          .get<any[]>(`${this.baseUrl}/getAdmin/${user?.email}`)
+          .subscribe(
+            (response) => {
+              localStorage.setItem('pseudo', response[0].pseudo);
+              localStorage.setItem('email', response[0].email);
+              localStorage.setItem('role', response[0].role);              
+            },
+            (error) => {
+              console.log('Erreur ! : ' + error);
+            }
+          );
+
+      } 
+    })
+
+
+
+
+
+
+
+
+
+    //return (user !== null) ? true : false;
 
   }
 
@@ -148,30 +190,55 @@ export class AuthService {
 
     this.socket.emit('update-pseudo', [email]);
 
-
-
-    // const id = this.afs.createId()
-
-    // console.log(id)
-
-    // const pseudoRef: AngularFirestoreDocument<any> = this.afs.doc(`pseudo/${id}`);
-    // const pseudoData: Pseudo = {
-    //   uid: id,
-    //   pseudo: pseudo,
-    //   email: email
-    // }
-    // return pseudoRef.set(pseudoData, {
-    //   merge: true
-    // })
-
-
   }
 
   getPseudo() {
-
     let pesudoLocal = localStorage.getItem('pseudo');
-    
     return pesudoLocal;
+  }
+
+
+  async SignUp(pseudo: any, email: any) {
+
+    var user = {
+      email: email,
+      pseudo: pseudo,
+      role: 'user',
+    };
+
+    this.http
+      .post(`${this.baseUrl}/user/register`, user)
+      .subscribe(
+        (response: any) => {
+
+
+          var templateParams = {
+            email: email,
+            password: response['cred']
+          };
+
+          emailjs.send('service_end_of_the_age', 'template_b200vbv', templateParams, 'user_SZkYtq4YKmK5GGrGDmP4s')
+            .then(() => {
+
+              console.log('SUCCESS!', response.status, response.text);
+              localStorage.setItem('pseudo', pseudo);
+              localStorage.setItem('email', email);
+              localStorage.setItem('role', 'user');
+              this.NewSignIn(email, response['cred']);
+
+            }, function (err) {
+              console.log('FAILED...', err);
+            });
+
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+          //loading.dismiss();
+
+        }
+      );
+
   }
 
 

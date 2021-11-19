@@ -115,7 +115,7 @@ export class PostService {
           if (response.length == 0) {
             $('#flash_message_theme_empty').show();
 
-            setTimeout( ()=> {
+            setTimeout(() => {
               $('#flash_message_theme_empty').hide();
               this.router.navigate(['/endTime-menu']);
 
@@ -246,6 +246,8 @@ export class PostService {
 
     let ucomment: any[];
 
+    var user = firebase.auth().currentUser;
+
 
 
     if (post.comments && post.comments.length > 0) {
@@ -253,6 +255,7 @@ export class PostService {
       let commentData = {
         uid: id,
         pseudo: localStorage.getItem('pseudo')!,
+        email : user?.email,
         comment: comment,
         create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
         timestamp: Date.now()
@@ -278,6 +281,7 @@ export class PostService {
       let commentData = {
         uid: id,
         pseudo: localStorage.getItem('pseudo')!,
+        email : user?.email,
         comment: comment,
         create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
         timestamp: Date.now()
@@ -308,77 +312,107 @@ export class PostService {
 
     const id = this.afs.createId();
 
-
+    var user = firebase.auth().currentUser;
 
     let ulike: any;
 
-    if (localStorage.getItem('email')) {
+    let oldLike = post.likes;
 
+    let nLike = oldLike?.slice();
 
+    let isNLike = nLike?.filter(function (item: { pseudo: string; }) { return item.pseudo === user?.email; });
 
+    if (isNLike?.length == 0) {
 
-      if (!post.likes || post.likes.length == 0) {
-        let likeData = {
-          uid: id,
-          pseudo: localStorage.getItem('email')!,
-        }
-
-        ulike = likeData;
-        //post.likes = [ulike];
-        //this.afs.doc(`posts/${post.uid}`).update({ likes: ulike });
-
-
-      } else {
-
-        if (post.likes.length > 1) {
-
-          let oldLike = post.likes;
-          let nLike = post.likes;
-
-
-          for (let [i, nL] of nLike.entries()) {
-            if (nL.pseudo == localStorage.getItem('email')) {
-              nLike.splice(i, 1);
-            }
-          }
-
-
-
-          //nLike.push(likeData);
-          ulike = nLike;
-
-
-        }
-        else {
-          for (let i = 0; i < post.likes!.length; i++) {
-
-            for (let j = 0; j < this.posts[i].likes.length; j++)
-
-
-              if (this.posts[i].likes[j].pseudo == localStorage.getItem('email')) {
-                ulike = this.posts[i].likes[j];
-                //this.posts[i].likes.splice(j,1);
-              } else {
-                let likeData = {
-                  uid: id,
-                  pseudo: localStorage.getItem('email')!,
-                }
-                let oldLike = post.likes;
-                let nLike = oldLike.slice();
-                nLike.push(likeData);
-                ulike = nLike;
-              }
-
-          }
+      let likeData = {
+        uid: id,
+        pseudo: user?.email!,
+      }
+      let nLike = oldLike?.slice();
+      nLike?.push(likeData);
+      ulike = nLike;
+    } else {
+      for (let [i, nL] of nLike!.entries()) {
+        if (nL.pseudo == user?.email) {
+          nLike?.splice(i, 1);
         }
       }
-
-
+      ulike = nLike;
 
     }
 
 
-    //this.socket.emit('update-like', [ulike, _id, localStorage.getItem('email')]);
+    // if (!post.likes || post.likes.length == 0) {
+    //   let likeData = {
+    //     uid: id,
+    //     pseudo: user?.email,
+    //   }
+
+    //   ulike = likeData;
+    //   //post.likes = [ulike];
+    //   //this.afs.doc(`posts/${post.uid}`).update({ likes: ulike });
+
+
+    // } else {
+
+    //   if (post.likes.length > 1) {
+
+    //     let oldLike = post.likes;
+    //     let nLike = oldLike.slice();
+
+    //     let isNLike = nLike.filter(function (item: { pseudo: string; }) { return item.pseudo === user?.email; });
+
+    //     if (isNLike.length == 0) {
+
+    //       let likeData = {
+    //         uid: id,
+    //         pseudo: user?.email!,
+    //       }
+    //       let nLike = oldLike.slice();
+    //       nLike.push(likeData);
+    //       ulike = nLike;
+    //     } else {
+    //       for (let [i, nL] of nLike.entries()) {
+    //         if (nL.pseudo == user?.email) {
+    //           nLike.splice(i, 1);
+    //         }
+    //       }
+    //       ulike = nLike;
+
+    //     }
+
+
+    //   }
+    //   else {
+    //     for (let i = 0; i < post.likes!.length; i++) {
+
+    //       for (let j = 0; j < this.posts[i].likes.length; j++)
+
+
+    //         if (this.posts[i].likes[j].pseudo == user?.email) {
+    //           ulike = this.posts[i].likes[j];
+    //           //this.posts[i].likes.splice(j,1);
+    //         } else {
+    //           let likeData = {
+    //             uid: id,
+    //             pseudo: user?.email!,
+    //           }
+    //           let oldLike = post.likes;
+    //           let nLike = oldLike.slice();
+    //           nLike.push(likeData);
+    //           ulike = nLike;
+    //         }
+
+    //     }
+    //   }
+    // }
+
+
+
+
+
+
+    //this.socket.emit('update-like', [ulike, _id, user?.email]);
 
     this.http
       .put(this.baseUrl + `/like-post/${_id}`, ulike)

@@ -2076,7 +2076,6 @@ select {
     font-size           : var(--text-sm);
     font-size           : calc(var(--text-size) * 0.8889);
     line-height         : var(--input-line-height);
-    max-width           : 100%;
     background-color    : white;
     border              : 1px solid  var(--color-placeholder);
     transition          : all .3s ease-in-out;

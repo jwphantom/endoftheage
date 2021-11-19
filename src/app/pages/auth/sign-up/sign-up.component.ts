@@ -3,17 +3,17 @@ import { Title } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/authservice.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-sign-up',
+  templateUrl: './sign-up.component.html',
+  styleUrls: ['./sign-up.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class SignUpComponent implements OnInit {
 
   constructor(private title: Title,
     public authService: AuthService) { }
 
   ngOnInit() {
-    this.title.setTitle("EndOfTheAge - Sign-In");
+    this.title.setTitle("EndOfTheAge - Sign-Up");
 
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/main.js');
@@ -30,6 +30,10 @@ export class LoginComponent implements OnInit {
     script.async = false;
     script.defer = true;
     body.appendChild(script);
+  }
+
+  signUp(pseudo: any, email: any) {
+    this.authService.SignUp(pseudo, email);
   }
 
 }

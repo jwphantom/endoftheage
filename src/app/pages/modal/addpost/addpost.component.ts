@@ -197,8 +197,8 @@ export class AddpostComponent implements OnInit {
       audio_url: audio_url,
       video_url: video_url,
       pdf_url: pdf_url,
-      comments: null,
-      likes: null,
+      comments: [],
+      likes: [],
       create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
       timestamp: Date.now()
 

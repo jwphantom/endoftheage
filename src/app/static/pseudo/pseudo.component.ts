@@ -15,15 +15,19 @@ export class PseudoComponent implements OnInit {
 
 
   constructor(private authService: AuthService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
   }
 
-  sendPseudo(){
-    this.authService.storePseudo(this.email,this.pseudo);
+  sendPseudo() {
+    this.authService.storePseudo(this.email, this.pseudo);
     this.email = '';
     this.pseudo = '';
+  }
+
+  signUp(pseudo: any,email: any) {
+    this.authService.SignUp(pseudo,email);
   }
 
 }

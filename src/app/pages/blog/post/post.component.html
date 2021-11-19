@@ -11,6 +11,9 @@
             ================================================== -->
     <app-header></app-header>
 
+
+    <div id="flash_message_success_auth"><i class="fas fa-check"></i> Inscription Réussi (Consultez Vos Mails)</div>
+
     <div id="flash_message_success"><i class="fas fa-check"></i> Post enregistré</div>
 
     <div id="flash_message_delete"><i class="fas fa-trash"></i> Post Supprimé</div>
@@ -33,7 +36,7 @@
         <!--  masonry -->
         <div id="bricks" class="bricks">
 
-            <div *ngIf="!s_aPost && getAuth()" class=" d-flex align-items-center justify-content-center">
+            <div *ngIf="!s_aPost && roleUser == 'admin'" class=" d-flex align-items-center justify-content-center">
                 <div class="col-md-6">
                     <div class="card">
                         <input (click)="o_s_apost()" type="text" placeholder="Quoi de neuf?" name="" id="">
@@ -51,7 +54,7 @@
 
                             <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2"> {{post.create_date
                                     }}</small>
-                                <span mat-icon-button [matMenuTriggerFor]="menu"
+                                <span *ngIf="!s_aPost && roleUser == 'admin'" mat-icon-button [matMenuTriggerFor]="menu"
                                     aria-label="Example icon-button with a menu">
                                     <i class="fa fa-ellipsis-h"></i>
                                 </span>
@@ -139,11 +142,17 @@
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between align-items-center ">
-                                <div style="cursor: pointer;" (click)="like(post, post._id)"
+                                <div *ngIf="!authcomment" style="cursor: pointer;" 
+                                    class="d-flex  flex-row icons d-flex align-items-center" data-toggle="modal" data-target="#addpseudo">
+                                    <img src="assets/images/icons/like.png" style="width: 12px; height: 12px;">
+                                    &nbsp; J'aime
+                                </div>
+                                <div *ngIf="authcomment" style="cursor: pointer;" (click)="like(post, post._id)"
                                     class="d-flex  flex-row icons d-flex align-items-center">
                                     <img src="assets/images/icons/like.png" style="width: 12px; height: 12px;">
                                     &nbsp; J'aime
                                 </div>
+
                                 <div data-toggle="modal" data-target="#commentModal"
                                     class="d-flex flex-row icons d-flex align-items-center btn-like">
                                     <i class="fa fa-share" style="font-size: 12px;"></i>
@@ -164,7 +173,7 @@
                                     <div class="d-flex flex-column ml-2"> <span class="name">{{ comment.pseudo
                                             }}</span>
                                         <small class="comment-text"> {{ comment.comment }}</small>
-                                        <small (click)="delComment(post.comments,post._id, i)" *ngIf="comment.pseudo === pseudoUser" style="cursor: pointer; color: #286ea7; font-size: 10px;"> Supprimer</small>
+                                        <small (click)="delComment(post.comments,post._id, i)" *ngIf="comment.email === emailUser" style="cursor: pointer; color: #286ea7; font-size: 10px;"> Supprimer</small>
 
 
                                     </div>
