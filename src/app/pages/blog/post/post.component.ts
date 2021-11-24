@@ -176,9 +176,6 @@ export class PostComponent implements AfterViewInit {
 
       
     })
-
-
-
     
 
   }

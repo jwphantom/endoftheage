@@ -2,23 +2,34 @@
 
     <div class="s-header__branding">
         <p class="site-title">
-            <a href="index.html" rel="home">EndOfTheAge </a>
+            <a routerLink="/" rel="home">
+                <img src="assets/images/long-logo.png" width="200" alt="">
+            </a>
         </p>
     </div>
 
     <div class="row s-header__navigation">
         <nav class="s-header__nav-wrap">
 
-        <app-menu></app-menu>
+            <app-menu></app-menu>
         </nav>
 
-        
+
 
     </div> <!-- end s-header__navigation -->
 
-    <a *ngIf="!getAuth()" routerLink="/sign-in" title="Close Search" class="s-header__search-close"><i style="color: black; font-size: 20px;" class="fas fa-sign-in-alt"></i></a>
+    <a *ngIf="!getAuth()" routerLink="/sign-in" class="s-header__logout" >
+        <img src="assets/images/icons/login.png" style="width: 20px; height: 20px;">
+    </a>
 
-    <a *ngIf="getAuth()" (click)="logout()" title="Close Search" class="s-header__search-close"><i style="color: black; font-size: 20px;" class="fas fa-sign-out-alt"></i></a>
+    <a *ngIf="getAuth()" routerLink="/settings" class="s-header__settings">
+        <img src="assets/images/icons/settings.png" style="width: 20px; height: 20px;">
+    </a>
+    <a *ngIf="getAuth()" (click)="logout()"  class="s-header__logout">
+        <img src="assets/images/icons/log-out.png" style="width: 20px; height: 20px;">
+    </a>
+
+
 
 
 </header> <!-- end s-header -->

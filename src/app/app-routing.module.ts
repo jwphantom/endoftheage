@@ -8,6 +8,7 @@ import { EditpostComponent } from './pages/blog/editpost/editpost.component';
 import { PostComponent } from './pages/blog/post/post.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { HomeComponent } from './pages/home/home.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'post', component: PostComponent },
-
+  { path: 'settings', component: SettingsComponent },
 
 ];
 

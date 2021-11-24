@@ -14,11 +14,18 @@ export class BlogComponent implements OnInit {
 
   lTheme: any;
 
-  dETV : boolean = false;
-  dETA : boolean = false;
-  dETI : boolean = false;
-  dETN : boolean = false;
-  dETP : boolean = false;
+  dETV: boolean = false;
+  dETA: boolean = false;
+  dETI: boolean = false;
+  dETN: boolean = false;
+  dETP: boolean = false;
+
+  bETV: boolean = true;
+  bETA: boolean = true;
+  bETI: boolean = true;
+  bETN: boolean = true;
+  bETP: boolean = true;
+
 
 
   constructor(private title: Title,
@@ -65,28 +72,102 @@ export class BlogComponent implements OnInit {
   }
 
 
-  oFileETV(){
-    this.dETV = !this.dETV;
+  oFileETV() {
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+    setTimeout(() => {
+      $('#loading').css('visibility', 'hidden');
+      $('#bricks').show();
+      this.dETV = !this.dETV;
+
+      this.bETI = !this.bETI;
+      this.bETA = !this.bETA;
+      this.bETN = !this.bETN;
+      this.bETP = !this.bETP;
+
+
+    }, 1500);
+
 
   }
 
-  oFileETA(){
-    this.dETA = !this.dETA;
+  oFileETA() {
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+    setTimeout(() => {
+      $('#loading').css('visibility', 'hidden');
+      $('#bricks').show();
+      this.dETA = !this.dETA;
+
+      this.bETI = !this.bETI;
+      this.bETV = !this.bETV;
+      this.bETN = !this.bETN;
+      this.bETP = !this.bETP;
+
+    }, 1500);
 
   }
 
-  oFileETI(){
-    this.dETI = !this.dETI;
+  oFileETI() {
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+
+    setTimeout(() => {
+      $('#loading').css('visibility', 'hidden');
+      $('#bricks').show();
+
+      this.dETI = !this.dETI;
+
+      this.bETV = !this.bETV;
+      this.bETA = !this.bETA;
+      this.bETN = !this.bETN;
+      this.bETP = !this.bETP;
+
+    }, 1500);
+
 
   }
 
-  oFileETP(){
-    this.dETP = !this.dETP;
+  oFileETP() {
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+
+    setTimeout(() => {
+      $('#loading').css('visibility', 'hidden');
+      $('#bricks').show();
+
+      this.dETP = !this.dETP;
+      this.bETV = !this.bETV;
+      this.bETA = !this.bETA;
+      this.bETN = !this.bETN;
+      this.bETI = !this.bETP;
+
+    }, 1500);
+
 
   }
 
-  oFileETN(){
-    this.dETN = !this.dETN;
+  oFileETN() {
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+
+    setTimeout(() => {
+      $('#loading').css('visibility', 'hidden');
+      $('#bricks').show();
+
+      this.dETN = !this.dETN;
+
+      this.bETV = !this.bETV;
+      this.bETA = !this.bETA;
+      this.bETP = !this.bETN;
+      this.bETI = !this.bETI;
+
+    }, 1500);
 
   }
 

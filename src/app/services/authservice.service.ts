@@ -56,7 +56,6 @@ export class AuthService {
           this.router.navigate(['post']);
         });
         this.SetUserData(result.user);
-        console.log(result.user);
       }).catch((error) => {
         window.alert(error.message)
       })
@@ -218,9 +217,9 @@ export class AuthService {
           };
 
           emailjs.send('service_end_of_the_age', 'template_b200vbv', templateParams, 'user_SZkYtq4YKmK5GGrGDmP4s')
-            .then(() => {
+            .then((r) => {
 
-              console.log('SUCCESS!', response.status, response.text);
+              console.log('SUCCESS!', r.status, r.text);
               localStorage.setItem('pseudo', pseudo);
               localStorage.setItem('email', email);
               localStorage.setItem('role', 'user');

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import firebase from 'firebase';
 import { AuthService } from './services/authservice.service';
+import { Socket } from 'ngx-socket-io';
 
 
 @Component({
@@ -12,7 +13,8 @@ import { AuthService } from './services/authservice.service';
 })
 export class AppComponent {
 
-  constructor(private authService : AuthService) {
+  constructor(private authService : AuthService,
+    private socket : Socket) {
     
     }
 

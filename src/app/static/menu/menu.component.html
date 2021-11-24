@@ -6,6 +6,8 @@
         <li><a routerLink="/post" title="">Posts</a></li>
         <li><a routerLink="/endTime-menu" title="">EndData</a></li>
         <li><a routerLink="/contact" title="">Contact</a></li>
-        <li style="cursor: pointer;" *ngIf="getAuth()"><a (click)="logout()" title="">Deconnexion</a></li>
+        <li style="cursor: pointer;" *ngIf="!getAuth()"><a routerLink="sign-in" title="">Log In</a></li>
+        <li style="cursor: pointer;" *ngIf="getAuth()"><a routerLink="settings" title="">Settings</a></li>
+        <li style="cursor: pointer;" *ngIf="getAuth()"><a (click)="logout()" title="">Log Out</a></li>
 
     </ul> <!-- end s-header__nav -->

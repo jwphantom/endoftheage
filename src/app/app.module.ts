@@ -38,6 +38,11 @@ import { CatpostComponent } from './pages/blog/catpost/catpost.component';
 import { EditpostComponent } from './pages/blog/editpost/editpost.component';
 import { TitlecasePipe } from './pipes/titlecase.pipe';
 import { SignUpComponent } from './pages/auth/sign-up/sign-up.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { SettingsService } from './services/settings.service';
+import { ToolbarComponent } from './static/toolbar/toolbar.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+
 
 //const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
 const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/", options: {} };
@@ -65,6 +70,8 @@ const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/
     EditpostComponent,
     TitlecasePipe,
     SignUpComponent,
+    SettingsComponent,
+    ToolbarComponent,
     
   ],
   imports: [
@@ -82,11 +89,18 @@ const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/
     HttpClientModule,
     MatMenuModule,
     MatIconModule,
+    MatToolbarModule,
     SocketIoModule.forRoot(config),
 
 
+
   ],
-  providers: [AuthService, PostService,DatePipe],
+  providers: [AuthService, 
+    PostService,
+    DatePipe,
+    SettingsService
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

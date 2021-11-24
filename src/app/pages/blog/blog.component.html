@@ -26,14 +26,187 @@
     <section id="content" class="s-content">
 
 
-        <!--  masonry -->
+        <div class="d-flex align-items-center justify-content-center" id="loading">
+            <img src="assets/images/animations/Dual-Ball-1s-200px.svg" style="width: 60px; height:60px;">
+        </div>
+
+
         <div id="bricks" class="bricks">
-
-            <div class="d-flex align-items-center justify-content-center">
+            <div *ngIf="bETV" class="d-flex align-items-center justify-content-center">
                 <div class="col-md-6">
-                    <div class="card">
+                    <div class="wrapper" *ngIf="dETV">
+                        <section class="audience">
+                            <header>
+                                <div (click)="oFileETV()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
+                                <p>Back</p>
+                            </header>
+                            <br>
 
-                        <div class="tree">
+                            <div *ngFor="let theme of lTheme" routerLink="video/{{theme.name}}" class="card">
+                                <span (click)="oFileETV()">
+                                    <i class="fa fa-folder-open"></i>
+                                    {{theme.name | uppercase }}
+                                </span>
+                            </div>
+                            <br>
+
+
+                        </section>
+                    </div>
+
+                    <div class="card" *ngIf="!dETV">
+                        <span class="title" (click)="oFileETV()">
+                            <img src="assets/images/icons/folder.png" style="width: 16px; height:16px;">
+                            &nbsp; End Times Video
+                        </span>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div *ngIf="bETI" class="d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="wrapper" *ngIf="dETI">
+                        <section class="audience">
+                            <header>
+                                <div (click)="oFileETI()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
+                                <p>Back</p>
+                            </header>
+                            <br>
+
+                            <div *ngFor="let theme of lTheme" routerLink="image/{{theme.name}}" class="card">
+                                <span (click)="oFileETI()">
+                                    <i class="fa fa-folder-open"></i>
+                                    {{theme.name | uppercase }}
+                                </span>
+                            </div>
+                            <br>
+
+
+                        </section>
+                    </div>
+
+                    <div class="card" *ngIf="!dETI">
+                        <span class="title" (click)="oFileETI()">
+                            <img src="assets/images/icons/folder.png" style="width: 16px; height:16px;">
+                            &nbsp; End Times Images
+                        </span>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div *ngIf="bETA" class="d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="wrapper" *ngIf="dETA">
+                        <section class="audience">
+                            <header>
+                                <div (click)="oFileETA()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
+                                <p>Back</p>
+                            </header>
+                            <br>
+
+                            <div *ngFor="let theme of lTheme" routerLink="audio/{{theme.name}}" class="card">
+                                <span (click)="oFileETA()">
+                                    <i class="fa fa-folder-open"></i>
+                                    {{theme.name | uppercase }}
+                                </span>
+                            </div>
+                            <br>
+
+
+                        </section>
+                    </div>
+
+                    <div class="card" *ngIf="!dETA">
+                        <span class="title" (click)="oFileETA()">
+                            <img src="assets/images/icons/folder.png" style="width: 16px; height:16px;">
+                            &nbsp; End Times Audio
+                        </span>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div *ngIf="bETP" class="d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="wrapper" *ngIf="dETP">
+                        <section class="audience">
+                            <header>
+                                <div (click)="oFileETP()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
+                                <p>Back</p>
+                            </header>
+                            <br>
+
+                            <div *ngFor="let theme of lTheme" routerLink="pdf/{{theme.name}}" class="card">
+                                <span (click)="oFileETP()">
+                                    <i class="fa fa-folder-open"></i>
+                                    {{theme.name | uppercase }}
+                                </span>
+                            </div>
+                            <br>
+
+
+                        </section>
+                    </div>
+
+                    <div class="card" *ngIf="!dETP">
+                        <span class="title" (click)="oFileETP()">
+                            <img src="assets/images/icons/folder.png" style="width: 16px; height:16px;">
+                            &nbsp; End Times PDF
+                        </span>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div *ngIf="bETN" class="d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="wrapper" *ngIf="dETN">
+                        <section class="audience">
+                            <header>
+                                <div (click)="oFileETN()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
+                                <p>Back</p>
+                            </header>
+                            <br>
+
+                            <div *ngFor="let theme of lTheme" routerLink="news/{{theme.name}}" class="card">
+                                <span (click)="oFileETN()">
+                                    <i class="fa fa-folder-open"></i>
+                                    {{theme.name | uppercase }}
+                                </span>
+                            </div>
+                            <br>
+
+
+                        </section>
+                    </div>
+
+                    <div class="card" *ngIf="!dETN">
+                        <span class="title" (click)="oFileETN()">
+                            <img src="assets/images/icons/folder.png" style="width: 16px; height:16px;">
+                            &nbsp; End Times News
+                        </span>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- <div class="tree">
 
                             <ul>
                                 <li>
@@ -115,14 +288,14 @@
                                     </ul>
                                 </li>
                             </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </div> -->
+        <!-- </div> -->
+        <!-- </div>
+            </div> -->
 
 
 
-        </div>
+        <!-- </div> -->
 
 
     </section> <!-- end s-content -->

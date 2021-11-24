@@ -1,0 +1,40 @@
+.card {
+    border: 1px solid rgb(243, 243, 243);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    margin: 10px;
+    padding-left: 10px;
+}
+
+.card:hover {
+    cursor: pointer;
+}
+
+span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.title {
+    font-weight: 500;
+}
+
+.field-icon {
+    float: right;
+    right: 10px;
+    margin-top: -35px;
+    position: relative;
+    z-index: 2;
+}
+
+#loading {
+    position: absolute;
+    left: 45%;
+    top: 45%;
+    visibility: hidden;
+  
+  }
+  

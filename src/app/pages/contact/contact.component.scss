@@ -1,7 +1,6 @@
-.form-field{
+.form-field {
     margin-bottom: 10px;
 }
-
 
 .s-content .rowa {
     display: -webkit-box;
@@ -11,4 +10,11 @@
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
+}
+
+#loading {
+    position: absolute;
+    left: 45%;
+    top: 45%;
+    visibility: hidden;
 }

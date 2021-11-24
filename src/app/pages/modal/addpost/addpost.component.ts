@@ -65,7 +65,9 @@ export class AddpostComponent implements OnInit {
 
   postForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private postService: PostService,
+  constructor(
+    private formBuilder: FormBuilder, 
+    private postService: PostService,
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,

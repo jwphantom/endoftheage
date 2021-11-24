@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { CountryService } from 'src/app/services/country.service';
+import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+
 
 @Component({
   selector: 'app-contact',
@@ -13,11 +16,14 @@ export class ContactComponent implements OnInit {
   countries: any[] | undefined;
   countriesSubscription: Subscription | undefined;
   country = 'Canada';
+  submitForm: boolean = false;
 
+  contactForm!: FormGroup;
 
 
 
   constructor(private title: Title,
+    private formBuilder: FormBuilder,
     private countryService: CountryService) { }
 
   ngOnInit() {
@@ -25,6 +31,7 @@ export class ContactComponent implements OnInit {
 
     this.storeCountries();
 
+    this.addContactForm();
 
 
     this.loadScript('../assets/js/plugins.js');
@@ -46,6 +53,69 @@ export class ContactComponent implements OnInit {
 
   storeCountries() {
     this.countries = this.countryService.countries;
+  }
+
+  addContactForm() {
+    this.contactForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', Validators.required],
+      phone: ['', Validators.required],
+      country: ['', Validators.required],
+      message: ['', Validators.required],
+    });
+  }
+
+  submit() {
+
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+    const name = this.contactForm.get('name')?.value;
+    const email = this.contactForm.get('email')?.value;
+    const phone = this.contactForm.get('phone')?.value;
+    const country = this.contactForm.get('country')?.value;
+    const message = this.contactForm.get('message')?.value;
+
+    var templateParams = {
+      name: name,
+      email: email,
+      phone: phone,
+      country: country,
+      message: message,
+    };
+
+
+    emailjs.send('service_end_of_the_age', 'contact', templateParams, 'user_SZkYtq4YKmK5GGrGDmP4s')
+      .then((r) => {
+
+        $('#loading').css('visibility', 'hidden');
+        $('#bricks').show();
+        $('#flash_message_success').show();
+
+        setTimeout(() => {
+          $('#flash_message_success').hide();
+
+        }, 3000);
+
+        this.contactForm.reset();
+
+
+        console.log('SUCCESS!', r.status, r.text);
+
+      }, function (err) {
+
+        $('#loading').css('visibility', 'hidden');
+        $('#bricks').show();
+        $('#flash_message_notGranted').show();
+
+        setTimeout(() => {
+          $('#flash_message_notGranted').hide();
+
+        }, 3000);
+
+        console.log('FAILED...', err);
+      });
+
   }
 
 }

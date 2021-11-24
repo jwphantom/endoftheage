@@ -1,0 +1,122 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Title } from '@angular/platform-browser';
+import { SettingsService } from 'src/app/services/settings.service';
+import firebase from 'firebase';
+
+
+@Component({
+  selector: 'app-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss']
+})
+export class SettingsComponent implements OnInit {
+
+  submitPassword: boolean = false;
+  submitPseudo: boolean = false;
+  currentUser: any = [];
+
+  ps : string | undefined;;
+
+  @ViewChild('oldpassword') iOPass!:ElementRef;
+  @ViewChild('newpassword') iNPass!:ElementRef;
+
+  
+  constructor(private title: Title,
+    private http: HttpClient,
+    private settingsService: SettingsService,
+    public afs: AngularFirestore,   // Inject Firestore service
+    public afAuth: AngularFireAuth, // Inject Firebase auth service
+  ) { }
+
+  ngOnInit() {
+    this.title.setTitle("EndOfTheAge - Settings");
+
+    this.ps = localStorage.getItem('pseudo')!;
+    console.log(localStorage.getItem('pseudo'))
+
+    this.loadScript('../assets/js/plugins.js');
+    this.loadScript('../assets/js/main.js');
+    this.loadScript('../assets/js/password.js');
+    this.loadScript('../assets/js/vendor/jquery-3.5.1.min.js');
+    this.loadScript('../assets/js/vendor/jquery-migrate-3.3.0.min.js');
+    this.loadScript('../assets/js/vendor/bootstrap.min.js');
+
+  }
+
+  public loadScript(url: string) {
+    const body = <HTMLDivElement>document.body;
+    const script = document.createElement('script');
+    script.innerHTML = '';
+    script.src = url;
+    script.async = false;
+    script.defer = true;
+    body.appendChild(script);
+  }
+
+
+  async cPassword(oPassword: any, nPassword: any) {
+
+    this.submitPassword = true;
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+    const user = firebase.auth().currentUser;
+
+    this.currentUser = user;
+
+    const credential: firebase.auth.AuthCredential = firebase.auth.EmailAuthProvider.credential(
+      this.currentUser.email,
+      oPassword
+    );
+
+    this.iOPass.nativeElement.value = '';
+    this.iNPass.nativeElement.value = '';
+
+
+    try {
+      await this.currentUser.reauthenticateWithCredential(credential);
+      $('#loading').css('visibility', 'hidden');
+      $('#bricks').show();
+      $('#flash_message_success_uPassword').show();
+
+      setTimeout(() => {
+        $('#flash_message_success_uPassword').hide();
+
+      }, 3000);
+      this.submitPassword = false;
+      
+      return this.currentUser.updatePassword(nPassword);
+
+
+    } catch (error) {
+      $('#loading').css('visibility', 'hidden');
+      $('#bricks').show();
+      $('#flash_message__upseudo_notGranted').show();
+
+      setTimeout(() => {
+        $('#flash_message__upseudo_notGranted').hide();
+
+      }, 3000);
+      this.submitPassword = false;
+
+      console.error(error);
+    }
+
+    //this.settingsService.updatePassword(oPassword, nPassword);
+  }
+
+  async cPseudo(pseudo: any) {
+
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+    this.settingsService.updatePseudo(pseudo);
+
+  
+  }
+
+
+}

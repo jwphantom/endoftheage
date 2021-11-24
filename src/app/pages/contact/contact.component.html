@@ -18,11 +18,19 @@
         ================================================== -->
     <app-header></app-header>
 
+    <div id="flash_message_success"><i class="fas fa-check"></i> Votre Mail a été envoyé</div>
+    <div id="flash_message_notGranted">Une erreur est survenue lors de l'envoi de votre mail, veuillez réessayer</div>
+
+
 
     <!-- # site-content
         ================================================== -->
     <section id="content" class="s-content">
 
+        <div class="d-flex align-items-center justify-content-center" id="loading">
+            <img src="assets/images/animations/Dual-Ball-1s-200px.svg" style="width: 60px; height:60px;">
+        </div>
+        
 
         <!--  masonry -->
         <div id="bricks" class="bricks">
@@ -30,64 +38,64 @@
             <div class="container">
 
 
-                        <div class="row block-large-1-2 block-tab-whole entry__blocks">
-                            <div class="column">
-                                <h4>Where to Find Us</h4>
-                                <p>
-                                    1600 AmpMonthitheatre Montreal<br>
-                                    Quebec, Canada<br>
-                                </p>
-                            </div>
+                <div class="row block-large-1-2 block-tab-whole entry__blocks">
+                    <div class="column">
+                        <h4>Where to Find Us</h4>
+                        <p>
+                            1600 AmpMonthitheatre Montreal<br>
+                            Quebec, Canada<br>
+                        </p>
+                    </div>
 
-                            <div class="column">
-                                <h4>Contact Info</h4>
-                                <p>
-                                    Support Français : (+1) 514 996-9835<br>
-                                    Support English :  (+1) 873 339-2560<br>
-                                </p>
-                            </div>
+                    <div class="column">
+                        <h4>Contact Info</h4>
+                        <p>
+                            Support Français : (+1) 514 996-9835<br>
+                            Support English : (+1) 873 339-2560<br>
+                        </p>
+                    </div>
+                </div>
+
+                <h4>Feel Free to Say Hi.</h4>
+
+                <form [formGroup]="contactForm" (ngSubmit)="submit()" class="entry__form" method="post" action="" autocomplete="off">
+                    <fieldset class="row">
+
+                        <div class="column lg-6 tab-12 form-field">
+                            <input formControlName="name" name="cName" id="cName" class="u-fullwidth" placeholder="Your Name" value=""
+                                type="text">
                         </div>
 
-                        <h4>Feel Free to Say Hi.</h4>
+                        <div class="column lg-6 tab-12 form-field">
+                            <input formControlName="email" name="cEmail" id="cEmail" class="u-fullwidth" placeholder="Your Email"
+                                value="" type="email" ngModel [email]="true">
+                        </div>
 
-                        <form name="cForm" id="cForm" class="entry__form" method="post" action="" autocomplete="off">
-                            <fieldset class="row">
+                        <div class="column lg-6 form-field">
+                            <input formControlName="phone"  id="cWebsite" class="u-fullwidth" placeholder="Phone"
+                                value="" type="text">
+                        </div>
 
-                                <div class="column lg-6 tab-12 form-field">
-                                    <input name="cName" id="cName" class="u-fullwidth" placeholder="Your Name" value=""
-                                        type="text">
-                                </div>
+                        <div class="column lg-6 form-field">
+                            <select formControlName="country" [(ngModel)]="country"  class="select-active" class="u-fullwidth">
+                                <option *ngFor="let c of countries" value="{{c.name}}">{{ c.name }}
+                                </option>
+                            </select>
+                        </div>
 
-                                <div class="column lg-6 tab-12 form-field">
-                                    <input name="cEmail" id="cEmail" class="u-fullwidth" placeholder="Your Email"
-                                        value="" type="text">
-                                </div>
+                        <div class="column lg-12 message form-field">
+                            <textarea formControlName="message" name="cMessage" id="cMessage" class="u-fullwidth"
+                                placeholder="Your Message"></textarea>
+                        </div>
 
-                                <div class="column lg-6 form-field">
-                                    <input name="cWebsite" id="cWebsite" class="u-fullwidth" placeholder="Website"
-                                        value="" type="text">
-                                </div>
+                        <div class="column lg-12">
+                            <button [disabled]="contactForm.invalid" type="submit" class="bCPassword btn btn-primary col-12">
+                                Valider
+                            </button>
+                        </div>
 
-                                <div class="column lg-6 form-field">
-                                    <select class="select-active"  class="u-fullwidth">
-                                        <option *ngFor="let c of countries" value="{{c.name}}">{{ c.name }}
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div class="column lg-12 message form-field">
-                                    <textarea name="cMessage" id="cMessage" class="u-fullwidth"
-                                        placeholder="Your Message"></textarea>
-                                </div>
-
-                                <div class="column lg-12">
-                                    <input name="submit" id="submit"
-                                        class="btn btn--primary btn-wide btn--large u-fullwidth" value="Envoyer"
-                                        type="submit">
-                                </div>
-
-                            </fieldset>
-                        </form> <!-- end form -->
+                    </fieldset>
+                </form> <!-- end form -->
 
 
 

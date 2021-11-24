@@ -10,8 +10,6 @@ export class CountryService {
 
   countrySubject = new Subject<any[]>();
 
-  private baseUrl = 'https://server-too-neuf.herokuapp.com/api';
-
   constructor(private http: HttpClient) { }
 
   countries = [
