@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { CountryService } from 'src/app/services/country.service';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import { GlobalConstants } from '../../common/global-constants';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ContactComponent implements OnInit {
 
   contactForm!: FormGroup;
 
+  private GEmail = GlobalConstants.email;
 
 
   constructor(private title: Title,
@@ -78,7 +80,7 @@ export class ContactComponent implements OnInit {
 
     var templateParams = {
       name: name,
-      email: email,
+      email: this.GEmail,
       phone: phone,
       country: country,
       message: message,
