@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { GlobalConstants } from '../../common/global-constants';
 
 
 @Component({
@@ -12,8 +13,7 @@ import { Router } from '@angular/router';
 export class BlockMenuComponent implements OnInit {
 
   lMenu: any;
-  //private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
-  private baseUrl = 'http://localhost:3001/api';
+  private baseUrl = GlobalConstants.apiURL;
 
 
 
