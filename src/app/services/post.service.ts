@@ -13,6 +13,8 @@ import DataSnapshot = firebase.database.DataSnapshot;
 import { DatePipe } from '@angular/common';
 import { Like } from '../model/like';
 import { Socket } from 'ngx-socket-io';
+import { GlobalConstants } from '../common/global-constants';
+
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +41,7 @@ export class PostService {
 
   countCommentsSubject = new Subject<Number>();
 
-  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
-  //private baseUrl = 'http://localhost:3001/api';
-
+  private baseUrl = GlobalConstants.apiURL;
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
@@ -119,7 +119,7 @@ export class PostService {
               $('#flash_message_theme_empty').hide();
               this.router.navigate(['/endTime-menu']);
 
-            }, 3000);
+            }, 1500);
 
 
           } else {
@@ -152,10 +152,14 @@ export class PostService {
 
   }
 
-  createNewPost(newPost: Post) {
+  createNewPost(newPost: Post, menu: any) {
+
+
+    const Data = [newPost, menu]
+
 
     this.http
-      .post(this.baseUrl + '/create-post', newPost)
+      .post(this.baseUrl + '/create-post', Data)
       .subscribe(
         (res) => {
 
@@ -175,10 +179,12 @@ export class PostService {
 
   }
 
-  updatePost(post: any, id: string) {
+  updatePost(post: any, menu:any, id: string) {
+
+    const Data = [post, menu]
 
     this.http
-      .put(this.baseUrl + `/update-post/${id}`, post)
+      .put(this.baseUrl + `/update-post/${id}`, Data)
       .subscribe(
         (res) => {
 
@@ -255,7 +261,7 @@ export class PostService {
       let commentData = {
         uid: id,
         pseudo: localStorage.getItem('pseudo')!,
-        email : user?.email,
+        email: user?.email,
         comment: comment,
         create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
         timestamp: Date.now()
@@ -281,7 +287,7 @@ export class PostService {
       let commentData = {
         uid: id,
         pseudo: localStorage.getItem('pseudo')!,
-        email : user?.email,
+        email: user?.email,
         comment: comment,
         create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
         timestamp: Date.now()

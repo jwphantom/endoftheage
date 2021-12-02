@@ -35,6 +35,32 @@ span {
     left: 45%;
     top: 45%;
     visibility: hidden;
-  
-  }
-  
+}
+
+header {
+    padding: 17px 0;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #bfbfbf;
+}
+
+header .arrow-back {
+    position: absolute;
+    //left: 25px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #747474;
+    border-radius: 50%;
+    background: #e4e6eb;
+    margin-top: -07px;
+}
+header p {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.listMenu button{
+    height: 10px;
+}

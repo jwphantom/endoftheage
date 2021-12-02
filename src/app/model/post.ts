@@ -3,6 +3,8 @@ export interface Post {
   content: string;
   theme: string;
   type: string;
+  view: number;
+  author : string | null;
   img_url: string  | null;
   audio_url: string | null;
   video_url:  string | null;

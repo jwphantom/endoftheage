@@ -30,54 +30,55 @@
         <div class="d-flex align-items-center justify-content-center" id="loading">
             <img src="assets/images/animations/Dual-Ball-1s-200px.svg" style="width: 60px; height:60px;">
         </div>
-        
+
 
         <!--  masonry -->
         <div id="bricks" class="bricks">
 
             <div class="container">
 
-
-                <div class="row block-large-1-2 block-tab-whole entry__blocks">
-                    <div class="column">
-                        <h4>Where to Find Us</h4>
-                        <p>
-                            1600 AmpMonthitheatre Montreal<br>
-                            Quebec, Canada<br>
-                        </p>
-                    </div>
-
-                    <div class="column">
-                        <h4>Contact Info</h4>
-                        <p>
-                            Support Français : (+1) 514 996-9835<br>
-                            Support English : (+1) 873 339-2560<br>
-                        </p>
-                    </div>
+                <div class="entry__blocks">
+                    <p>Your comprehensive guide to Bible prophecy, preparing you for Christ's soon return.</p>
+                    <p> Join our online community by <a href="#">liking our Facebook page</a> , or subscribe to our <a
+                            href="#">YouTube channel</a> .
+                    </p>
+                    <p>
+                        You want to call us directly by phone, use theses numbers:
+                    </p>
+                    <p>
+                        -	French assistance: +1 514 996 9835 (Frère James)<br>
+                        -	English assistance: (+1) 873 339-2560 (Brother Michel)<br>
+                    </p>
+                    <br>
+                    <p>
+                        You can also contact us directly by using the form below:
+                    </p>
+                    <p>Have questions, comments or want to share a testimony?</p>
+                    <p>Please fill out the form below, and we'll get back to you as soon as possible.</p>
                 </div>
 
-                <h4>Feel Free to Say Hi.</h4>
-
-                <form [formGroup]="contactForm" (ngSubmit)="submit()" class="entry__form" method="post" action="" autocomplete="off">
+                <form [formGroup]="contactForm" (ngSubmit)="submit()" class="entry__form" method="post" action=""
+                    autocomplete="off">
                     <fieldset class="row">
 
                         <div class="column lg-6 tab-12 form-field">
-                            <input formControlName="name" name="cName" id="cName" class="u-fullwidth" placeholder="Your Name" value=""
-                                type="text">
+                            <input formControlName="name" name="cName" id="cName" class="u-fullwidth"
+                                placeholder="Your Name" value="" type="text">
                         </div>
 
                         <div class="column lg-6 tab-12 form-field">
-                            <input formControlName="email" name="cEmail" id="cEmail" class="u-fullwidth" placeholder="Your Email"
-                                value="" type="email" ngModel [email]="true">
+                            <input formControlName="email" name="cEmail" id="cEmail" class="u-fullwidth"
+                                placeholder="Your Email" value="" type="email" ngModel [email]="true">
                         </div>
 
                         <div class="column lg-6 form-field">
-                            <input formControlName="phone"  id="cWebsite" class="u-fullwidth" placeholder="Phone"
+                            <input formControlName="phone" id="cWebsite" class="u-fullwidth" placeholder="Phone"
                                 value="" type="text">
                         </div>
 
                         <div class="column lg-6 form-field">
-                            <select formControlName="country" [(ngModel)]="country"  class="select-active" class="u-fullwidth">
+                            <select formControlName="country" [(ngModel)]="country" class="select-active"
+                                class="u-fullwidth">
                                 <option *ngFor="let c of countries" value="{{c.name}}">{{ c.name }}
                                 </option>
                             </select>
@@ -89,7 +90,8 @@
                         </div>
 
                         <div class="column lg-12">
-                            <button [disabled]="contactForm.invalid" type="submit" class="bCPassword btn btn-primary col-12">
+                            <button [disabled]="contactForm.invalid" type="submit"
+                                class="bCPassword btn btn-primary col-12">
                                 Valider
                             </button>
                         </div>
@@ -105,6 +107,8 @@
 
 
     </section> <!-- end s-content -->
+
+    <app-footer></app-footer>
 
 
     <app-mobilemenu></app-mobilemenu>

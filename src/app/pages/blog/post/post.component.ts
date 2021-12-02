@@ -18,6 +18,9 @@ import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
 import firebase from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { HttpClient } from '@angular/common/http';
+import { GlobalConstants } from '../../../common/global-constants';
+import { HostListener } from '@angular/core';
 
 
 @Component({
@@ -28,7 +31,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class PostComponent implements AfterViewInit {
 
 
-
+  private baseUrl = GlobalConstants.apiURL;
   closeResult = '';
 
   s_aPost: Boolean = false;
@@ -53,6 +56,11 @@ export class PostComponent implements AfterViewInit {
 
   countLike!: number;
 
+  admins: any;
+
+  pView: Array<string> = [];
+
+
 
   @ViewChild(AddpostComponent) child: any;
 
@@ -61,6 +69,7 @@ export class PostComponent implements AfterViewInit {
   commentForm!: FormGroup;
   emailUser = localStorage.getItem('email');
   roleUser = localStorage.getItem('role');
+  pseudoUser = localStorage.getItem('pseudo');
 
 
 
@@ -72,6 +81,7 @@ export class PostComponent implements AfterViewInit {
     private postService: PostService,
     private authService: AuthService,
     public afs: AngularFirestore,
+    private http: HttpClient,
     private socket: Socket,  // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
 
@@ -81,16 +91,14 @@ export class PostComponent implements AfterViewInit {
 
     this.title.setTitle("EndOfTheAge - Post");
 
-    if (localStorage.getItem('email')) {
+    if (this.emailUser) {
       this.authcomment = true;
-      console.log(this.roleUser)
     } else {
       this.authcomment = false;
 
     }
 
     //this.posts = this.postService.getPosts().valueChanges();
-
 
     this.storePost();
 
@@ -101,6 +109,7 @@ export class PostComponent implements AfterViewInit {
 
     this.upPseudoCreate();
     this.flash_message_success_auth();
+    this.getAllAdmin();
 
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/mobilemenu.js');
@@ -137,46 +146,29 @@ export class PostComponent implements AfterViewInit {
 
   flash_message_success_auth() {
 
-    // this.socket.on(`get_flash_message_success_auth`, (email : any) => {   
-      
-    //   const user = firebase.auth().currentUser;
 
-    //   if(email.email == user?.email){
-    //     $('#flash_message_success_auth').show();
-
-    //       setTimeout(function () {
-    //         $('#flash_message_success_auth').hide();
-    //       }, 5000);
-
-    //   }
-
-      
-    // })
-
-
-
-
-    this.socket.on(`get_flash_message_success_auth`, (email : any) => {   
-      
-      console.log(email);
+    this.socket.on(`get_flash_message_success_auth`, (email: any) => {
 
       this.afAuth.authState.subscribe(user => {
-        if (user?.email == email.email.email ) { 
-          console.log('ok');
+        if (user?.email == email.email.email) {
           $('#flash_message_success_auth').show();
 
           setTimeout(function () {
             $('#flash_message_success_auth').hide();
           }, 5000);
 
-          
+          this.emailUser = localStorage.getItem('email');
+          this.roleUser = localStorage.getItem('role');
+          this.pseudoUser = localStorage.getItem('pseudo');
+          this.authcomment = true;
+
         }
       });
 
 
-      
+
     })
-    
+
 
   }
 
@@ -188,6 +180,7 @@ export class PostComponent implements AfterViewInit {
         this.authcomment = true
       } else {
         this.authcomment = false;
+
 
       }
     })
@@ -369,7 +362,6 @@ export class PostComponent implements AfterViewInit {
 
   ePost(uid: string) {
     this.router.navigate(['/post/edit', uid])
-    //this.postService.deletePost(uid);
   }
 
   onCommentChange(event: any) {
@@ -440,5 +432,82 @@ export class PostComponent implements AfterViewInit {
     this.postService.deleteComment(comments, pId, i);
 
   }
+
+
+  getAllAdmin() {
+    this.http
+      .get<any[]>(`${this.baseUrl}/getAllAdmin`)
+      .subscribe(
+        (response) => {
+
+          this.admins = response;
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+  }
+
+
+  setViewMouse(id: string) {
+    var height = $(window).height();
+
+    const ifView = this.pView.find(element => element == id);
+
+    if (ifView) {
+      console.log('views')
+    } else {
+      this.pView.push(id);
+      console.log(this.pView)
+
+      let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
+
+      this.http
+        .put<any[]>(`${this.baseUrl}/posts/setViews/${id}`, [id])
+        .subscribe(
+          (response) => {
+            fPost[0].view = fPost[0].view + 1;
+          },
+          (error) => {
+            console.log('Erreur ! : ' + error);
+          }
+        );
+
+    }
+
+  }
+
+  setViewTouch(id: string) {
+    var height = $(window).height();
+
+    const ifView = this.pView.find(element => element == id);
+
+    if (ifView) {
+      console.log('views')
+    } else {
+      this.pView.push(id);
+      console.log(this.pView)
+
+      let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
+
+      this.http
+        .put<any[]>(`${this.baseUrl}/posts/setViews/${id}`, [id])
+        .subscribe(
+          (response) => {
+            fPost[0].view = fPost[0].view + 1;
+          },
+          (error) => {
+            console.log('Erreur ! : ' + error);
+          }
+        );
+
+    }
+
+  }
+
+  
+
 
 }

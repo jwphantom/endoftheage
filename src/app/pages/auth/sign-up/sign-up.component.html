@@ -53,9 +53,17 @@
     
                                     </div>
                                     
-                                    <div  class="entry__excerpt" >
-                                        <button class="btn btn-primary col-12" (click)="signUp(pseudo.value, email.value)">Suivant</button>
-    
+        
+                                    <div class="form-group">
+                                        <button id="NSubmitForm" class="btn btn-primary col-12"
+                                        (click)="signUp(pseudo.value, email.value)">Suivant</button>
+                                        <button style="display: none;" id="submitForm" disabled
+                                            class="btn btn-primary col-12">
+                                            Wait
+                                            <img src="assets/images/animations/Dual-Ball-1s-200px.svg"
+                                                style="width: 30px; height:30px;">
+                                        </button>
+
                                     </div>
     
     

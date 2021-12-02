@@ -7,6 +7,64 @@ body {
     font-family: Prompt, "Helvetica Neue", sans-serif;
 }
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~ngx-sharebuttons/themes/material';
+
+
+#loading {
+    position: absolute;
+    left: 45%;
+    top: 45%;
+    visibility: hidden;
+}
+
+
+#flash_message_danger {
+    display: none; /* Hidden by default. Visible on click */
+    width: 96%; /* Set a default minimum width */
+    margin-left: 2%; /* Divide value of min-width by 2 */
+    background-color: #a72828; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 100; /* Add a z-index if needed */ /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_danger.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
+#flash_message_success_cMenu{
+    display: none; /* Hidden by default. Visible on click */
+    width: 96%; /* Set a default minimum width */
+    margin-left: 2%; /* Divide value of min-width by 2 */
+    background-color: #28a745; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 100; /* Add a z-index if needed */ /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_success_cMenu.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
 
 #flash_message_success{
     display: none; /* Hidden by default. Visible on click */
@@ -53,6 +111,54 @@ body {
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
+
+#flash_message_success_dMenu {
+    display: none; /* Hidden by default. Visible on click */
+    width: 96%; /* Set a default minimum width */
+    margin-left: 2%; /* Divide value of min-width by 2 */
+    background-color: #28a745; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 100; /* Add a z-index if needed */ /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_success_dMenu.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#flash_message_success_eMenu {
+    display: none; /* Hidden by default. Visible on click */
+    width: 96%; /* Set a default minimum width */
+    margin-left: 2%; /* Divide value of min-width by 2 */
+    background-color: #28a745; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1000; /* Add a z-index if needed */ /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_success_eMenu.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
 
 #flash_message_success {
     display: none; /* Hidden by default. Visible on click */
@@ -156,6 +262,75 @@ body {
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
 #flash_message_notGranted.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#flash_message_success_ieMenu {
+    display: none; /* Hidden by default. Visible on click */
+    width: 96%; /* Set a default minimum width */
+    margin-left: 2%; /* Divide value of min-width by 2 */
+    background-color: #a72828; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 100; /* Add a z-index if needed */ /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_success_ieMenu.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#flash_message_success_icMenu {
+    display: none; /* Hidden by default. Visible on click */
+    width: 96%; /* Set a default minimum width */
+    margin-left: 2%; /* Divide value of min-width by 2 */
+    background-color: #a72828; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 100; /* Add a z-index if needed */ /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_success_icMenu.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#flash_message_success_idMenu {
+    display: none; /* Hidden by default. Visible on click */
+    width: 96%; /* Set a default minimum width */
+    margin-left: 2%; /* Divide value of min-width by 2 */
+    background-color: #a72828; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 100; /* Add a z-index if needed */ /* Center the snackbar */
+    top: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#flash_message_success_idMenu.show {
     visibility: visible; /* Show the snackbar */
     /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
     However, delay the fade out process for 2.5 seconds */
@@ -287,18 +462,18 @@ body {
 }
 
 #flash_message_theme_empty {
-    display: none; /* Hidden by default. Visible on click */
-    min-width: 200px; /* Set a default minimum width */
-    margin-left: 0px; /* Divide value of min-width by 2 */
+    display: none;
+    width: 96%; /* Set a default minimum width */
+    margin-left: 2%; /* Divide value of min-width by 2 */
     background-color: #286ea7; /* Black background color */
     color: #fff; /* White text color */
     text-align: center; /* Centered text */
     border-radius: 2px; /* Rounded borders */
     padding: 16px; /* Padding */
     position: fixed; /* Sit on top of the screen */
-    z-index: 1; /* Add a z-index if needed */
-    left: 50%; /* Center the snackbar */
+    z-index: 100; /* Add a z-index if needed */ /* Center the snackbar */
     top: 30px; /* 30px from the bottom */
+    
 }
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
@@ -651,7 +826,7 @@ form textarea:valid ~ button:hover {
         z-index: 1000;
         border-top: 1px solid #000000;
 
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         background: var(--background);
         &:before,
         &:after {
@@ -758,87 +933,6 @@ form textarea:valid ~ button:hover {
                         }
                     }
                 }
-            }
-            &.active {
-                a {
-                    div {
-                        --y: -24px;
-
-                        svg {
-                            fill: var(--icon-active);
-                        }
-                    }
-                    &.calendar {
-                        em {
-                            &:before,
-                            &:after {
-                                background: var(--icon-active);
-                            }
-                        }
-                    }
-                }
-            }
-            &:not(.active) {
-                a {
-                    div {
-                        transition: transform 0.4s ease;
-                        svg {
-                            transition: fill 0.4s ease;
-                        }
-                    }
-                    &:active {
-                        transform: scale(0.92);
-                    }
-                }
-            }
-            &.move {
-                a {
-                    div {
-                        animation: icon 1.2s linear forwards;
-                        svg {
-                            animation: svg 1.2s linear forwards;
-                        }
-                    }
-                    &.box {
-                        div {
-                            &:before {
-                                animation: element-far 1.2s linear forwards;
-                            }
-                            em {
-                                animation: element-close 1.2s linear forwards;
-                            }
-                        }
-                    }
-                    &.home {
-                        div {
-                            &:before {
-                                animation: element-close 1.2s linear forwards;
-                            }
-                        }
-                    }
-                    &.calendar {
-                        div {
-                            &:before {
-                                animation: element-close 1.2s linear forwards;
-                            }
-                            em {
-                                animation: calendar-2 1.2s linear forwards;
-                                &:before,
-                                &:after {
-                                    animation: calendar-3 1.2s linear forwards;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        &.move {
-            &:before {
-                animation: move 1.2s linear forwards;
-            }
-            &:after {
-                animation: move-after 1.2s linear forwards;
             }
         }
     }

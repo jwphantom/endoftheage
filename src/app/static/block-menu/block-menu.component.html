@@ -1,0 +1,51 @@
+<div id="bricks" class="bricks">
+
+    <div class="masonry">
+
+        <header class="entry__header entry__header--narrow">
+    
+            <h1 class="entry__title">
+                Learn More About Us.
+            </h1>
+
+        </header>
+
+        <div class="bricks-wrapper" data-animate-block>
+            
+
+            <div class="grid-sizer"></div>
+
+            <article *ngFor="let menu of lMenu" class="brick entry" >
+
+                <div class="entry__thumb">
+                    <a routerLink="/endTime-menu" class="thumb-link">
+                        <img style="height: 250px;" src="{{menu.img_url}}" 
+                            srcset="{{menu.img_url}} 1x, {{menu.img_url}} 2x" alt="">
+                    </a>
+                </div> <!-- end entry__thumb -->
+
+                <div class="entry__text">
+                    <div class="entry__header">
+                        <div class="entry__meta">
+                            
+                        </div>
+                        <h1 class="entry__title"><a routerLink="/endTime-menu">{{menu.name}}.</a></h1>
+                     </div>
+                    <div class="entry__excerpt">
+                        <p>
+                        {{menu.description}}
+                        </p>
+                    </div>
+                    <a class="entry__more-link" routerLink="/endTime-menu">Read More</a>
+                </div> <!-- end entry__text -->
+            
+            </article> <!-- end article -->
+            
+
+        </div> <!-- end bricks-wrapper -->
+
+    </div> <!-- end masonry-->
+
+
+</div> <!-- end bricks -->
+

@@ -6,6 +6,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import firebase from 'firebase';
+import { GlobalConstants } from '../common/global-constants';
 
 
 @Injectable({
@@ -13,8 +14,8 @@ import firebase from 'firebase';
 })
 export class SettingsService {
 
-  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
-  //private baseUrl = 'http://localhost:3001/api';
+  private baseUrl = GlobalConstants.apiURL;
+
 
 
   currentUser: any = [];
@@ -95,6 +96,8 @@ export class SettingsService {
 
         },
         (error) => {
+          $('#loading').css('visibility', 'hidden');
+          $('#bricks').show();
           $('#flash_message_notGranted').show();
 
           setTimeout(() => {
@@ -105,11 +108,57 @@ export class SettingsService {
         }
       );
 
-    console.log(pseudo);
+
+  }
+
+  async createMenu(
+    menu: string
+  ): Promise<void> {
+
+    const mn = {
+      name: menu,
+      theme: []
+    };
+
+
+
+    this.http
+      .post(this.baseUrl + `/create-menu/`, mn)
+      .subscribe(
+        (res) => {
+
+          $('#loading').css('visibility', 'hidden');
+          $('#bricks').show();
+          $('#flash_message_success_cMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_cMenu').hide();
+
+          }, 3000);
+
+
+        },
+        (error) => {
+          $('#loading').css('visibility', 'hidden');
+          $('#bricks').show();
+
+          $('#flash_message_success_icMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_icMenu').hide();
+
+          }, 3000);
+
+
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
 
 
 
   }
+
 
 }
 

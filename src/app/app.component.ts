@@ -13,10 +13,10 @@ import { Socket } from 'ngx-socket-io';
 })
 export class AppComponent {
 
-  constructor(private authService : AuthService,
-    private socket : Socket) {
-    
-    }
+  constructor(private authService: AuthService,
+    private socket: Socket) {
+
+  }
 
 
 
@@ -26,8 +26,11 @@ export class AppComponent {
 
     let pseudoLocal = localStorage.getItem('pseudo');
 
-    if(!pseudoLocal){
-      localStorage.setItem('pseudo', 'Anonyme');
+    if (!pseudoLocal || pseudoLocal == 'anonyme') {
+      localStorage.removeItem('user');
+      localStorage.removeItem('pseudo');
+      localStorage.removeItem('role');
+      localStorage.removeItem('email');
     }
 
   }

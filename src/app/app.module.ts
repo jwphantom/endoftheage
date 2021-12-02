@@ -42,10 +42,16 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { SettingsService } from './services/settings.service';
 import { ToolbarComponent } from './static/toolbar/toolbar.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { AboutComponent } from './pages/about/about.component';
+import { BlockMenuComponent } from './static/block-menu/block-menu.component';
+
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 
 
-//const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
-const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/", options: {} };
+
+const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
+//const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/", options: {} };
 
 
 @NgModule({
@@ -72,6 +78,8 @@ const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/
     SignUpComponent,
     SettingsComponent,
     ToolbarComponent,
+    AboutComponent,
+    BlockMenuComponent,
     
   ],
   imports: [
@@ -91,6 +99,10 @@ const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/
     MatIconModule,
     MatToolbarModule,
     SocketIoModule.forRoot(config),
+    ShareButtonsModule.withConfig({
+      debug: true
+    }),
+    ShareIconsModule
 
 
 

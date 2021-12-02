@@ -10,7 +10,6 @@ export class MobilemenuComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.loadScript('../assets/js/mobilemenu.js');
 
   }
 

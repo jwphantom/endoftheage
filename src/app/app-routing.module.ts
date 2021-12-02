@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AboutComponent } from './pages/about/about.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { SignUpComponent } from './pages/auth/sign-up/sign-up.component';
 import { BlogComponent } from './pages/blog/blog.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'endTime-menu/:cat/:theme', component: CatpostComponent },
   { path: 'post/edit/:id', component: EditpostComponent },
   { path: 'sign-in', component: LoginComponent },
+  { path: 'about', component: AboutComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'post', component: PostComponent },

@@ -41,43 +41,60 @@
                                     </span>
                                 </div>
 
-                                <div class="form-group">
-                                    <input type="email" class="form-control" id="exampleInputEmail1"
-                                        aria-describedby="emailHelp" placeholder="Enter email" #userName required>
+                                <form action="">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" required placeholder="Enter email" #userName
+                                            required>
 
-                                </div>
+                                    </div>
 
-                                <div class="form-group">
-                                    <input type="password" class="form-control" id="exampleInputEmail1"
-                                        aria-describedby="emailHelp" placeholder="Enter Password" #userPassword required>
+                                    <div class="form-group">
+                                        <input type="password" required class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" placeholder="Enter Password" #userPassword
+                                            required>
 
-                                </div>
-                                
-                                <div  class="entry__excerpt" >
-                                    <button class="btn btn-primary col-12" (click)="authService.SignIn(userName.value, userPassword.value)">Suivant</button>
+                                    </div>
 
-                                </div>
+                                    <div class="form-group">
+                                        <button id="NSubmitForm" class="btn btn-primary col-12"
+                                            (click)="login(userName.value, userPassword.value)">Suivant</button>
+                                        <button style="display: none;" id="submitForm" disabled
+                                            class="btn btn-primary col-12">
+                                            Wait
+                                            <img src="assets/images/animations/Dual-Ball-1s-200px.svg"
+                                                style="width: 30px; height:30px;">
+                                        </button>
 
-                                <div class="formGroup">
-                                    <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
-                                      <i class="fab fa-google-plus-g"></i>
-                                      Log in with Google
-                                    </button>
-                                  </div>
+                                    </div>
 
-                                  <div class="formGroup">
-                                    <button type="button" class="btn googleBtn" routerLink="/sign-up">
-                                        <i class="fas fa-user-plus"></i>
-                                      Sign Up
-                                    </button>
-                                  </div>
+                                    <div class="formGroup">
+                                        <button type="button" class="btn googleBtn" type="submit"
+                                            (click)="authService.GoogleAuth()">
+                                            <i class="fab fa-google-plus-g"></i>
+                                            Log in with Google
+                                        </button>
+                                    </div>
 
-                                <div class="entry__excerpt" style="visibility:hidden">
-                                    <p sty>
-                                        Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id
-                                       
-                                    </p>
-                                </div>
+                                    <div class="formGroup">
+                                        <button type="button" class="btn googleBtn" routerLink="/sign-up">
+                                            <i class="fas fa-user-plus"></i>
+                                            Sign Up
+                                        </button>
+                                    </div>
+
+
+
+                                    <div class="entry__excerpt" style="visibility:hidden">
+                                        <p sty>
+                                            Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit
+                                            id
+
+                                        </p>
+                                    </div>
+                                </form>
+
+
 
 
                             </div>

@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { GlobalConstants } from '../../common/global-constants';
+
 
 @Component({
   selector: 'app-blog',
@@ -9,10 +12,10 @@ import { Title } from '@angular/platform-browser';
 })
 export class BlogComponent implements OnInit {
 
-  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
-  //private baseUrl = 'http://localhost:3001/api';
+  private baseUrl = GlobalConstants.apiURL;
 
   lTheme: any;
+  lMenu: any;
 
   dETV: boolean = false;
   dETA: boolean = false;
@@ -30,12 +33,15 @@ export class BlogComponent implements OnInit {
 
   constructor(private title: Title,
     private http: HttpClient,
+    public router: Router,
+
   ) { }
 
   ngOnInit() {
     this.title.setTitle("EndOfTheAge - Blog");
 
     this.getTheme();
+    this.getMenu();
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/main.js');
     this.loadScript('../assets/js/vendor/jquery-3.5.1.min.js');
@@ -72,104 +78,129 @@ export class BlogComponent implements OnInit {
   }
 
 
-  oFileETV() {
-    $('#bricks').hide();
-    $('#loading').css('visibility', 'visible');
+  getMenu() {
+    this.http
+      .get<any[]>(`${this.baseUrl}/menu`)
+      .subscribe(
+        (response) => {
 
-    setTimeout(() => {
-      $('#loading').css('visibility', 'hidden');
-      $('#bricks').show();
-      this.dETV = !this.dETV;
+          this.lMenu = response;
+          //this.theme = response[0].name;
 
-      this.bETI = !this.bETI;
-      this.bETA = !this.bETA;
-      this.bETN = !this.bETN;
-      this.bETP = !this.bETP;
-
-
-    }, 1500);
-
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
 
   }
 
-  oFileETA() {
-    $('#bricks').hide();
-    $('#loading').css('visibility', 'visible');
+  // oFile()
 
-    setTimeout(() => {
-      $('#loading').css('visibility', 'hidden');
-      $('#bricks').show();
-      this.dETA = !this.dETA;
+  // oFileETV() {
+  //   $('#bricks').hide();
+  //   $('#loading').css('visibility', 'visible');
 
-      this.bETI = !this.bETI;
-      this.bETV = !this.bETV;
-      this.bETN = !this.bETN;
-      this.bETP = !this.bETP;
+  //   setTimeout(() => {
+  //     $('#loading').css('visibility', 'hidden');
+  //     $('#bricks').show();
+  //     this.dETV = !this.dETV;
 
-    }, 1500);
+  //     this.bETI = !this.bETI;
+  //     this.bETA = !this.bETA;
+  //     this.bETN = !this.bETN;
+  //     this.bETP = !this.bETP;
 
+
+  //   }, 1500);
+
+
+  // }
+
+  // oFileETA() {
+  //   $('#bricks').hide();
+  //   $('#loading').css('visibility', 'visible');
+
+  //   setTimeout(() => {
+  //     $('#loading').css('visibility', 'hidden');
+  //     $('#bricks').show();
+  //     this.dETA = !this.dETA;
+
+  //     this.bETI = !this.bETI;
+  //     this.bETV = !this.bETV;
+  //     this.bETN = !this.bETN;
+  //     this.bETP = !this.bETP;
+
+  //   }, 1500);
+
+  // }
+
+  // oFileETI() {
+  //   $('#bricks').hide();
+  //   $('#loading').css('visibility', 'visible');
+
+
+  //   setTimeout(() => {
+  //     $('#loading').css('visibility', 'hidden');
+  //     $('#bricks').show();
+
+  //     this.dETI = !this.dETI;
+
+  //     this.bETV = !this.bETV;
+  //     this.bETA = !this.bETA;
+  //     this.bETN = !this.bETN;
+  //     this.bETP = !this.bETP;
+
+  //   }, 1500);
+
+
+  // }
+
+  // oFileETP() {
+  //   $('#bricks').hide();
+  //   $('#loading').css('visibility', 'visible');
+
+
+  //   setTimeout(() => {
+  //     $('#loading').css('visibility', 'hidden');
+  //     $('#bricks').show();
+
+  //     this.dETP = !this.dETP;
+  //     this.bETV = !this.bETV;
+  //     this.bETA = !this.bETA;
+  //     this.bETN = !this.bETN;
+  //     this.bETI = !this.bETP;
+
+  //   }, 1500);
+
+
+  // }
+
+  // oFileETN() {
+  //   $('#bricks').hide();
+  //   $('#loading').css('visibility', 'visible');
+
+
+  //   setTimeout(() => {
+  //     $('#loading').css('visibility', 'hidden');
+  //     $('#bricks').show();
+
+  //     this.dETN = !this.dETN;
+
+  //     this.bETV = !this.bETV;
+  //     this.bETA = !this.bETA;
+  //     this.bETP = !this.bETN;
+  //     this.bETI = !this.bETI;
+
+  //   }, 1500);
+
+  // }
+
+  CatByPos(menu:string, theme:string){
+    //$('#MenuModal-'+menu).modal('hide');
+    this.router.navigate(['/endTime-menu/'+menu+'/'+theme]);
+
+    console.log(theme);
   }
-
-  oFileETI() {
-    $('#bricks').hide();
-    $('#loading').css('visibility', 'visible');
-
-
-    setTimeout(() => {
-      $('#loading').css('visibility', 'hidden');
-      $('#bricks').show();
-
-      this.dETI = !this.dETI;
-
-      this.bETV = !this.bETV;
-      this.bETA = !this.bETA;
-      this.bETN = !this.bETN;
-      this.bETP = !this.bETP;
-
-    }, 1500);
-
-
-  }
-
-  oFileETP() {
-    $('#bricks').hide();
-    $('#loading').css('visibility', 'visible');
-
-
-    setTimeout(() => {
-      $('#loading').css('visibility', 'hidden');
-      $('#bricks').show();
-
-      this.dETP = !this.dETP;
-      this.bETV = !this.bETV;
-      this.bETA = !this.bETA;
-      this.bETN = !this.bETN;
-      this.bETI = !this.bETP;
-
-    }, 1500);
-
-
-  }
-
-  oFileETN() {
-    $('#bricks').hide();
-    $('#loading').css('visibility', 'visible');
-
-
-    setTimeout(() => {
-      $('#loading').css('visibility', 'hidden');
-      $('#bricks').show();
-
-      this.dETN = !this.dETN;
-
-      this.bETV = !this.bETV;
-      this.bETA = !this.bETA;
-      this.bETP = !this.bETN;
-      this.bETI = !this.bETI;
-
-    }, 1500);
-
-  }
-
 
 }

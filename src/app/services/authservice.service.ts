@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { Socket } from 'ngx-socket-io';
 import { HttpClient } from '@angular/common/http';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import { GlobalConstants } from '../common/global-constants';
 
 
 @Injectable({
@@ -17,8 +18,8 @@ import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 
 export class AuthService {
 
-  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
-  //private baseUrl = 'http://localhost:3001/api';
+  private baseUrl = GlobalConstants.apiURL;
+
 
   userData: any; // Save logged in user data
 
@@ -57,6 +58,8 @@ export class AuthService {
         });
         this.SetUserData(result.user);
       }).catch((error) => {
+        $('#NSubmitForm').show();
+        $('#submitForm').hide();
         window.alert(error.message)
       })
   }
@@ -116,21 +119,15 @@ export class AuthService {
             (response) => {
               localStorage.setItem('pseudo', response[0].pseudo);
               localStorage.setItem('email', response[0].email);
-              localStorage.setItem('role', response[0].role);              
+              localStorage.setItem('role', response[0].role);
             },
             (error) => {
               console.log('Erreur ! : ' + error);
             }
           );
 
-      } 
+      }
     })
-
-
-
-
-
-
 
 
 
@@ -177,6 +174,9 @@ export class AuthService {
   SignOut() {
     return firebase.auth().signOut().then(() => {
       localStorage.removeItem('user');
+      localStorage.setItem('pseudo', 'anonyme');
+      localStorage.removeItem('role');
+      localStorage.removeItem('email');
       this.router.navigate(['/sign-in']);
     })
   }
@@ -186,6 +186,7 @@ export class AuthService {
 
     localStorage.setItem('pseudo', pseudo);
     localStorage.setItem('email', email);
+
 
     this.socket.emit('update-pseudo', [email]);
 
@@ -198,6 +199,9 @@ export class AuthService {
 
 
   async SignUp(pseudo: any, email: any) {
+
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
 
     var user = {
       email: email,
@@ -223,6 +227,8 @@ export class AuthService {
               localStorage.setItem('pseudo', pseudo);
               localStorage.setItem('email', email);
               localStorage.setItem('role', 'user');
+              $('#loading').css('visibility', 'hidden');
+              $('#bricks').show();
               this.NewSignIn(email, response['cred']);
 
             }, function (err) {
@@ -233,6 +239,8 @@ export class AuthService {
         },
         (error) => {
           console.log('Erreur ! : ' + error);
+          $('#NSubmitForm').show();
+          $('#submitForm').hide();
           //loading.dismiss();
 
         }

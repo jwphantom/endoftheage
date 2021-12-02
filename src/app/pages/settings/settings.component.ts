@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Title } from '@angular/platform-browser';
 import { SettingsService } from 'src/app/services/settings.service';
 import firebase from 'firebase';
+import { GlobalConstants } from '../../common/global-constants';
 
 
 @Component({
@@ -14,16 +15,41 @@ import firebase from 'firebase';
 })
 export class SettingsComponent implements OnInit {
 
+  private baseUrl = GlobalConstants.apiURL;
+
+
+  lTheme: any;
+  lMenu: any;
+
   submitPassword: boolean = false;
   submitPseudo: boolean = false;
+  submitEndMenu: boolean = false;
+
   currentUser: any = [];
 
-  ps : string | undefined;;
+  ps: string | undefined;;
 
-  @ViewChild('oldpassword') iOPass!:ElementRef;
-  @ViewChild('newpassword') iNPass!:ElementRef;
+  dEPass: Boolean = false;
+  dEPseu: Boolean = false;
+  dCEndMenu: Boolean = false;
 
-  
+  bEPass: boolean = true;
+  bEPseu: boolean = true;
+  bEndMEnu: boolean = true;
+
+  listTheme: boolean = true;
+  isDeleteTheme: boolean = false;
+
+  cMenu: boolean = true;
+
+  roleUser = localStorage.getItem('role');
+
+
+
+  @ViewChild('oldpassword') iOPass!: ElementRef;
+  @ViewChild('newpassword') iNPass!: ElementRef;
+
+
   constructor(private title: Title,
     private http: HttpClient,
     private settingsService: SettingsService,
@@ -35,7 +61,8 @@ export class SettingsComponent implements OnInit {
     this.title.setTitle("EndOfTheAge - Settings");
 
     this.ps = localStorage.getItem('pseudo')!;
-    console.log(localStorage.getItem('pseudo'))
+
+    this.getMenu();
 
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/main.js');
@@ -54,6 +81,25 @@ export class SettingsComponent implements OnInit {
     script.async = false;
     script.defer = true;
     body.appendChild(script);
+  }
+
+
+  getMenu() {
+    this.http
+      .get<any[]>(`${this.baseUrl}/menu`)
+      .subscribe(
+        (response) => {
+
+
+          this.lMenu = response;
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
   }
 
 
@@ -87,7 +133,7 @@ export class SettingsComponent implements OnInit {
 
       }, 3000);
       this.submitPassword = false;
-      
+
       return this.currentUser.updatePassword(nPassword);
 
 
@@ -115,8 +161,303 @@ export class SettingsComponent implements OnInit {
 
     this.settingsService.updatePseudo(pseudo);
 
-  
+
   }
+
+  oDEPass() {
+    
+      this.dEPass = !this.dEPass;
+      this.bEPseu = !this.bEPseu;
+      this.bEndMEnu = !this.bEndMEnu
+
+
+  }
+
+  oDEPseu() {
+    
+      this.bEPass = !this.bEPass;
+      this.bEndMEnu = !this.bEndMEnu;
+      this.dEPseu = !this.dEPseu;
+
+
+  }
+
+  oDEndMenu() {
+    // $('#bricks').hide();
+    // $('#loading').css('visibility', 'visible');
+
+    // setTimeout(() => {
+    //   $('#loading').css('visibility', 'hidden');
+    //   $('#bricks').show();
+    //   this.bEPass = !this.bEPass;
+    //   this.bEPseu = !this.bEPseu;
+    //   this.dCEndMenu = !this.dCEndMenu;
+
+
+    // }, 1500);
+
+    this.bEPass = !this.bEPass;
+    this.bEPseu = !this.bEPseu;
+    this.dCEndMenu = !this.dCEndMenu;
+
+
+  }
+
+  async cEndMenu(menu: any, description:any, img_url:any) {
+
+    $('#bricks').hide();
+    $('#loading').css('visibility', 'visible');
+
+    this.cMenu = !this.cMenu
+    //this.settingsService.createMenu(menu);
+
+    const mn = {
+      name: menu,
+      description : description,
+      img_url: img_url,
+      theme: []
+    };
+
+
+
+    this.http
+      .post(this.baseUrl + `/create-menu/`, mn)
+      .subscribe(
+        (res) => {
+
+          $('#loading').css('visibility', 'hidden');
+          $('#bricks').show();
+          $('#flash_message_success_cMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_cMenu').hide();
+
+          }, 3000);
+
+          this.lMenu = res;
+
+
+        },
+        (error) => {
+          $('#loading').css('visibility', 'hidden');
+          $('#bricks').show();
+
+          $('#flash_message_success_icMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_icMenu').hide();
+
+          }, 3000);
+
+
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
+
+  }
+
+  addMenu() {
+    this.cMenu = !this.cMenu;
+  }
+
+  delMenu(menu: string) {
+
+    $(`#deleteMenuModal-${menu}`).modal('hide');
+
+    this.http
+      .delete<any[]>(`${this.baseUrl}/delete-menu/${menu}`)
+      .subscribe(
+        (response) => {
+
+          this.lMenu = response;
+          $('#flash_message_success_dMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_dMenu').hide();
+
+          }, 3000);
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+          $('#flash_message_success_idMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_idMenu').hide();
+
+          }, 3000);
+        }
+      );
+
+
+
+  }
+
+
+  editMenu(id: string, menuEdit: string, description:string, img_url:string) {
+
+    $("#deleteMenuModal-"+id).modal("hide");
+    $("#themeMenuModal-"+id).modal("hide");
+
+
+    const mn = {
+      name: menuEdit,
+      description : description,
+      img_url: img_url,
+
+    };
+
+    this.http
+      .put<any[]>(`${this.baseUrl}/edit-menu/${id}`, mn)
+      .subscribe(
+        (response) => {
+
+          this.lMenu = response;
+          $('#flash_message_success_eMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_eMenu').hide();
+
+          }, 3000);
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+          $('#flash_message_success_ieMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_ieMenu').hide();
+
+          }, 3000);
+        }
+      );
+
+  }
+
+  deleteTheme(themeId: string) {
+
+    $(".listTheme-" + themeId).hide();
+    $(".deleteTheme-" + themeId).show();
+  }
+
+  cDeletePost(menu: any, themeId: string) {
+
+    $(".deleteMenuModal").modal("hide");
+    $(".themeMenuModal").modal("hide");
+
+    for (var i = 0; i < menu.theme.length; i++) {
+
+      if (menu.theme[i].id === themeId) {
+
+        menu.theme.splice(i, 1);
+      }
+
+    }
+
+    const mn = {
+      theme: menu.theme
+    };
+    
+    this.http
+      .put<any[]>(`${this.baseUrl}/delete-theme/${menu._id}`, [mn,themeId])
+      .subscribe(
+        (response) => {
+
+          this.lMenu = response;
+          
+          $('#flash_message_success_eMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_eMenu').hide();
+
+          }, 3000);
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+          $('#flash_message_success_ieMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_ieMenu').hide();
+
+          }, 3000);
+        }
+      );
+
+
+  }
+
+  aDeletePost(themeId: string) {
+    $(".deleteTheme-" + themeId).hide();
+    $(".listTheme-" + themeId).show();
+
+  }
+
+
+  editTheme(themeId: string) {
+
+    $(".listTheme-" + themeId).hide();
+    $(".editTheme-" + themeId).show();
+  }
+
+  cEditPost(menu: any,themeId: string, vTheme: string) {
+
+    for (var i = 0; i < menu.theme.length; i++) {
+
+      if (menu.theme[i].id === themeId) {
+
+        menu.theme[i].name = vTheme;
+      }
+
+    }
+
+    const mn = {
+      theme: menu.theme
+    };
+
+    $("#themeMenuModal-"+menu._id).modal("hide")
+
+    this.http
+      .put<any[]>(`${this.baseUrl}/edit-theme/${menu._id}`, mn)
+      .subscribe(
+        (response) => {
+
+          this.lMenu = response;
+          $('#flash_message_success_eMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_eMenu').hide();
+
+          }, 3000);
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+          $('#flash_message_success_ieMenu').show();
+
+          setTimeout(() => {
+            $('#flash_message_success_ieMenu').hide();
+
+          }, 3000);
+        }
+      );
+
+    console.log(menu.theme);
+
+  }
+
+
+  aEditPost(themeId: string) {
+    $(".editTheme-" + themeId).hide();
+    $(".listTheme-" + themeId).show();
+
+  }
+    
 
 
 }

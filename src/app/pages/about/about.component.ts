@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AuthService } from 'src/app/services/authservice.service';
+
 
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss']
+  selector: 'app-about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.scss']
 })
-export class SignUpComponent implements OnInit {
+export class AboutComponent implements OnInit {
 
-  constructor(private title: Title,
-    public authService: AuthService) { }
+  constructor(private title: Title) { }
 
   ngOnInit() {
-    this.title.setTitle("EndOfTheAge - Sign-Up");
+    this.title.setTitle("EndOfTheAge - About");
 
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/main.js');
@@ -30,12 +29,6 @@ export class SignUpComponent implements OnInit {
     script.async = false;
     script.defer = true;
     body.appendChild(script);
-  }
-
-  signUp(pseudo: any, email: any) {
-    $('#submitForm').show();
-    $('#NSubmitForm').hide();
-    this.authService.SignUp(pseudo, email);
   }
 
 }

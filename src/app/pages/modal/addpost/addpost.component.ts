@@ -3,13 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../../../services/post.service';
 import { Post } from '../../../model/post';
 import { NgZone } from '@angular/core';
-
+import firebase from 'firebase';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
 import * as $ from 'jquery';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { GlobalConstants } from '../../../common/global-constants';
 
 
 @Component({
@@ -19,8 +20,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AddpostComponent implements OnInit {
 
-  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
-  //private baseUrl = 'http://localhost:3001/api';
+  private baseUrl = GlobalConstants.apiURL;
+
 
 
   @Input() section_o!: Boolean;
@@ -43,6 +44,9 @@ export class AddpostComponent implements OnInit {
 
   currentDate = new Date();
 
+  lMenu: any;
+
+  ifCreateTheme: boolean = false;
 
 
   s_aImage: Boolean = false;
@@ -56,9 +60,9 @@ export class AddpostComponent implements OnInit {
   b_aPdf: Boolean = true;
 
 
-  type: string =""; 
+  type: string = "";
 
-  theme: string =""; 
+  theme: string = "";
   cTheme: Boolean = false;
   lTheme: any;
 
@@ -66,7 +70,7 @@ export class AddpostComponent implements OnInit {
   postForm!: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder, 
+    private formBuilder: FormBuilder,
     private postService: PostService,
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -81,7 +85,8 @@ export class AddpostComponent implements OnInit {
 
     this.addPostForm();
     console.log(this.section_o);
-    this.getTheme();
+    this.getMenu();
+
 
   }
 
@@ -90,6 +95,39 @@ export class AddpostComponent implements OnInit {
     this.messageEvent.emit(this.message);
 
   }
+
+  getMenu() {
+    this.http
+      .get<any[]>(`${this.baseUrl}/menu`)
+      .subscribe(
+        (response) => {
+
+
+          this.lMenu = response;
+
+          if(this.lMenu.length == 0){
+            this.close();
+            $('.menuEmpty').show();
+
+            setTimeout(function () {
+              $('.menuEmpty').hide();
+            }, 5000);
+          }
+          else{
+            this.type = this.lMenu[0]._id;
+            this.lTheme = this.lMenu[0].theme;
+          }
+          
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
+  }
+
 
   o_s_aImage() {
     this.s_aImage = !this.s_aImage;
@@ -112,7 +150,7 @@ export class AddpostComponent implements OnInit {
       title: ['', Validators.required],
       content: ['', Validators.required],
       theme: ['', Validators.required],
-      type: ['video', Validators.required],
+      type: ['', Validators.required],
       img_url: [''],
       audio_url: [''],
       video_url: [''],
@@ -190,25 +228,72 @@ export class AddpostComponent implements OnInit {
     const pdf_url = this.postForm.get('pdf_url')?.value;
 
 
-    const postData: Post = {
-      title: title,
-      content: content,
-      theme: theme,
-      type: type,
-      img_url: img_url,
-      audio_url: audio_url,
-      video_url: video_url,
-      pdf_url: pdf_url,
-      comments: [],
-      likes: [],
-      create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
-      timestamp: Date.now()
+    var user = firebase.auth().currentUser;
+
+
+    if (this.cTheme == true) {
+
+      let idTheme = this.afs.createId();
+
+      const postData: Post = {
+        title: title,
+        content: content,
+        theme: idTheme,
+        type: type,
+        author : user!.email,
+        img_url: img_url,
+        audio_url: audio_url,
+        view : 1,
+        video_url: video_url,
+        pdf_url: pdf_url,
+        comments: [],
+        likes: [],
+        create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
+        timestamp: Date.now()
+
+      }
+
+      let menu = this.lMenu?.slice();
+
+      menu = this.lMenu.filter(function (item: { _id: string; }) { return item._id === type; });
+
+      const ctheme = {
+        id : idTheme,
+        name : theme
+      };
+
+      menu[0].theme.push(ctheme);
+
+      if (postData) {
+        this.close();
+        this.postService.createNewPost(postData, menu[0]);
+  
+      }
 
     }
-
-    if (postData) {
+    else{
       this.close();
-      this.postService.createNewPost(postData);
+      const postData: Post = {
+        title: title,
+        content: content,
+        theme: theme,
+        type: type,
+        author : user!.email,
+        img_url: img_url,
+        view : 1,
+        audio_url: audio_url,
+        video_url: video_url,
+        pdf_url: pdf_url,
+        comments: [],
+        likes: [],
+        create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
+        timestamp: Date.now()
+
+      }
+
+      console.log(postData);
+
+      this.postService.createNewPost(postData,'notNewTheme');
 
     }
 
@@ -218,11 +303,20 @@ export class AddpostComponent implements OnInit {
     console.log(event.target.value);
 
     if (event.target.value == 'create') {
-      this.theme = '';
       this.cTheme = true;
+      this.postForm.controls['theme'].setValue('');
+
     } else {
       this.cTheme = false;
     }
+  }
+
+  getValueMenu(event: any) {
+    console.log(event.target.value);
+    let id = event.target.value
+    let menu = this.lMenu.filter(function (item: { _id: string; }) { return item._id === id; });
+    this.lTheme = menu[0].theme;
+
   }
 
   getTheme() {

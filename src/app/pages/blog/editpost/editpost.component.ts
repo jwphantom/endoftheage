@@ -11,6 +11,8 @@ import * as $ from 'jquery';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { GlobalConstants } from '../../../common/global-constants';
+
 
 @Component({
   selector: 'app-editpost',
@@ -19,8 +21,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class EditpostComponent implements AfterViewInit {
 
-  private baseUrl = 'https://server-endoftheage.herokuapp.com/api';
-  //private baseUrl = 'http://localhost:3001/api';
+  private baseUrl = GlobalConstants.apiURL;
 
   public id!: string;
 
@@ -63,6 +64,8 @@ export class EditpostComponent implements AfterViewInit {
 
   type!: string;
 
+  lMenu: any;
+
   theme!: string;
   cTheme: Boolean = false;
   lTheme: any;
@@ -84,19 +87,44 @@ export class EditpostComponent implements AfterViewInit {
 
     this.id = this.route.snapshot.paramMap.get('id')!;
 
-
     this.postService.getSinglePosts(this.id);
     this.storeOnePost();
-    this.getTheme();
+
   }
 
   ngAfterViewInit() {
 
     setTimeout(() => {
       this.display = true;
+      this.getMenu(this.post);
       this.editPostForm(this.post);
 
     }, 1000);
+
+  }
+
+  getMenu(post: any) {
+    this.http
+      .get<any[]>(`${this.baseUrl}/menu`)
+      .subscribe(
+        (response) => {
+
+
+
+          this.lMenu = response;
+          // // this.type = this.lMenu[0]._id;
+          // // this.lTheme = this.lMenu[0].theme;
+
+          let menu = this.lMenu.filter(function (item: { _id: string; }) { return item._id === post.type; });
+          this.lTheme = menu[0].theme;          
+
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
 
   }
 
@@ -218,27 +246,101 @@ export class EditpostComponent implements AfterViewInit {
     const pdf_url = this.postForm.get('pdf_url')?.value;
 
 
-    const postData: Post = {
-      title: title,
-      content: content,
-      type: type,
-      theme: theme,
-      img_url: img_url,
-      audio_url: audio_url,
-      video_url: video_url,
-      pdf_url: pdf_url,
-      comments: null,
-      likes: null,
-      create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
-      timestamp: Date.now()
+
+    if (this.cTheme == true) {
+
+      let idTheme = this.afs.createId();
+
+      const postData: Post = {
+        title: title,
+        content: content,
+        theme: idTheme,
+        type: type,
+        view : this.post.view,
+        author : this.post.author,
+        img_url: img_url,
+        audio_url: audio_url,
+        video_url: video_url,
+        pdf_url: pdf_url,
+        comments: [],
+        likes: [],
+        create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
+        timestamp: Date.now()
+
+      }
+
+      let menu = this.lMenu?.slice();
+
+      menu = this.lMenu.filter(function (item: { _id: string; }) { return item._id === type; });
+
+      const ctheme = {
+        id : idTheme,
+        name : theme
+      };
+
+      menu[0].theme.push(ctheme);
+
+
+
+      if (postData) {
+        this.close();
+        this.postService.updatePost(postData,menu[0],this.id);
+
+        //this.postService.createNewPost(postData, menu[0]);
+  
+      }
 
     }
-
-    if (postData) {
+    else{
       this.close();
-      this.postService.updatePost(postData, this.id);
+      const postData: Post = {
+        title: title,
+        content: content,
+        theme: theme,
+        type: type,
+        view : this.post.view,
+        author : this.post.author,
+        img_url: img_url,
+        audio_url: audio_url,
+        video_url: video_url,
+        pdf_url: pdf_url,
+        comments: [],
+        likes: [],
+        create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
+        timestamp: Date.now()
+
+      }
+
+      this.postService.updatePost(postData,'notNewTheme', this.id);
+      //this.postService.createNewPost(postData,'notNewTheme');
 
     }
+
+
+
+
+
+    // const postData: Post = {
+    //   title: title,
+    //   content: content,
+    //   type: type,
+    //   theme: theme,
+    //   img_url: img_url,
+    //   audio_url: audio_url,
+    //   video_url: video_url,
+    //   pdf_url: pdf_url,
+    //   comments: null,
+    //   likes: null,
+    //   create_date: this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm:ss a'),
+    //   timestamp: Date.now()
+
+    // }
+
+    // if (postData) {
+    //   this.close();
+    //   this.postService.updatePost(postData, this.id);
+
+    // }
 
     // return postRef.set(postData, {
     //   merge: true
@@ -266,6 +368,14 @@ export class EditpostComponent implements AfterViewInit {
     } else {
       this.cTheme = false;
     }
+  }
+
+  getValueMenu(event: any) {
+    console.log(event.target.value);
+    let id = event.target.value
+    let menu = this.lMenu.filter(function (item: { _id: string; }) { return item._id === id; });
+    this.lTheme = menu[0].theme;
+
   }
 
   getTheme() {

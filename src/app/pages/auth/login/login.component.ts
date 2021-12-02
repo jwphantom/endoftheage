@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/services/authservice.service';
 })
 export class LoginComponent implements OnInit {
 
+  submitButton : boolean = false;
+
   constructor(private title: Title,
     public authService: AuthService) { }
 
@@ -30,6 +32,14 @@ export class LoginComponent implements OnInit {
     script.async = false;
     script.defer = true;
     body.appendChild(script);
+  }
+
+  login(username : string, password :string){
+    $('#submitForm').show();
+
+    $('#NSubmitForm').hide();
+
+    this.authService.SignIn(username, password)
   }
 
 }

@@ -2123,9 +2123,6 @@ select {
     transform        : rotate(45deg);
 }
 
-textarea {
-    min-height : calc(8 * var(--space));
-}
 
 input[type="email"]:focus,
 input[type="number"]:focus,
@@ -2928,7 +2925,6 @@ img.u-pull-left {
     max-width : 1520px;
     width     : 92%;
     margin    : 0 auto var(--vspace-2);
-    overflow  : hidden;
 }
 
 .bricks .pagination {
@@ -3018,7 +3014,12 @@ img.u-pull-left {
 }
 
 .bricks-wrapper .entry__text {
-    padding : var(--vspace-1) 0 calc(var(--vspace-1) + 2px);
+    border: 1px solid rgb(243, 243, 243);
+  padding: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  margin-top: -10px;
+
 }
 
 .bricks-wrapper .entry__header {
@@ -4514,8 +4515,7 @@ body.search-is-visible .s-header__search-inner {
 .s-footer {
     background-color : var(--color-gray-4);
     font-weight      : 300;
-    padding-top      : var(--vspace-4_5);
-    padding-bottom   : var(--vspace-3_5);
+    padding-bottom   : 30px;
     position         : relative;
 }
 

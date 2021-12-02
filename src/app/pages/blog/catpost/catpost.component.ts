@@ -1,14 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { Subscription } from 'rxjs';
 import { Post } from 'src/app/model/post';
 import { AuthService } from 'src/app/services/authservice.service';
 import { PostService } from 'src/app/services/post.service';
+import { GlobalConstants } from '../../../common/global-constants';
 
 @Component({
   selector: 'app-catpost',
@@ -17,8 +19,11 @@ import { PostService } from 'src/app/services/post.service';
 })
 export class CatpostComponent implements OnInit {
 
-  public cat! : string;
-  public theme! : string;
+  private baseUrl = GlobalConstants.apiURL;
+
+
+  public cat!: string;
+  public theme!: string;
 
   postsSubscription!: Subscription;
   public posts: any;
@@ -40,12 +45,21 @@ export class CatpostComponent implements OnInit {
 
   private auth: Boolean = false;
 
+  admins: any;
+
+
+  menu: any;
+
+  pView: Array<string> = [];
+
+
   commentForm!: FormGroup;
+  emailUser = localStorage.getItem('email');
+  roleUser = localStorage.getItem('role');
   pseudoUser = localStorage.getItem('pseudo');
 
 
 
-  
   constructor(private route: ActivatedRoute,
     private postService: PostService,
     private title: Title,
@@ -53,6 +67,8 @@ export class CatpostComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     public afs: AngularFirestore,
+    private router: Router,
+    private http: HttpClient,
     private socket: Socket) { }
 
   ngOnInit(): void {
@@ -61,7 +77,7 @@ export class CatpostComponent implements OnInit {
     this.theme = this.route.snapshot.paramMap.get('theme')!;
 
 
-    this.title.setTitle("EndOfTheAge - EndTime : "+this.cat);
+    this.title.setTitle("EndOfTheAge - EndTime");
 
     if (localStorage.getItem('email')) {
       this.authcomment = true
@@ -72,15 +88,15 @@ export class CatpostComponent implements OnInit {
 
 
 
-    this.storePost(this.cat,this.theme);
+    this.storePost(this.cat, this.theme);
     this.upPostafterCreate();
     this.upPostafterDelete();
     this.upComment();
     this.upLike();
     this.addCommentForm()
-
+    this.getAllAdmin();
     this.upPseudoCreate();
-
+    this.getMenuById(this.cat);
 
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/main.js');
@@ -90,6 +106,7 @@ export class CatpostComponent implements OnInit {
 
 
   }
+
 
 
   public loadScript(url: string) {
@@ -103,7 +120,7 @@ export class CatpostComponent implements OnInit {
   }
 
 
-  storePost(cat: string,theme:string) {
+  storePost(cat: string, theme: string) {
 
     this.postsSubscription = this.postService.postsByCatSubject.subscribe(
       (posts: Post[]) => {
@@ -111,9 +128,9 @@ export class CatpostComponent implements OnInit {
       }
     );
 
-    this.postService.getPostsByCatTheme(cat,theme)
+    this.postService.getPostsByCatTheme(cat, theme)
 
-    this.postService.emitPostsByCat();
+    //this.postService.emitPostsByCat();
   }
 
   getAuth() {
@@ -127,6 +144,10 @@ export class CatpostComponent implements OnInit {
 
   dPost(uid: string) {
     this.postService.deletePost(uid);
+  }
+
+  ePost(uid: string) {
+    this.router.navigate(['/post/edit', uid])
   }
 
 
@@ -324,5 +345,95 @@ export class CatpostComponent implements OnInit {
 
 
   }
+
+  getAllAdmin() {
+    this.http
+      .get<any[]>(`${this.baseUrl}/getAllAdmin`)
+      .subscribe(
+        (response) => {
+
+          this.admins = response;
+          //this.theme = response[0].name;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+  }
+
+
+  getMenuById(id: string) {
+    this.http
+      .get<any[]>(`${this.baseUrl}/menu/${id}`)
+      .subscribe(
+        (response) => {
+
+          this.menu = response;
+
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
+  }
+
+  setViewMouse(id: string) {
+    var height = $(window).height();
+
+    const ifView = this.pView.find(element => element == id);
+
+    if (ifView) {
+      console.log('views')
+    } else {
+      this.pView.push(id);
+      console.log(this.pView)
+
+      let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
+
+      this.http
+        .put<any[]>(`${this.baseUrl}/posts/setViews/${id}`, [id])
+        .subscribe(
+          (response) => {
+            fPost[0].view = fPost[0].view + 1;
+          },
+          (error) => {
+            console.log('Erreur ! : ' + error);
+          }
+        );
+
+    }
+
+  }
+
+  setViewTouch(id: string) {
+    var height = $(window).height();
+
+    const ifView = this.pView.find(element => element == id);
+
+    if (ifView) {
+      console.log('views')
+    } else {
+      this.pView.push(id);
+      console.log(this.pView)
+
+      let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
+
+      this.http
+        .put<any[]>(`${this.baseUrl}/posts/setViews/${id}`, [id])
+        .subscribe(
+          (response) => {
+            fPost[0].view = fPost[0].view + 1;
+          },
+          (error) => {
+            console.log('Erreur ! : ' + error);
+          }
+        );
+
+    }
+
+  }
+
 
 }
