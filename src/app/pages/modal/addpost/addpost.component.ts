@@ -66,6 +66,7 @@ export class AddpostComponent implements OnInit {
   cTheme: Boolean = false;
   lTheme: any;
 
+  idThemeSelect! : string;
 
   postForm!: FormGroup;
 
@@ -220,13 +221,12 @@ export class AddpostComponent implements OnInit {
   onSavePost() {
     const title = this.postForm.get('title')?.value;
     const content = this.postForm.get('content')?.value;
-    const theme = this.postForm.get('theme')?.value.toLowerCase();
+    const theme = this.postForm.get('theme')?.value;
     const type = this.postForm.get('type')?.value;
     const audio_url = this.postForm.get('audio_url')?.value;
     const img_url = this.postForm.get('img_url')?.value;
     const video_url = this.postForm.get('video_url')?.value;
     const pdf_url = this.postForm.get('pdf_url')?.value;
-
 
     var user = firebase.auth().currentUser;
 
@@ -301,7 +301,7 @@ export class AddpostComponent implements OnInit {
 
   getValueTheme(event: any) {
     console.log(event.target.value);
-
+    this.idThemeSelect = event.target.value;
     if (event.target.value == 'create') {
       this.cTheme = true;
       this.postForm.controls['theme'].setValue('');

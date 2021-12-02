@@ -50,8 +50,8 @@ import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 
 
 
-const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
-//const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/", options: {} };
+//const config: SocketIoConfig = { url: "http://localhost:3001/", options: {} };
+const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/", options: {} };
 
 
 @NgModule({

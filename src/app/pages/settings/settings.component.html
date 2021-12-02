@@ -27,7 +27,7 @@
     <div id="flash_message_success_icMenu"><i class="fas fa-times"></i> Menu Cannot be created, Try again later</div>
 
     <div id="flash_message_success_dMenu"><i class="fas fa-check"></i> Deleted menu with success </div>
-    <div id="flash_message_success_idMenu"><i class="fas fa-times"></i> Unable to Delete Menu,  Try again later</div>
+    <div id="flash_message_success_idMenu"><i class="fas fa-times"></i> Unable to Delete Menu, Try again later</div>
 
     <div id="flash_message_success_eMenu"><i class="fas fa-check"></i> Menu Modified with success</div>
     <div id="flash_message_success_ieMenu"><i class="fas fa-times"></i> Menu Cannot be changed, Try again later</div>
@@ -39,198 +39,201 @@
 
     <!-- # site-content
             ================================================== -->
-    <section id="content" class="s-content">
 
 
-        <div class="d-flex align-items-center justify-content-center" id="loading">
-            <img src="assets/images/animations/Dual-Ball-1s-200px.svg" style="width: 60px; height:60px;">
+    <div class="d-flex align-items-center justify-content-center" id="loading">
+        <img src="assets/images/animations/Dual-Ball-1s-200px.svg" style="width: 60px; height:60px;">
+    </div>
+
+
+    <!--  masonry -->
+    <div id="bricks" class="bricks">
+        <div *ngIf="bEPass" class="d-flex align-items-center justify-content-center">
+            <div class="col-md-6">
+                <div class="wrapper" *ngIf="dEPass">
+                    <section class="audience">
+                        <header>
+                            <div (click)="oDEPass()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
+                            <p>Back</p>
+                        </header>
+                        <br>
+
+                        <div class="card">
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <h3 class="title">
+                                        Password
+                                    </h3>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <input id="password-field1" type="password" class="form-control" name="oldpassword"
+                                        placeholder="Old Password" #oldpassword>
+
+                                    <span toggle="#password-field1"
+                                        class="fa fa-fw fa-eye field-icon old-password"></span>
+                                </div>
+
+                                <br>
+
+                                <div class="col-md-12">
+                                    <input id="password-field" type="password" class="form-control" name="newpassword"
+                                        placeholder="New Password" #newpassword>
+
+                                    <span toggle="#password-field"
+                                        class="fa fa-fw fa-eye field-icon new-password"></span>
+                                </div>
+
+                                <br>
+
+                                <div class="col-md-12">
+                                    <button [disabled]="submitPassword" class="bCPassword btn btn-primary col-12"
+                                        (click)="cPassword(oldpassword.value,newpassword.value)">
+                                        Validate
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </section>
+                </div>
+
+                <div class="card" *ngIf="!dEPass">
+                    <span class="title" (click)="oDEPass()">
+                        <i class="fas fa-key"></i>
+                        &nbsp; Password
+                    </span>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div *ngIf="bEPseu" class="d-flex align-items-center justify-content-center">
+            <div class="col-md-6">
+                <div class="wrapper" *ngIf="dEPseu">
+                    <section class="audience">
+                        <header>
+                            <div (click)="oDEPseu()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
+                            <p>Back</p>
+                        </header>
+                        <br>
+
+                        <div class="card">
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <h3 class="title">
+                                        Nickname
+                                    </h3>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="pseudo" [value]="ps" #pseudo>
+                                </div>
+
+                                <br>
+
+
+
+                                <div class="col-md-12">
+                                    <button [disabled]="submitPseudo" class="bCPassword btn btn-primary col-12"
+                                        (click)="cPseudo(pseudo.value)">
+                                        Validate
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </section>
+                </div>
+
+                <div class="card" *ngIf="!dEPseu">
+                    <span class="title" (click)="oDEPseu()">
+                        <i class="fas fa-user"></i>
+                        &nbsp; Nickname
+                    </span>
+                </div>
+
+
+            </div>
+
         </div>
 
 
-        <!--  masonry -->
-        <div id="bricks" class="bricks">
-            <div *ngIf="bEPass" class="d-flex align-items-center justify-content-center">
-                <div class="col-md-6">
-                    <div class="wrapper" *ngIf="dEPass">
-                        <section class="audience">
-                            <header>
-                                <div (click)="oDEPass()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
-                                <p>Back</p>
-                            </header>
-                            <br>
+        <div *ngIf="bEndMEnu && roleUser == 'admin'" class="d-flex align-items-center justify-content-center">
+            <div class="col-md-6">
+                <div class="wrapper" *ngIf="dCEndMenu">
+                    <section class="audience">
+                        <header>
+                            <div (click)="oDEndMenu()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
+                            <p>Back</p>
+                        </header>
+                        <br>
 
-                            <div class="card">
+                        <div class="card">
 
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <h3 class="title">
-                                            Password
-                                        </h3>
-                                    </div>
+                            <div class="col-md-12">
 
-
-                                    <div class="col-md-12">
-                                        <input id="password-field1" type="password" class="form-control"
-                                            name="oldpassword" placeholder="Old Password" #oldpassword>
-
-                                        <span toggle="#password-field1"
-                                            class="fa fa-fw fa-eye field-icon old-password"></span>
-                                    </div>
-
-                                    <br>
-
-                                    <div class="col-md-12">
-                                        <input id="password-field" type="password" class="form-control"
-                                            name="newpassword" placeholder="New Password" #newpassword>
-
-                                        <span toggle="#password-field"
-                                            class="fa fa-fw fa-eye field-icon new-password"></span>
-                                    </div>
-
-                                    <br>
-
-                                    <div class="col-md-12">
-                                        <button [disabled]="submitPassword" class="bCPassword btn btn-primary col-12"
-                                            (click)="cPassword(oldpassword.value,newpassword.value)">
-                                            Validate
-                                        </button>
-                                    </div>
-                                </div>
-
-
+                                <button *ngIf="cMenu" (click)="addMenu()" class="bCPassword btn btn-primary col-12">
+                                    Create Menu
+                                </button>
                             </div>
 
-
-                        </section>
-                    </div>
-
-                    <div class="card" *ngIf="!dEPass">
-                        <span class="title" (click)="oDEPass()">
-                            <i class="fas fa-key"></i>
-                            &nbsp; Password
-                        </span>
-                    </div>
-
-
-                </div>
-
-            </div>
-
-            <div *ngIf="bEPseu" class="d-flex align-items-center justify-content-center">
-                <div class="col-md-6">
-                    <div class="wrapper" *ngIf="dEPseu">
-                        <section class="audience">
-                            <header>
-                                <div (click)="oDEPseu()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
-                                <p>Back</p>
-                            </header>
-                            <br>
-
-                            <div class="card">
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <h3 class="title">
-                                            Nickname
-                                        </h3>
-                                    </div>
-
-
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control" name="pseudo" [value]="ps" #pseudo>
-                                    </div>
-
-                                    <br>
-
-
-
-                                    <div class="col-md-12">
-                                        <button [disabled]="submitPseudo" class="bCPassword btn btn-primary col-12"
-                                            (click)="cPseudo(pseudo.value)">
-                                            Validate
-                                        </button>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-
-                        </section>
-                    </div>
-
-                    <div class="card" *ngIf="!dEPseu">
-                        <span class="title" (click)="oDEPseu()">
-                            <i class="fas fa-user"></i>
-                            &nbsp; Nickname
-                        </span>
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-            <div *ngIf="bEndMEnu && roleUser == 'admin'" class="d-flex align-items-center justify-content-center">
-                <div class="col-md-6">
-                    <div class="wrapper" *ngIf="dCEndMenu">
-                        <section class="audience">
-                            <header>
-                                <div (click)="oDEndMenu()" class="arrow-back"><i class="fas fa-arrow-left"></i></div>
-                                <p>Back</p>
-                            </header>
-                            <br>
-
-                            <div class="card">
+                            <div *ngIf="!cMenu" class="form-group">
 
                                 <div class="col-md-12">
-
-                                    <button *ngIf="cMenu" (click)="addMenu()" class="bCPassword btn btn-primary col-12">
+                                    <h3 class="title">
                                         Create Menu
-                                    </button>
+                                    </h3>
                                 </div>
 
-                                <div *ngIf="!cMenu" class="form-group">
 
-                                    <div class="col-md-12">
-                                        <h3 class="title">
-                                            Create Menu
-                                        </h3>
-                                    </div>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" placeholder="Name End Time Menu"
+                                        #endtimeMenu>
+                                </div>
 
+                                <br>
 
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control" placeholder="Name End Time Menu" #endtimeMenu>
-                                    </div>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" placeholder="Image End Time Menu"
+                                        #endtimeMenuUrlImage>
+                                </div>
 
-                                    <br>
+                                <br>
 
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control" placeholder="Image End Time Menu" #endtimeMenuUrlImage>
-                                    </div>
-                                    
-                                    <br>
-
-                                    <div class="col-md-12">
-                                        <textarea type="text" rows="3" class="form-control" placeholder="Description End Time Menu" #endtimeMenuDescription></textarea>
-                                    </div>
-
-                                    
-
-                                    <br>
+                                <div class="col-md-12">
+                                    <textarea type="text" rows="3" class="form-control"
+                                        placeholder="Description End Time Menu" #endtimeMenuDescription></textarea>
+                                </div>
 
 
 
-                                    <div class="col-md-12">
-                                        <span>
-                                            <button [disabled]="submitEndMenu" (click)="cEndMenu(endtimeMenu.value,endtimeMenuDescription.value,endtimeMenuUrlImage.value)"
-                                                style="height: 30px;" class="btn btn-xs btn-success">Validate</button>
-                                            <button (click)="addMenu()" style="height: 30px;"
-                                                class="btn btn-xs btn-danger">Cancel</button>
+                                <br>
 
-                                        </span>
-                                        <!-- <button [disabled]="submitEndMenu" class="bCPassword btn btn-primary colcol-6"
+
+
+                                <div class="col-md-12">
+                                    <span>
+                                        <button [disabled]="submitEndMenu"
+                                            (click)="cEndMenu(endtimeMenu.value,endtimeMenuDescription.value,endtimeMenuUrlImage.value)"
+                                            style="height: 30px;" class="btn btn-xs btn-success">Validate</button>
+                                        <button (click)="addMenu()" style="height: 30px;"
+                                            class="btn btn-xs btn-danger">Cancel</button>
+
+                                    </span>
+                                    <!-- <button [disabled]="submitEndMenu" class="bCPassword btn btn-primary colcol-6"
                                             (click)="cEndMenu(endtimeMenu.value)">
                                             Valider
                                         </button>
@@ -239,212 +242,215 @@
                                         <button class="bCPassword btn btn-danger col-6" (click)="addMenu()">
                                             Annuler
                                         </button> -->
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="listMenu" *ngFor="let menu of lMenu" class="card">
-                                    <span>
-                                        <i class="fa fa-folder-open"></i>
-                                        {{menu.name | uppercase }}
-                                    </span>
-                                    <br>
-                                    <span>
-                                        <button data-toggle="modal" [attr.data-target]="'#deleteMenuModal-'+menu._id"
-                                            style="height: 30px;" class="btn btn-xs btn-danger">Delete</button>
-                                        <button data-toggle="modal" [attr.data-target]="'#editMenuModal-'+menu._id"
-                                            style="height: 30px;" class="btn btn-xs btn-primary">Edit</button>
-                                        <button data-toggle="modal" [attr.data-target]="'#themeMenuModal-'+menu._id"
-                                            style="height: 30px;" class="btn btn-xs btn-dark">Theme</button>
+                            <div class="listMenu" *ngFor="let menu of lMenu" class="card">
+                                <span>
+                                    <i class="fa fa-folder-open"></i>
+                                    {{menu.name | uppercase }}
+                                </span>
+                                <br>
+                                <span>
+                                    <button data-toggle="modal" [attr.data-target]="'#deleteMenuModal-'+menu._id"
+                                        style="height: 30px;" class="btn btn-xs btn-danger">Delete</button>
+                                    <button data-toggle="modal" [attr.data-target]="'#editMenuModal-'+menu._id"
+                                        style="height: 30px;" class="btn btn-xs btn-primary">Edit</button>
+                                    <button data-toggle="modal" [attr.data-target]="'#themeMenuModal-'+menu._id"
+                                        style="height: 30px;" class="btn btn-xs btn-dark">Theme</button>
 
-                                    </span>
+                                </span>
 
-                                    <div class="modal fade deleteMenuModal" id="deleteMenuModal-{{menu._id}}" tabindex="-1"
-                                        role="dialog" aria-labelledby="deleteMenuModal" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title" id="exampleModalLabel">Delete Menu {{
-                                                        menu.name }}</h3>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    You are about to delete a menu.
-                                                    <br>
-                                                    <strong>Consequences: Disappearance of this menu, of these themes and posts</strong> <br>
+                                <div class="modal fade deleteMenuModal" id="deleteMenuModal-{{menu._id}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="deleteMenuModal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title" id="exampleModalLabel">Delete Menu {{
+                                                    menu.name }}</h3>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                You are about to delete a menu.
+                                                <br>
+                                                <strong>Consequences: Disappearance of this menu, of these themes and
+                                                    posts</strong> <br>
 
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
-                                                    <button  (click)="delMenu(menu._id)"
-                                                    data-dismiss="modal" class="btn btn-primary">Validate</button>
-                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button (click)="delMenu(menu._id)" data-dismiss="modal"
+                                                    class="btn btn-primary">Validate</button>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="modal fade editModal" id="editMenuModal-{{menu._id}}" tabindex="-1" role="dialog"
-                                        aria-labelledby="editMenuModal" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title" id="exampleModalLabel">Edit Menu {{
-                                                        menu.name }}</h3>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                <div class="modal fade editModal" id="editMenuModal-{{menu._id}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="editMenuModal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title" id="exampleModalLabel">Edit Menu {{
+                                                    menu.name }}</h3>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                You are about to edit a menu.
+                                                <br>
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control" name="menu"
+                                                        [value]="menu.name" #menuEdit>
                                                 </div>
-                                                <div class="modal-body">
-                                                    You are about to edit a menu.
-                                                    <br>
-                                                    <div class="col-md-12">
-                                                        <input type="text" class="form-control" name="menu"
-                                                            [value]="menu.name" #menuEdit>
-                                                    </div>
 
-                                                    <br>
+                                                <br>
 
-                                                    <div class="col-md-12">
-                                                        <input type="text" class="form-control" name="menu"
-                                                            [value]="menu.img_url" #ImenuEdit>
-                                                    </div>
-
-                                                    <br>
-
-                                                    <div class="col-md-12">
-                                                        <textarea type="text" rows="3" class="form-control" name="menu"
-                                                            [value]="menu.description" #DmenuEdit></textarea>
-                                                    </div>
-
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control" name="menu"
+                                                        [value]="menu.img_url" #ImenuEdit>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
-                                                    <button (click)="editMenu(menu._id,menuEdit.value,DmenuEdit.value,ImenuEdit.value)"
+
+                                                <br>
+
+                                                <div class="col-md-12">
+                                                    <textarea type="text" rows="3" class="form-control" name="menu"
+                                                        [value]="menu.description" #DmenuEdit></textarea>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button
+                                                    (click)="editMenu(menu._id,menuEdit.value,DmenuEdit.value,ImenuEdit.value)"
                                                     data-dismiss="modal" class="btn btn-primary">Valider</button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="modal fade themeMenuModal" id="themeMenuModal-{{menu._id}}" tabindex="-1" role="dialog"
-                                        aria-labelledby="editMenuModal" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title" id="exampleModalLabel">Lists of Themes {{
-                                                        menu.name }}</h3>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-
-                                                    <div *ngIf="menu.theme.length == 0" style="color: brown;">
-                                                        Empty Theme
-                                                    </div>
-
-
-                                                    <div *ngFor="let theme of menu.theme" class="card">
-
-                                                        <div class="listTheme-{{theme.id}}"
-                                                            style="visibility: visible;">
-                                                            <div class="title" data-toggle="modal">
-                                                                <img src="assets/images/icons/folder.png"
-                                                                    style="width: 16px; height:16px;">
-                                                                &nbsp; {{theme.name}}
-                                                            </div>
-                                                            <span>
-                                                                <button (click)="deleteTheme(theme.id)"
-                                                                    style="height: 30px;"
-                                                                    class="btn btn-xs btn-danger">Delete</button>
-                                                                <button (click)="editTheme(theme.id)"
-                                                                    style="height: 30px;"
-                                                                    class="btn btn-xs btn-primary">Edit</button>
-                                                            </span>
-                                                        </div>
-
-                                                        <div class="deleteTheme-{{theme.id}}" style="display: none;">
-
-                                                            You are about to delete the theme {{ theme.name }}
-                                                            <br>
-                                                            <strong>Consequences: Disappearance of this theme and these posts</strong> <br>
-
-                                                            <span>
-                                                                <button  data-dismiss="modal" (click)="cDeletePost(menu,theme.id)"
-                                                                    style="height: 30px;"
-                                                                    class="btn btn-xs btn-danger">Oui</button>
-                                                                <button (click)="aDeletePost(theme.id)"
-                                                                    style="height: 30px;"
-                                                                    class="btn btn-xs btn-primary">Non</button>
-                                                            </span>
-                                                        </div>
-
-                                                        <div class="editTheme-{{theme.id}}" style="display: none;">
-
-                                                            You are about to Change the theme {{ theme.name }}
-                                                            <br>
-                                                            <strong>Consequences: Modification of this theme in the menus</strong> <br>
-
-                                                            <br>
-                                                            <input type="text" [value]="theme.name" #vtheme
-                                                                class="form-control">
-
-                                                            <br>
-                                                            <span>
-                                                                <button data-dismiss="modal" (click)="cEditPost(menu,theme.id,vtheme.value)"
-                                                                    style="height: 30px;"
-                                                                    class="btn btn-xs btn-danger">Yes</button>
-                                                                <button (click)="aEditPost(theme.id)"
-                                                                    style="height: 30px;"
-                                                                    class="btn btn-xs btn-primary">No</button>
-                                                            </span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
 
+                                <div class="modal fade themeMenuModal" id="themeMenuModal-{{menu._id}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="editMenuModal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title" id="exampleModalLabel">Lists of Themes {{
+                                                    menu.name }}</h3>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div *ngIf="menu.theme.length == 0" style="color: brown;">
+                                                    Empty Theme
+                                                </div>
+
+
+                                                <div *ngFor="let theme of menu.theme" class="card">
+
+                                                    <div class="listTheme-{{theme.id}}" style="visibility: visible;">
+                                                        <div class="title" data-toggle="modal">
+                                                            <img src="assets/images/icons/folder.png"
+                                                                style="width: 16px; height:16px;">
+                                                            &nbsp; {{theme.name}}
+                                                        </div>
+                                                        <span>
+                                                            <button (click)="deleteTheme(theme.id)"
+                                                                style="height: 30px;"
+                                                                class="btn btn-xs btn-danger">Delete</button>
+                                                            <button (click)="editTheme(theme.id)" style="height: 30px;"
+                                                                class="btn btn-xs btn-primary">Edit</button>
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="deleteTheme-{{theme.id}}" style="display: none;">
+
+                                                        You are about to delete the theme {{ theme.name }}
+                                                        <br>
+                                                        <strong>Consequences: Disappearance of this theme and these
+                                                            posts</strong> <br>
+
+                                                        <span>
+                                                            <button data-dismiss="modal"
+                                                                (click)="cDeletePost(menu,theme.id)"
+                                                                style="height: 30px;"
+                                                                class="btn btn-xs btn-danger">Oui</button>
+                                                            <button (click)="aDeletePost(theme.id)"
+                                                                style="height: 30px;"
+                                                                class="btn btn-xs btn-primary">Non</button>
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="editTheme-{{theme.id}}" style="display: none;">
+
+                                                        You are about to Change the theme {{ theme.name }}
+                                                        <br>
+                                                        <strong>Consequences: Modification of this theme in the
+                                                            menus</strong> <br>
+
+                                                        <br>
+                                                        <input type="text" [value]="theme.name" #vtheme
+                                                            class="form-control">
+
+                                                        <br>
+                                                        <span>
+                                                            <button data-dismiss="modal"
+                                                                (click)="cEditPost(menu,theme.id,vtheme.value)"
+                                                                style="height: 30px;"
+                                                                class="btn btn-xs btn-danger">Yes</button>
+                                                            <button (click)="aEditPost(theme.id)" style="height: 30px;"
+                                                                class="btn btn-xs btn-primary">No</button>
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
 
 
-                        </section>
-                    </div>
-
-                    <div class="card" *ngIf="!dCEndMenu">
-                        <span class="title" (click)="oDEndMenu()">
-                            <i class="fas fa-book-open"></i>
-                            &nbsp; End Time Menu
-                        </span>
-                    </div>
+                        </div>
 
 
+                    </section>
                 </div>
+
+                <div class="card" *ngIf="!dCEndMenu">
+                    <span class="title" (click)="oDEndMenu()">
+                        <i class="fas fa-book-open"></i>
+                        &nbsp; End Time Menu
+                    </span>
+                </div>
+
 
             </div>
 
-
-
-
-
-
         </div>
 
-        <!-- <div id="bricks" class="bricks">
+
+
+
+
+
+    </div>
+
+    <!-- <div id="bricks" class="bricks">
 
             <div class="d-flex align-items-center justify-content-center">
                 <div class="col-md-6">
@@ -527,9 +533,7 @@
 
 
         </div> -->
-
-
-    </section> <!-- end s-content -->
+</div>
 
     <app-footer></app-footer>
 
