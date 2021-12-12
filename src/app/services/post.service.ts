@@ -248,13 +248,12 @@ export class PostService {
 
   sendComment(comment: string, post: Post, _id: string) {
 
+
     const id = this.afs.createId()
 
     let ucomment: any[];
 
     var user = firebase.auth().currentUser;
-
-
 
     if (post.comments && post.comments.length > 0) {
 
@@ -267,22 +266,20 @@ export class PostService {
         timestamp: Date.now()
       }
 
-      // console.log(ucomment);
-      // console.log(commentData);
-
-
       let oldPost = post.comments;
 
       let nPost = oldPost.slice();
 
       nPost.push(commentData);
 
-
       ucomment = nPost;
 
 
     }
     else {
+
+      console.log('p');
+
 
       let commentData = {
         uid: id,
@@ -346,77 +343,6 @@ export class PostService {
       ulike = nLike;
 
     }
-
-
-    // if (!post.likes || post.likes.length == 0) {
-    //   let likeData = {
-    //     uid: id,
-    //     pseudo: user?.email,
-    //   }
-
-    //   ulike = likeData;
-    //   //post.likes = [ulike];
-    //   //this.afs.doc(`posts/${post.uid}`).update({ likes: ulike });
-
-
-    // } else {
-
-    //   if (post.likes.length > 1) {
-
-    //     let oldLike = post.likes;
-    //     let nLike = oldLike.slice();
-
-    //     let isNLike = nLike.filter(function (item: { pseudo: string; }) { return item.pseudo === user?.email; });
-
-    //     if (isNLike.length == 0) {
-
-    //       let likeData = {
-    //         uid: id,
-    //         pseudo: user?.email!,
-    //       }
-    //       let nLike = oldLike.slice();
-    //       nLike.push(likeData);
-    //       ulike = nLike;
-    //     } else {
-    //       for (let [i, nL] of nLike.entries()) {
-    //         if (nL.pseudo == user?.email) {
-    //           nLike.splice(i, 1);
-    //         }
-    //       }
-    //       ulike = nLike;
-
-    //     }
-
-
-    //   }
-    //   else {
-    //     for (let i = 0; i < post.likes!.length; i++) {
-
-    //       for (let j = 0; j < this.posts[i].likes.length; j++)
-
-
-    //         if (this.posts[i].likes[j].pseudo == user?.email) {
-    //           ulike = this.posts[i].likes[j];
-    //           //this.posts[i].likes.splice(j,1);
-    //         } else {
-    //           let likeData = {
-    //             uid: id,
-    //             pseudo: user?.email!,
-    //           }
-    //           let oldLike = post.likes;
-    //           let nLike = oldLike.slice();
-    //           nLike.push(likeData);
-    //           ulike = nLike;
-    //         }
-
-    //     }
-    //   }
-    // }
-
-
-
-
-
 
     //this.socket.emit('update-like', [ulike, _id, user?.email]);
 

@@ -193,7 +193,7 @@ export class PostComponent implements AfterViewInit {
 
       this.posts.unshift(newPost['newPost']);
 
-      this.postService.emitPosts();
+      //this.postService.emitPosts();
     })
 
   }
@@ -217,41 +217,58 @@ export class PostComponent implements AfterViewInit {
     this.socket.on('get-update-comment', (comment: any) => {
 
 
-      for (let i = 0; i < this.posts.length; i++) {
-        if (this.posts[i]._id == comment.comment[1]) {
-          if (this.posts[i].comments && this.posts[i].comments.length > 0) {
+      let sPost = this.posts.filter(function (item: { _id: string; }) { return item._id === comment.comment[1] });
+
+      sPost[0].comments.push(comment.comment[0].at(-1))
+
+      // let commentData = {
+      //   uid: comment.comment[0][comment.comment[0].length - 1].uid,
+      //   pseudo: comment.comment[0][comment.comment[0].length - 1].pseudo,
+      //   comment: comment.comment[0][comment.comment[0].length - 1].comment,
+      //   email: comment.comment[0][comment.comment[0].length - 1].email,
+      //   create_date: comment.comment[0][comment.comment[0].length - 1].create_date,
+      //   timestamp: comment.comment[0][comment.comment[0].length - 1].timestamp
+      // }
+
+      // sPost[0].comments.push(commentData)
+
+      // console.log(sPost);
+
+      // for (let i = 0; i < this.posts.length; i++) {
+      //   if (this.posts[i]._id == comment.comment[1]) {
+      //     if (this.posts[i].comments && this.posts[i].comments.length > 0) {
 
 
-            let commentData = {
-              uid: comment.comment[0][comment.comment[0].length - 1].uid,
-              pseudo: comment.comment[0][comment.comment[0].length - 1].pseudo,
-              comment: comment.comment[0][comment.comment[0].length - 1].comment,
-              email: comment.comment[0][comment.comment[0].length - 1].email,
-              create_date: comment.comment[0][comment.comment[0].length - 1].create_date,
-              timestamp: comment.comment[0][comment.comment[0].length - 1].timestamp
-            }
+      //       let commentData = {
+      //         uid: comment.comment[0][comment.comment[0].length - 1].uid,
+      //         pseudo: comment.comment[0][comment.comment[0].length - 1].pseudo,
+      //         comment: comment.comment[0][comment.comment[0].length - 1].comment,
+      //         email: comment.comment[0][comment.comment[0].length - 1].email,
+      //         create_date: comment.comment[0][comment.comment[0].length - 1].create_date,
+      //         timestamp: comment.comment[0][comment.comment[0].length - 1].timestamp
+      //       }
 
 
-            this.posts[i].comments.push(commentData)
+      //       this.posts[i].comments.push(commentData)
 
-          }
-          else {
+      //     }
+      //     else {
 
-            let commentData = {
-              uid: comment.comment[0][0].uid,
-              pseudo: comment.comment[0][0].pseudo,
-              email: comment.comment[0][0].email,
-              comment: comment.comment[0][0].comment,
-              create_date: comment.comment[0][0].create_date,
-              timestamp: comment.comment[0][0].timestamp
-            }
+      //       let commentData = {
+      //         uid: comment.comment[0][0].uid,
+      //         pseudo: comment.comment[0][0].pseudo,
+      //         email: comment.comment[0][0].email,
+      //         comment: comment.comment[0][0].comment,
+      //         create_date: comment.comment[0][0].create_date,
+      //         timestamp: comment.comment[0][0].timestamp
+      //       }
 
-            this.posts[i].comments = [commentData]
+      //       this.posts[i].comments = [commentData]
 
-          }
+      //     }
 
-        }
-      }
+      //   }
+      // }
 
     })
 
@@ -270,57 +287,11 @@ export class PostComponent implements AfterViewInit {
             let found = this.posts.filter(function (item: { _id: string; }) { return item._id === like.like[1]; });
             found[0].likes = like.like[0];
 
-            // if (like.like[0].length >= 1) {
 
-            //   console.log(like.like[0]);
-
-            //   if (like.like[0][like.like[0].length - 1].pseudo == user?.email) {
-            //     console.log('ok');
-            //     let found = this.posts.filter(function (item: { _id: string; }) { return item._id === like.like[1]; });
-            //     found[0].likes.push(like.like[0][like.like[0].length - 1])
-            //   }
-            //   else{
-            //     console.log(like.like[0]);
-            //   }
-            // }
-            // else {
-            //   for (let i = 0; i < this.posts.length; i++) {
-
-            //     if (this.posts[i]._id == like.like[1]) {
-
-
-            //       if (!this.posts[i].likes || this.posts[i].likes.length == 0) {
-            //         let likeData = {
-            //           uid: like.like[0].uid,
-            //           pseudo: like.like[0].pseudo,
-            //         }
-
-            //         ulike = likeData;
-            //         this.posts[i].likes = [ulike];
-
-            //       } else {
-
-            //         for (let j = 0; j < this.posts[i].likes.length; j++) {
-            //           if (this.posts[i].likes[j].pseudo == like.like[0].pseudo) {
-            //             this.posts[i].likes.splice(j, 1);
-            //             //console.log(like.like[0].pseudo)
-            //           }
-            //         }
-            //       }
-            //     }
-            //   }
-            // }
           })
         }
       }
     })
-
-
-
-
-  }
-
-  storeCountLike() {
 
   }
 
@@ -373,31 +344,40 @@ export class PostComponent implements AfterViewInit {
 
     const comment = this.commentForm.get('pcomment')?.value;
 
+    var user = firebase.auth().currentUser;
 
-    if (comment.length == 0) {
-      $('#flash_message_comment_empty').show();
+    if (user) {
+      if (comment.length == 0) {
+        $('#flash_message_comment_empty').show();
 
-      setTimeout(function () {
-        $('#flash_message_comment_empty').hide();
-      }, 5000);
+        setTimeout(function () {
+          $('#flash_message_comment_empty').hide();
+        }, 5000);
 
 
-    } else {
-
-      let _id = id;
-
-      if (!$(`.dComment-${_id}`).hasClass(`.dComment-${_id}-true`)) {
-        $(`.dComment-${_id}`).addClass(`.dComment-${_id}-true`);
-        $(`.dComment-${_id}`).show();
-        this.postService.sendComment(comment, post, id);
-        this.commentForm.reset();
       } else {
-        this.postService.sendComment(comment, post, id);
-        this.commentForm.reset();
 
+        let _id = id;
+
+        if (!$(`.dComment-${_id}`).hasClass(`.dComment-${_id}-true`)) {
+          $(`.dComment-${_id}`).addClass(`.dComment-${_id}-true`);
+          $(`.dComment-${_id}`).show();
+          this.postService.sendComment(comment, post, id);
+          this.commentForm.reset();
+        } else {
+          this.postService.sendComment(comment, post, id);
+          this.commentForm.reset();
+
+        }
       }
     }
+    else {
+      $('#user_not_auth').show();
 
+      setTimeout(function () {
+        $('#user_not_auth').hide();
+      }, 5000);
+    }
 
   }
 
@@ -507,7 +487,23 @@ export class PostComponent implements AfterViewInit {
 
   }
 
-  
+
+  URLReplacer(str: string) {
+
+    let match = str.match(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig);
+    let final = str;
+    match?.map(url => {
+      final = final.replace(url, "<a href=\"" + url + "\" target=\"_BLANK\">" + url + "</a>")
+    })
+
+    if (final) {
+      return final
+    } else {
+      return str;
+    }
+    //console.log(final);
+  }
+
 
 
 }

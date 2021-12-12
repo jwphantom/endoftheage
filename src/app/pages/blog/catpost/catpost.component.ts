@@ -11,6 +11,9 @@ import { Post } from 'src/app/model/post';
 import { AuthService } from 'src/app/services/authservice.service';
 import { PostService } from 'src/app/services/post.service';
 import { GlobalConstants } from '../../../common/global-constants';
+import firebase from 'firebase';
+import { AngularFireAuth } from '@angular/fire/auth';
+
 
 @Component({
   selector: 'app-catpost',
@@ -52,6 +55,8 @@ export class CatpostComponent implements OnInit {
 
   pView: Array<string> = [];
 
+  nTheme!: string;
+
 
   commentForm!: FormGroup;
   emailUser = localStorage.getItem('email');
@@ -69,6 +74,7 @@ export class CatpostComponent implements OnInit {
     public afs: AngularFirestore,
     private router: Router,
     private http: HttpClient,
+    public afAuth: AngularFireAuth, // Inject Firebase auth service
     private socket: Socket) { }
 
   ngOnInit(): void {
@@ -96,7 +102,7 @@ export class CatpostComponent implements OnInit {
     this.addCommentForm()
     this.getAllAdmin();
     this.upPseudoCreate();
-    this.getMenuById(this.cat);
+    this.getMenuById(this.cat, this.theme);
 
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/main.js');
@@ -175,8 +181,6 @@ export class CatpostComponent implements OnInit {
     this.socket.on('send-posts-afterCreate', (newPost: any) => {
 
       this.posts.push(newPost['newPost']);
-
-      this.postService.emitPosts();
     })
 
   }
@@ -199,39 +203,43 @@ export class CatpostComponent implements OnInit {
     this.socket.on('get-update-comment', (comment: any) => {
 
 
-      for (let i = 0; i < this.posts.length; i++) {
-        if (this.posts[i]._id == comment.comment[1]) {
-          if (this.posts[i].comments && this.posts[i].comments.length > 0) {
+      let sPost = this.posts.filter(function (item: { _id: string; }) { return item._id === comment.comment[1] });
+
+      sPost[0].comments.push(comment.comment[0].at(-1))
+
+      // for (let i = 0; i < this.posts.length; i++) {
+      //   if (this.posts[i]._id == comment.comment[1]) {
+      //     if (this.posts[i].comments && this.posts[i].comments.length > 0) {
 
 
-            let commentData = {
-              uid: comment.comment[0][comment.comment[0].length - 1].uid,
-              pseudo: comment.comment[0][comment.comment[0].length - 1].pseudo,
-              comment: comment.comment[0][comment.comment[0].length - 1].comment,
-              create_date: comment.comment[0][comment.comment[0].length - 1].create_date,
-              timestamp: comment.comment[0][comment.comment[0].length - 1].timestamp
-            }
+      //       let commentData = {
+      //         uid: comment.comment[0][comment.comment[0].length - 1].uid,
+      //         pseudo: comment.comment[0][comment.comment[0].length - 1].pseudo,
+      //         comment: comment.comment[0][comment.comment[0].length - 1].comment,
+      //         create_date: comment.comment[0][comment.comment[0].length - 1].create_date,
+      //         timestamp: comment.comment[0][comment.comment[0].length - 1].timestamp
+      //       }
 
 
-            this.posts[i].comments.push(commentData)
+      //       this.posts[i].comments.push(commentData)
 
-          }
-          else {
+      //     }
+      //     else {
 
-            let commentData = {
-              uid: comment.comment[0][0].uid,
-              pseudo: comment.comment[0][0].pseudo,
-              comment: comment.comment[0][0].comment,
-              create_date: comment.comment[0][0].create_date,
-              timestamp: comment.comment[0][0].timestamp
-            }
+      //       let commentData = {
+      //         uid: comment.comment[0][0].uid,
+      //         pseudo: comment.comment[0][0].pseudo,
+      //         comment: comment.comment[0][0].comment,
+      //         create_date: comment.comment[0][0].create_date,
+      //         timestamp: comment.comment[0][0].timestamp
+      //       }
 
-            this.posts[i].comments = [commentData]
+      //       this.posts[i].comments = [commentData]
 
-          }
+      //     }
 
-        }
-      }
+      //   }
+      // }
 
     })
 
@@ -239,47 +247,22 @@ export class CatpostComponent implements OnInit {
 
   upLike() {
 
-    if (localStorage.getItem('email')) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        if (user.email) {
 
-      this.socket.on(`get-update-like-${localStorage.getItem('email')}`, (like: any) => {
-        let ulike: any | undefined;
-        if (like.like[0].length > 1) {
+          this.socket.on(`get-update-like`, (like: any) => {
 
-          if (like.like[0][like.like[0].length - 1].pseudo == localStorage.getItem('email')) {
+            let ulike: any | undefined;
 
             let found = this.posts.filter(function (item: { _id: string; }) { return item._id === like.like[1]; });
-            found[0].likes.push(like.like[0][like.like[0].length - 1])
-          }
+            found[0].likes = like.like[0];
+
+           
+          })
         }
-        else {
-          for (let i = 0; i < this.posts.length; i++) {
-
-            if (this.posts[i]._id == like.like[1]) {
-
-
-              if (!this.posts[i].likes || this.posts[i].likes.length == 0) {
-                let likeData = {
-                  uid: like.like[0].uid,
-                  pseudo: like.like[0].pseudo,
-                }
-
-                ulike = likeData;
-                this.posts[i].likes = [ulike];
-
-              } else {
-
-                for (let j = 0; j < this.posts[i].likes.length; j++) {
-                  if (this.posts[i].likes[j].pseudo == like.like[0].pseudo) {
-                    this.posts[i].likes.splice(j, 1);
-                    //console.log(like.like[0].pseudo)
-                  }
-                }
-              }
-            }
-          }
-        }
-      })
-    }
+      }
+    })
 
   }
 
@@ -310,7 +293,11 @@ export class CatpostComponent implements OnInit {
 
   like(post: Post, _id: string) {
 
-    this.postService.sendLike(post, _id);
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      this.postService.sendLike(post, _id);
+    }
 
   }
 
@@ -363,13 +350,17 @@ export class CatpostComponent implements OnInit {
   }
 
 
-  getMenuById(id: string) {
+  getMenuById(id: string, theme: string) {
     this.http
       .get<any[]>(`${this.baseUrl}/menu/${id}`)
       .subscribe(
         (response) => {
 
           this.menu = response;
+
+          let nTheme = this.menu.theme.filter(function (item: { id: string; }) { return item.id === theme; });
+
+          this.nTheme = nTheme[0].name;
 
         },
         (error) => {
@@ -378,6 +369,7 @@ export class CatpostComponent implements OnInit {
       );
 
   }
+
 
   setViewMouse(id: string) {
     var height = $(window).height();
@@ -388,7 +380,6 @@ export class CatpostComponent implements OnInit {
       console.log('views')
     } else {
       this.pView.push(id);
-      console.log(this.pView)
 
       let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
 
@@ -435,5 +426,21 @@ export class CatpostComponent implements OnInit {
 
   }
 
+
+  URLReplacer(str: string) {
+
+    let match = str.match(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig);
+    let final = str;
+    match?.map(url => {
+      final = final.replace(url, "<a href=\"" + url + "\" target=\"_BLANK\">" + url + "</a>")
+    })
+
+    if (final) {
+      return final
+    } else {
+      return str;
+    }
+    //console.log(final);
+  }
 
 }

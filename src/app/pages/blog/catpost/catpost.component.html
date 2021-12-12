@@ -41,7 +41,7 @@
             <header class="entry__header entry__header--narrow">
 
                 <h1 class="entry__title">
-                   {{ menu?.name }}
+                   {{ nTheme }}
                 </h1>
                 <hr>
             </header>
@@ -99,13 +99,8 @@
 
                         </div>
                         <h6>{{ post.title }}</h6>
-                        <p>{{post.content}}
-                            <br>
-                            <a target="_blank" *ngIf="post.img_url!.length > 0"
-                                href="{{post.img_url}}">{{post.img_url}}</a>
-                            <a *ngIf="post.video_url!.length > 0" href="{{post.video_url}}">{{post.video_url}}</a>
-                            <a *ngIf="post.audio_url!.length > 0" href="{{post.audio_url}}">{{post.audio_url}}</a>
-                        </p>
+                        <div [innerHtml]="URLReplacer(post.content) "></div>
+
 
                         <div>
                             <img *ngIf="post.img_url!.length > 0" src="{{post.img_url}}" class="img-fluid">

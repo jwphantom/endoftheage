@@ -98,7 +98,7 @@ export class AuthService {
 
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = firebase.auth().currentUser;
     return (user !== null) ? true : false;
   }
 

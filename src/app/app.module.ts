@@ -47,6 +47,9 @@ import { BlockMenuComponent } from './static/block-menu/block-menu.component';
 
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { AuthGuard } from './shared/guard/auth.guard';
+import { SecureInnerPagesGuard } from './shared/guard/secure-inner-pages.guard';
+import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 
 
 
@@ -80,6 +83,7 @@ const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/
     ToolbarComponent,
     AboutComponent,
     BlockMenuComponent,
+    FourOhFourComponent,
     
   ],
   imports: [
@@ -110,7 +114,11 @@ const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/
   providers: [AuthService, 
     PostService,
     DatePipe,
-    SettingsService
+    SettingsService,
+    AuthService, 
+    AuthGuard, 
+    SecureInnerPagesGuard
+
 
   ],
   bootstrap: [AppComponent]
