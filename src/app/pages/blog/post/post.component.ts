@@ -89,16 +89,11 @@ export class PostComponent implements AfterViewInit {
 
   ngOnInit() {
 
+
+
     this.title.setTitle("EndOfTheAge - Post");
 
-    if (this.emailUser) {
-      this.authcomment = true;
-    } else {
-      this.authcomment = false;
-
-    }
-
-    //this.posts = this.postService.getPosts().valueChanges();
+    this.authcomment = this.authService.getisLogged();
 
     this.storePost();
 
@@ -146,7 +141,6 @@ export class PostComponent implements AfterViewInit {
 
   flash_message_success_auth() {
 
-
     this.socket.on(`get_flash_message_success_auth`, (email: any) => {
 
       this.afAuth.authState.subscribe(user => {
@@ -160,7 +154,7 @@ export class PostComponent implements AfterViewInit {
           this.emailUser = localStorage.getItem('email');
           this.roleUser = localStorage.getItem('role');
           this.pseudoUser = localStorage.getItem('pseudo');
-          this.authcomment = true;
+          this.authcomment = this.authService.getisLogged();;
 
         }
       });
@@ -177,7 +171,7 @@ export class PostComponent implements AfterViewInit {
     this.socket.on(`get-update-pseudo`, (email: any) => {
 
       if (localStorage.getItem('email') == email.email[0]) {
-        this.authcomment = true
+        this.authcomment = this.authService.getisLogged();
       } else {
         this.authcomment = false;
 

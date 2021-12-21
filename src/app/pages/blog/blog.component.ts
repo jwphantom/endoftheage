@@ -40,7 +40,6 @@ export class BlogComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle("EndOfTheAge - Blog");
 
-    this.getTheme();
     this.getMenu();
     this.loadScript('../assets/js/plugins.js');
     this.loadScript('../assets/js/main.js');

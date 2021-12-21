@@ -1,0 +1,30 @@
+<div class="row u-add-half-bottom" style="margin-top: 60px; background-color: white;" >
+
+    <div class="column lg-12 tab-12" style="text-align: center;">
+
+        <h1 class="entry__title" style="font-size: 30px;">
+            Daily News
+        </h1>
+        <br>
+        <br>
+
+        <h3 style="font-weight: 600; font-size: 30px;">{{ post?.title }}</h3>
+        <div class="entry__meta-date">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="7.25" stroke="currentColor" stroke-width="1.5"></circle>
+                <path stroke="currentColor" stroke-width="1.5" d="M12 8V12L14 14"></path>
+            </svg>
+            {{post.create_date}}
+        </div>
+        <br>
+        <img src="{{post?.img_url}}" srcset="{{post?.img_url}}, 
+                         {{post?.img_url}}" alt="" style="width: 800px;">
+
+        <div class="container desc">
+            {{ post?.content | truncate:[100]}}... <a routerLink="/endTime-menu/61a8c4b459ba2c99c1ec80e2/AcKH2aaOOA6p4NGIBUkl">Read More</a>
+        </div>
+
+
+    </div>
+
+</div> <!-- end row -->

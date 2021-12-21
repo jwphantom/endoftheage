@@ -85,13 +85,7 @@ export class CatpostComponent implements OnInit {
 
     this.title.setTitle("EndOfTheAge - EndTime");
 
-    if (localStorage.getItem('email')) {
-      this.authcomment = true
-    } else {
-      this.authcomment = false;
-
-    }
-
+    this.authcomment = this.authService.getisLogged();
 
 
     this.storePost(this.cat, this.theme);
@@ -168,7 +162,8 @@ export class CatpostComponent implements OnInit {
     this.socket.on(`get-update-pseudo`, (email: any) => {
 
       if (localStorage.getItem('email') == email.email[0]) {
-        this.authcomment = true
+        this.authcomment = this.authcomment = this.authService.getisLogged();
+
       } else {
         this.authcomment = false;
 
@@ -193,8 +188,6 @@ export class CatpostComponent implements OnInit {
           this.posts.splice(i, 1)
         }
       }
-
-      this.postService.emitPosts();
     })
 
   }
@@ -207,40 +200,6 @@ export class CatpostComponent implements OnInit {
 
       sPost[0].comments.push(comment.comment[0].at(-1))
 
-      // for (let i = 0; i < this.posts.length; i++) {
-      //   if (this.posts[i]._id == comment.comment[1]) {
-      //     if (this.posts[i].comments && this.posts[i].comments.length > 0) {
-
-
-      //       let commentData = {
-      //         uid: comment.comment[0][comment.comment[0].length - 1].uid,
-      //         pseudo: comment.comment[0][comment.comment[0].length - 1].pseudo,
-      //         comment: comment.comment[0][comment.comment[0].length - 1].comment,
-      //         create_date: comment.comment[0][comment.comment[0].length - 1].create_date,
-      //         timestamp: comment.comment[0][comment.comment[0].length - 1].timestamp
-      //       }
-
-
-      //       this.posts[i].comments.push(commentData)
-
-      //     }
-      //     else {
-
-      //       let commentData = {
-      //         uid: comment.comment[0][0].uid,
-      //         pseudo: comment.comment[0][0].pseudo,
-      //         comment: comment.comment[0][0].comment,
-      //         create_date: comment.comment[0][0].create_date,
-      //         timestamp: comment.comment[0][0].timestamp
-      //       }
-
-      //       this.posts[i].comments = [commentData]
-
-      //     }
-
-      //   }
-      // }
-
     })
 
   }
@@ -252,8 +211,6 @@ export class CatpostComponent implements OnInit {
         if (user.email) {
 
           this.socket.on(`get-update-like`, (like: any) => {
-
-            let ulike: any | undefined;
 
             let found = this.posts.filter(function (item: { _id: string; }) { return item._id === like.like[1]; });
             found[0].likes = like.like[0];
@@ -338,10 +295,7 @@ export class CatpostComponent implements OnInit {
       .get<any[]>(`${this.baseUrl}/getAllAdmin`)
       .subscribe(
         (response) => {
-
           this.admins = response;
-          //this.theme = response[0].name;
-
         },
         (error) => {
           console.log('Erreur ! : ' + error);

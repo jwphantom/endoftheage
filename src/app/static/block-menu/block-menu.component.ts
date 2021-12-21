@@ -35,7 +35,6 @@ export class BlockMenuComponent implements OnInit {
         (response) => {
 
           this.lMenu = response;
-          console.log(this.lMenu);
           //this.theme = response[0].name;
 
         },

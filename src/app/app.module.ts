@@ -50,6 +50,7 @@ import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { SecureInnerPagesGuard } from './shared/guard/secure-inner-pages.guard';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { NewsComponent } from './static/news/news.component';
 
 
 
@@ -84,6 +85,7 @@ const config: SocketIoConfig = { url: "https://server-endoftheage.herokuapp.com/
     AboutComponent,
     BlockMenuComponent,
     FourOhFourComponent,
+    NewsComponent,
     
   ],
   imports: [

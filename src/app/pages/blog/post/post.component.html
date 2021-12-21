@@ -33,225 +33,227 @@
 
 
 
-        <!-- # site-content
+    <!-- # site-content
             ================================================== -->
-        <section id="content" class="s-content">
+    <section id="content" class="s-content">
 
 
 
-            <div class="d-flex align-items-center justify-content-center" id="loading">
-                <img src="assets/images/animations/Dual-Ball-1s-200px.svg" style="width: 60px; height:60px;">
-            </div>
+        <div class="d-flex align-items-center justify-content-center" id="loading">
+            <img src="assets/images/animations/Dual-Ball-1s-200px.svg" style="width: 60px; height:60px;">
+        </div>
 
-            <!--  masonry -->
-            <div id="bricks" class="bricks">
+        <!--  masonry -->
+        <div id="bricks" class="bricks">
 
-                <div *ngIf="!s_aPost && roleUser == 'admin'" class=" d-flex align-items-center justify-content-center">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <input (click)="o_s_apost()" type="text" placeholder="What's News?" name="" id="">
-                        </div>
+            <div *ngIf="!s_aPost && roleUser == 'admin'" class=" d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <input (click)="o_s_apost()" type="text" placeholder="What's News?" name="" id="">
                     </div>
                 </div>
+            </div>
 
-                <app-addpost *ngIf="s_aPost" [section_o]="s_aPost" (messageEvent)="receiveMessage($event)">
-                </app-addpost>
+            <app-addpost *ngIf="s_aPost" [section_o]="s_aPost" (messageEvent)="receiveMessage($event)">
+            </app-addpost>
 
-                <br>
-                <div *ngFor="let post of posts  ; let i = index"
-                    class="d-flex align-items-center justify-content-center">
-                    <div class="col-md-6">
-                        <div class="card" (touchmove)="setViewTouch(post._id)" (mouseover)="setViewMouse(post._id)">
-                            <div class="d-flex justify-content-between p-2 px-3">
+            <br>
+            <div *ngFor="let post of posts  ; let i = index" class="d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card" (touchmove)="setViewTouch(post._id)" (mouseover)="setViewMouse(post._id)">
+                        <div class="d-flex justify-content-between p-2 px-3">
 
-                                <div class="">
+                            <div class="">
 
-                                    <p style="font-size: 12px;">
-                                        <small class="mr-2"> <i class="fas fa-user"></i>
-                                            <span *ngFor="let a of admins">
-                                                <span *ngIf="a.email === post.author">
-                                                    {{a.pseudo }}
-                                                </span>
+                                <p style="font-size: 12px;">
+                                    <small class="mr-2"> <i class="fas fa-user"></i>
+                                        <span *ngFor="let a of admins">
+                                            <span *ngIf="a.email === post.author">
+                                                {{a.pseudo }}
                                             </span>
-                                        </small>
-
-                                        <br>
-
-                                        <small class="mr-2"> <i class="fa fa-clock"></i> {{post.create_date}}</small>
-                                        <span *ngIf="!s_aPost && roleUser == 'admin'" mat-icon-button
-                                            [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                                            <i class="fa fa-ellipsis-h"></i>
                                         </span>
-                                    </p>
+                                    </small>
+
+                                    <br>
+
+                                    <small class="mr-2"> <i class="fa fa-clock"></i> {{post.create_date}}</small>
+                                    <span *ngIf="!s_aPost && roleUser == 'admin'" mat-icon-button
+                                        [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </span>
+                                </p>
 
 
 
-                                    <!-- <small class="mr-2"> {{post.create_date}}</small>
+                                <!-- <small class="mr-2"> {{post.create_date}}</small>
                                 <span *ngIf="!s_aPost && roleUser == 'admin'" mat-icon-button [matMenuTriggerFor]="menu"
                                     aria-label="Example icon-button with a menu">
                                     <i class="fa fa-ellipsis-h"></i>
                                 </span> -->
 
 
-                                    <mat-menu #menu="matMenu">
-                                        <button mat-menu-item (click)="dPost(post._id)">
-                                            <i class="fas fa-trash"></i>
-                                            <span> Delete</span>
-                                        </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="dPost(post._id)">
+                                        <i class="fas fa-trash"></i>
+                                        <span> Delete</span>
+                                    </button>
 
-                                        <button mat-menu-item (click)="ePost(post._id)">
-                                            <i class="fas fa-edit"></i>
-                                            <span> Edit</span>
-                                        </button>
+                                    <button mat-menu-item (click)="ePost(post._id)">
+                                        <i class="fas fa-edit"></i>
+                                        <span> Edit</span>
+                                    </button>
 
-                                    </mat-menu>
+                                </mat-menu>
 
-
-
-                                </div>
 
 
                             </div>
-                            <h6>{{ post.title }}</h6>
-                            <div [innerHtml]="URLReplacer(post.content) "></div>
 
 
-                            <div>
-                                <img *ngIf="post.img_url!.length > 0" src="{{post.img_url}}" class="img-fluid">
+                        </div>
+                        <h6>{{ post.title }}</h6>
+                        {{ post.video_url! }}
+                        <div [innerHtml]="URLReplacer(post.content) ">
 
-                                <audio *ngIf="post.audio_url!.length > 0" controlsList="nodownload"
-                                    src="{{post.audio_url}}" controls></audio>
-
-                            </div>
-
-                            <div
-                                *ngIf="post.video_url!.length > 0 &&  (post.video_url | truncate:[19]) == 'https://www.youtube'">
+                        </div>
 
 
-                                <iframe width="100%" height="315" [src]="post.video_url! | safe"
-                                    title="YouTube video player" frameborder="0"
-                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen></iframe>
-                            </div>
+                        <div>
+                            <img *ngIf="post.img_url!.length > 0" src="{{post.img_url}}" class="img-fluid">
 
-                            <div
-                                *ngIf="post.video_url!.length > 0 &&  (post.video_url | truncate:[19]) != 'https://www.youtube'">
+                            <audio *ngIf="post.audio_url!.length > 0" controlsList="nodownload" src="{{post.audio_url}}"
+                                controls></audio>
 
-                                <object width="100%" height="315" [data]="post.video_url! | safe">
-                                </object>
+                        </div>
 
-                                <!-- <video width="100%" style="height: 300px;" controls>
+                        <div
+                            *ngIf="post.video_url!.length > 0 &&  (post.video_url | truncate:[19]) == 'https://www.youtube'">
+
+
+                            <iframe width="100%" height="315" [src]="post.video_url! | safe"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+
+                        <div
+                            *ngIf="post.video_url!.length > 0 &&  (post.video_url | truncate:[19]) != 'https://www.youtube'">
+
+                            <iframe width="100%" height="315" [src]="post.video_url! | safe">
+                            </iframe>
+
+                            <!-- <video width="100%" style="height: 300px;" controls>
                                 <source src="{{post.video_url}}#t=0.1" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video> -->
 
-                                <!-- <iframe width="100%" height="315" [src]="post.video_url! | safe"
+                            <!-- <iframe width="100%" height="315" [src]="post.video_url! | safe"
                                 title="YouTube video player" frameborder="0"
                                 allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe> -->
+                        </div>
+
+                        <div *ngIf="post.pdf_url!.length > 0">
+                            <iframe [src]="post.pdf_url! | safe" width="100%" height="500px">
+                            </iframe>
+                        </div>
+
+
+                        <div *ngIf="!authcomment" class="p-2" style="text-align: center;">
+                            <div style="text-align: center; font-size: 20px;">
+                                <a routerLink="/sign-in">Connect</a> to like and comment
                             </div>
+                            
+                        </div>
 
-                            <div *ngIf="post.pdf_url!.length > 0">
-                                <iframe [src]="post.pdf_url! | safe" width="100%" height="500px">
-                                </iframe>
+                        <div *ngIf="authcomment" class="p-2">
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div class="d-flex flex-row icons d-flex align-items-center ">
+                                    <img src="assets/images/icons/like.png" style="width: 12px; height: 12px;">
+
+                                    &nbsp;{{post.likes?.length || 0 }}
+                                </div>
+                                <div style="cursor: pointer;" (click)="dComment(post._id)"
+                                    class="d-flex flex-row icons d-flex align-items-center">
+
+                                    {{ post.comments?.length || 0 }} Comments
+                                </div>
                             </div>
-
-
-                            <div class="p-2">
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <div class="d-flex flex-row icons d-flex align-items-center ">
-                                        <img src="assets/images/icons/like.png" style="width: 12px; height: 12px;">
-
-                                        &nbsp;{{post.likes?.length || 0 }}
-                                    </div>
-                                    <div style="cursor: pointer;" (click)="dComment(post._id)"
-                                        class="d-flex flex-row icons d-flex align-items-center">
-
-                                        {{ post.comments?.length || 0 }} Comments
-                                    </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div *ngIf="authcomment" style="cursor: pointer;" (click)="like(post, post._id)"
+                                    class="d-flex  flex-row icons d-flex align-items-center">
+                                    <img src="assets/images/icons/like.png" style="width: 12px; height: 12px;">
+                                    &nbsp; Likes
                                 </div>
-                                <hr>
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <div *ngIf="!authcomment" style="cursor: pointer;"
-                                        class="d-flex  flex-row icons d-flex align-items-center" data-toggle="modal"
-                                        data-target="#addpseudo">
-                                        <img src="assets/images/icons/like.png" style="width: 12px; height: 12px;">
-                                        &nbsp; Likes
-                                    </div>
-                                    <div *ngIf="authcomment" style="cursor: pointer;" (click)="like(post, post._id)"
-                                        class="d-flex  flex-row icons d-flex align-items-center">
-                                        <img src="assets/images/icons/like.png" style="width: 12px; height: 12px;">
-                                        &nbsp; Likes
-                                    </div>
 
-                                    <div style="cursor: pointer;"
-                                        class="d-flex flex-row icons d-flex align-items-center">
+                                <div style="cursor: pointer;" class="d-flex flex-row icons d-flex align-items-center">
 
-                                        {{ post.view || 0 }} Views
-                                    </div>
+                                    {{ post.view || 0 }} Views
                                 </div>
-                                <hr>
-                                <div class="comments">
+                            </div>
+                            <hr>
+                            <div class="comments">
 
-                                    <div id="lComments" class="dComment-{{post._id}}">
-                                        <div *ngFor="let comment of post.comments; let i = index"
-                                            class="d-flex flex-row mb-2" style="margin-bottom: 4px;">
+                                <div id="lComments" class="dComment-{{post._id}}">
+                                    <div *ngFor="let comment of post.comments; let i = index"
+                                        class="d-flex flex-row mb-2" style="margin-bottom: 4px;">
 
-                                            <img src="assets/images/icons/user.png" style="width: 25px; height: 25px;"
-                                                class="rounded-image">
+                                        <img src="assets/images/icons/user.png" style="width: 25px; height: 25px;"
+                                            class="rounded-image">
 
-                                            <div class="d-flex flex-column ml-2"> <span class="name">{{ comment.pseudo
-                                                    }}</span>
-                                                <small class="comment-text"> {{ comment.comment }}</small>
-                                                <small (click)="delComment(post.comments,post._id, i)"
-                                                    *ngIf="comment.email === emailUser"
-                                                    style="cursor: pointer; color: #286ea7; font-size: 10px;">
-                                                    Supprimer</small>
+                                        <div class="d-flex flex-column ml-2"> <span class="name">{{ comment.pseudo
+                                                }}</span>
+                                            <small class="comment-text"> {{ comment.comment }}</small>
+                                            <small (click)="delComment(post.comments,post._id, i)"
+                                                *ngIf="comment.email === emailUser"
+                                                style="cursor: pointer; color: #286ea7; font-size: 10px;">
+                                                Supprimer</small>
 
-
-                                            </div>
 
                                         </div>
 
                                     </div>
 
+                                </div>
 
 
-                                    <div *ngIf="!authcomment" class="comment-input">
 
-                                        <input type="text" data-toggle="modal" data-target="#addpseudo"
-                                            class="form-control">
-                                        <div class="fonts">
+                                <div *ngIf="!authcomment" class="comment-input">
+
+                                    <input type="text" data-toggle="modal" data-target="#addpseudo"
+                                        class="form-control">
+                                    <div class="fonts">
+                                        <i class="fa fa-paper-plane"></i>
+                                    </div>
+                                </div>
+
+
+                                <div *ngIf="authcomment" class="comment-input">
+                                    <form [formGroup]="commentForm" (ngSubmit)="sendComment(post,post._id)">
+
+                                        <input type="text" (keyup.enter)="sendComment(post,post._id)"
+                                            class="form-control" formControlName="pcomment">
+                                        <div class="fonts" (click)="sendComment(post,post._id)">
                                             <i class="fa fa-paper-plane"></i>
                                         </div>
-                                    </div>
-
-
-                                    <div *ngIf="authcomment" class="comment-input">
-                                        <form [formGroup]="commentForm" (ngSubmit)="sendComment(post,post._id)">
-
-                                            <input type="text" (keyup.enter)="sendComment(post,post._id)"
-                                                class="form-control" formControlName="pcomment">
-                                            <div class="fonts" (click)="sendComment(post,post._id)">
-                                                <i class="fa fa-paper-plane"></i>
-                                            </div>
-                                        </form>
-                                    </div>
-
+                                    </form>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
 
-        </section> <!-- end s-content -->
+        </div>
 
 
-        <app-pseudo></app-pseudo>
+    </section> <!-- end s-content -->
 
 
-        <app-mobilemenu></app-mobilemenu>
+    <app-pseudo></app-pseudo>
+
+
+    <app-mobilemenu></app-mobilemenu>
