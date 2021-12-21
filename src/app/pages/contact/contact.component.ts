@@ -92,7 +92,15 @@ export class ContactComponent implements OnInit {
       .then((r) => {
 
 
+        $('#flash_message_success').show();
+
+        setTimeout(() => {
+          $('#flash_message_success').hide();
+
+        }, 3000);
+
         this.contactForm.reset();
+
 
 
         console.log('SUCCESS!', r.status, r.text);
@@ -101,6 +109,13 @@ export class ContactComponent implements OnInit {
         $('#NSubmitForm').show();
 
       }, function (err) {
+
+        $('#flash_message_notGranted').show();
+
+        setTimeout(() => {
+          $('#flash_message_notGranted').hide();
+
+        }, 3000);
 
 
         console.log('FAILED...', err);
