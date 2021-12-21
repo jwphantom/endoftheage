@@ -69,8 +69,8 @@ export class ContactComponent implements OnInit {
 
   submit() {
 
-    $('#bricks').hide();
-    $('#loading').css('visibility', 'visible');
+    $('#submitForm').show();
+    $('#NSubmitForm').hide();
 
     const name = this.contactForm.get('name')?.value;
     const email = this.contactForm.get('email')?.value;
@@ -80,42 +80,32 @@ export class ContactComponent implements OnInit {
 
     var templateParams = {
       name: name,
-      email: this.GEmail,
+      email: email,
+      Gemail: this.GEmail,
       phone: phone,
       country: country,
       message: message,
     };
 
 
-    emailjs.send('service_end_of_the_age', 'contact', templateParams, 'user_SZkYtq4YKmK5GGrGDmP4s')
+    emailjs.send('service_end_of_the_age', 'template_e411pjd', templateParams, 'user_SZkYtq4YKmK5GGrGDmP4s')
       .then((r) => {
 
-        $('#loading').css('visibility', 'hidden');
-        $('#bricks').show();
-        $('#flash_message_success').show();
-
-        setTimeout(() => {
-          $('#flash_message_success').hide();
-
-        }, 3000);
 
         this.contactForm.reset();
 
 
         console.log('SUCCESS!', r.status, r.text);
 
+        $('#submitForm').hide();
+        $('#NSubmitForm').show();
+
       }, function (err) {
 
-        $('#loading').css('visibility', 'hidden');
-        $('#bricks').show();
-        $('#flash_message_notGranted').show();
-
-        setTimeout(() => {
-          $('#flash_message_notGranted').hide();
-
-        }, 3000);
 
         console.log('FAILED...', err);
+        $('#submitForm').hide();
+        $('#NSubmitForm').show();
       });
 
   }

@@ -4,5 +4,7 @@ export class GlobalConstants {
     public static version: string = "0.1.0";
     public static appname: string = "End Of The Age"
     public static localisation: string = "Montreal, Quebec, Canada";
-    public static email : string = 'endoftheage1777@&gmail.com';
+    public static email : string = 'endoftheage1777@gmail.com';
+    //public static email : string = 'jawill.olongo@gmail.com';
+
 }

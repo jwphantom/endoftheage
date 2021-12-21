@@ -27,90 +27,96 @@
         ================================================== -->
     <section id="content" class="s-content">
 
-            
-            <!--  masonry -->
-            <div id="bricks" class="bricks">
 
-                <header class="entry__header entry__header--narrow">
+        <!--  masonry -->
+        <div id="bricks" class="bricks">
 
-                    <h1 class="entry__title">
-                        Contacts us
-                    </h1>
-                    <hr>
-                </header>
-    
+            <header class="entry__header entry__header--narrow">
 
-                <div class="container">
-
-                    <div class="entry__blocks">
-                        <p>Your comprehensive guide to Bible prophecy, preparing you for Christ's coming soon.</p>
-                        <p> Join our online community by <a target="_blank"
-                                href="https://www.facebook.com/groups/927903897717939">liking our Facebook page</a> , or
-                            subscribe to our <a target="_blank"
-                                href="https://www.youtube.com/channel/UCbd6lC6Q6X2tk4t3Faavq2g">YouTube channel</a> .
-                        </p>
-                        <p>
-                            You want to call us directly by phone, use theses numbers:
-                        </p>
-                        <p>
-                            - French assistance: +1 (514) 996 9835 (Frère James)<br>
-                            - English assistance: +1 (873) 339 2560 (Brother Michel)<br>
-                        </p>
-                        <br>
-                        <p>
-                            You can also contact us directly by using the form below:
-                        </p>
-                        <p>Have questions, comments or want to share a testimony?</p>
-                        <p>Please fill out the form below, and we'll get back to you as soon as possible.</p>
-                    </div>
-
-                    <form [formGroup]="contactForm" (ngSubmit)="submit()" class="entry__form" method="post" action=""
-                        autocomplete="off">
-                        <fieldset class="row">
-
-                            <div class="column lg-6 tab-12 form-field">
-                                <input formControlName="name" name="cName" id="cName" class="u-fullwidth"
-                                    placeholder="Your Name" value="" type="text">
-                            </div>
-
-                            <div class="column lg-6 tab-12 form-field">
-                                <input formControlName="email" name="cEmail" id="cEmail" class="u-fullwidth"
-                                    placeholder="Your Email" value="" type="email" ngModel [email]="true">
-                            </div>
-
-                            <div class="column lg-6 form-field">
-                                <input formControlName="phone" id="cWebsite" class="u-fullwidth" placeholder="Phone"
-                                    value="" type="text">
-                            </div>
-
-                            <div class="column lg-6 form-field">
-                                <select formControlName="country" [(ngModel)]="country" class="select-active"
-                                    class="u-fullwidth">
-                                    <option *ngFor="let c of countries" value="{{c.name}}">{{ c.name }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="column lg-12 message form-field">
-                                <textarea formControlName="message" name="cMessage" id="cMessage" class="u-fullwidth"
-                                    placeholder="Your Message"></textarea>
-                            </div>
-
-                            <div class="column lg-12">
-                                <button [disabled]="contactForm.invalid" type="submit"
-                                    class="bCPassword btn btn-primary col-12">
-                                    Validate
-                                </button>
-                            </div>
-
-                        </fieldset>
-                    </form> <!-- end form -->
+                <h1 class="entry__title">
+                    Contacts us
+                </h1>
+                <hr>
+            </header>
 
 
+            <div class="container">
 
-                </div> <!-- end masonry-->
+                <div class="entry__blocks">
+                    <p>Your comprehensive guide to Bible prophecy, preparing you for Christ's coming soon.</p>
+                    <p> Join our online community by <a target="_blank"
+                            href="https://www.facebook.com/groups/927903897717939">liking our Facebook page</a> , or
+                        subscribe to our <a target="_blank"
+                            href="https://www.youtube.com/channel/UCbd6lC6Q6X2tk4t3Faavq2g">YouTube channel</a> .
+                    </p>
+                    <p>
+                        You want to call us directly by phone, use theses numbers:
+                    </p>
+                    <p>
+                        - French assistance: +1 (514) 996 9835 (Frère James)<br>
+                        - English assistance: +1 (873) 339 2560 (Brother Michel)<br>
+                    </p>
+                    <br>
+                    <p>
+                        You can also contact us directly by using the form below:
+                    </p>
+                    <p>Have questions, comments or want to share a testimony?</p>
+                    <p>Please fill out the form below, and we'll get back to you as soon as possible.</p>
+                </div>
 
-            </div>
+                <form [formGroup]="contactForm" (ngSubmit)="submit()" class="entry__form" method="post" action=""
+                    autocomplete="off">
+                    <fieldset class="row">
+
+                        <div class="column lg-6 tab-12 form-field">
+                            <input formControlName="name" name="cName" id="cName" class="u-fullwidth"
+                                placeholder="Your Name" value="" type="text">
+                        </div>
+
+                        <div class="column lg-6 tab-12 form-field">
+                            <input formControlName="email" name="cEmail" id="cEmail" class="u-fullwidth"
+                                placeholder="Your Email" value="" type="email" ngModel [email]="true">
+                        </div>
+
+                        <div class="column lg-6 form-field">
+                            <input formControlName="phone" id="cWebsite" class="u-fullwidth" placeholder="Phone"
+                                value="" type="text">
+                        </div>
+
+                        <div class="column lg-6 form-field">
+                            <select formControlName="country" [(ngModel)]="country" class="select-active"
+                                class="u-fullwidth">
+                                <option *ngFor="let c of countries" value="{{c.name}}">{{ c.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="column lg-12 message form-field">
+                            <textarea formControlName="message" name="cMessage" id="cMessage" class="u-fullwidth"
+                                placeholder="Your Message"></textarea>
+                        </div>
+
+                        <div class="column lg-12">
+                            <button id="NSubmitForm" [disabled]="contactForm.invalid" type="submit"
+                                class="bCPassword btn btn-primary col-12">
+                                Validate
+                            </button>
+                            <button style="display: none;" id="submitForm" disabled class="btn btn-primary col-12">
+                                Wait
+                                <img src="assets/images/animations/Dual-Ball-1s-200px.svg"
+                                    style="width: 30px; height:30px;">
+                            </button>
+
+                        </div>
+
+                    </fieldset>
+                </form> <!-- end form -->
+
+
+
+            </div> <!-- end masonry-->
+
+        </div>
 
     </section> <!-- end s-content -->
 
