@@ -53,6 +53,8 @@ export class PostComponent implements AfterViewInit {
   pseudo: string = '';
 
   public posts: any;
+  public postsAll: any;
+
 
   countLike!: number;
 
@@ -60,6 +62,9 @@ export class PostComponent implements AfterViewInit {
 
   pView: Array<string> = [];
 
+  sliceProduct: number = 1;
+
+  lengthProduct! : number;
 
 
   @ViewChild(AddpostComponent) child: any;
@@ -128,14 +133,17 @@ export class PostComponent implements AfterViewInit {
 
 
   storePost() {
+    this.posts = [];
+
     this.postsSubscription = this.postService.postsSubject.subscribe(
       (posts: Post[]) => {
-        this.posts = posts;
+        this.lengthProduct = posts.length;
+        this.postsAll = posts
+        this.posts = this.postsAll.slice(0, this.sliceProduct);
       }
     );
 
     this.postService.getPosts();
-    this.postService.emitPosts();
   }
 
 
@@ -186,8 +194,6 @@ export class PostComponent implements AfterViewInit {
     this.socket.on('send-posts-afterCreate', (newPost: any) => {
 
       this.posts.unshift(newPost['newPost']);
-
-      //this.postService.emitPosts();
     })
 
   }
@@ -426,58 +432,54 @@ export class PostComponent implements AfterViewInit {
 
 
   setViewMouse(id: string) {
-    var height = $(window).height();
+    // var height = $(window).height();
 
-    const ifView = this.pView.find(element => element == id);
+    // const ifView = this.pView.find(element => element == id);
 
-    if (ifView) {
-      console.log('views')
-    } else {
-      this.pView.push(id);
-      console.log(this.pView)
+    // if (ifView) {
+    // } else {
+    //   this.pView.push(id);
 
-      let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
+    //   let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
 
-      this.http
-        .put<any[]>(`${this.baseUrl}/posts/setViews/${id}`, [id])
-        .subscribe(
-          (response) => {
-            fPost[0].view = fPost[0].view + 1;
-          },
-          (error) => {
-            console.log('Erreur ! : ' + error);
-          }
-        );
+    //   this.http
+    //     .put<any[]>(`${this.baseUrl}/posts/setViews/${id}`, [id])
+    //     .subscribe(
+    //       (response) => {
+    //         fPost[0].view = fPost[0].view + 1;
+    //       },
+    //       (error) => {
+    //         console.log('Erreur ! : ' + error);
+    //       }
+    //     );
 
-    }
+    // }
 
   }
 
   setViewTouch(id: string) {
-    var height = $(window).height();
+    // var height = $(window).height();
 
-    const ifView = this.pView.find(element => element == id);
+    // const ifView = this.pView.find(element => element == id);
 
-    if (ifView) {
-      console.log('views')
-    } else {
-      this.pView.push(id);
-      console.log(this.pView)
+    // if (ifView) {
+    // } else {
+    //   this.pView.push(id);
 
-      let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
+    //   let fPost = this.posts.filter(function (item: { _id: string; }) { return item._id === id; });
 
-      this.http
-        .put<any[]>(`${this.baseUrl}/posts/setViews/${id}`, [id])
-        .subscribe(
-          (response) => {
-            fPost[0].view = fPost[0].view + 1;
-          },
-          (error) => {
-            console.log('Erreur ! : ' + error);
-          }
-        );
+    //   this.http
+    //     .put<any[]>(`${this.baseUrl}/posts/setViews/${id}`, [id])
+    //     .subscribe(
+    //       (response) => {
+    //         fPost[0].view = fPost[0].view + 1;
+    //       },
+    //       (error) => {
+    //         console.log('Erreur ! : ' + error);
+    //       }
+    //     );
 
-    }
+    // }
 
   }
 
@@ -496,6 +498,25 @@ export class PostComponent implements AfterViewInit {
       return str;
     }
     //console.log(final);
+  }
+
+
+  readmore(idPost: string) {
+    $(`.sContent-${idPost}`).hide();
+    $(`.fContent-${idPost}`).show();
+
+  }
+
+  minimize(idPost: string) {
+    $(`.sContent-${idPost}`).show();
+    $(`.fContent-${idPost}`).hide();
+
+  }
+
+  addSlice(){
+    this.sliceProduct = this.sliceProduct + 4;
+    this.posts = this.postsAll.slice(0, this.sliceProduct);
+    console.log(this.sliceProduct);
   }
 
 

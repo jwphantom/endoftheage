@@ -30,6 +30,8 @@ export class CatpostComponent implements OnInit {
 
   postsSubscription!: Subscription;
   public posts: any;
+  public postsAll: any;
+
 
   s_aPost: Boolean = false;
 
@@ -56,6 +58,11 @@ export class CatpostComponent implements OnInit {
   pView: Array<string> = [];
 
   nTheme!: string;
+
+
+  sliceProduct: number = 1;
+
+  lengthProduct! : number;
 
 
   commentForm!: FormGroup;
@@ -122,13 +129,17 @@ export class CatpostComponent implements OnInit {
 
   storePost(cat: string, theme: string) {
 
-    this.postsSubscription = this.postService.postsByCatSubject.subscribe(
+    this.posts = [];
+
+    this.postsSubscription = this.postService.postsSubject.subscribe(
       (posts: Post[]) => {
-        this.posts = posts;
+        this.lengthProduct = posts.length;
+        this.postsAll = posts
+        this.posts = this.postsAll.slice(0, this.sliceProduct);
       }
     );
 
-    this.postService.getPostsByCatTheme(cat, theme)
+    this.postService.getPosts();
 
     //this.postService.emitPostsByCat();
   }
@@ -394,7 +405,24 @@ export class CatpostComponent implements OnInit {
     } else {
       return str;
     }
-    //console.log(final);
+  }
+
+  readmore(idPost: string) {
+    $(`.sContent-${idPost}`).hide();
+    $(`.fContent-${idPost}`).show();
+
+  }
+
+  minimize(idPost: string) {
+    $(`.sContent-${idPost}`).show();
+    $(`.fContent-${idPost}`).hide();
+
+  }
+
+  addSlice(){
+    this.sliceProduct = this.sliceProduct + 4;
+    this.posts = this.postsAll.slice(0, this.sliceProduct);
+    console.log(this.sliceProduct);
   }
 
 }

@@ -113,7 +113,14 @@
                         </div>
                         <h6>{{ post.title }}</h6>
                         {{ post.video_url! }}
-                        <div [innerHtml]="URLReplacer(post.content) ">
+                        <div class="sContent-{{post._id}} sCTrue-{{post._id}}">
+                            {{ post.content | truncate:[40] }}..... <span class="link" (click)="readmore(post._id)">Read  More </span>
+                        </div>
+
+                        <div class="fContent-{{post._id}}" style="display: none">
+                            <div [innerHtml]="URLReplacer(post.content) ">
+                            </div>
+                            <span class="link" (click)="minimize(post._id)">Reduce</span>
 
                         </div>
 
@@ -163,7 +170,7 @@
                             <div style="text-align: center; font-size: 20px;">
                                 <a routerLink="/sign-in">Connect</a> to like and comment
                             </div>
-                            
+
                         </div>
 
                         <div *ngIf="authcomment" class="p-2">
@@ -244,6 +251,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <br>
+
+            <div *ngIf="sliceProduct <  lengthProduct" class="bCenter" (click)="addSlice()">
+                <span>
+                    <i class="fas fa-eye"></i>  Read More
+                </span>
             </div>
 
 

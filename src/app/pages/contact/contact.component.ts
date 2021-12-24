@@ -88,7 +88,7 @@ export class ContactComponent implements OnInit {
     };
 
 
-    emailjs.send('service_end_of_the_age', 'template_e411pjd', templateParams, 'user_SZkYtq4YKmK5GGrGDmP4s')
+    emailjs.send('service_on11x8n', 'template_an65r6a', templateParams, 'user_yn1JMY7CtM4tXFI7FnkIf')
       .then((r) => {
 
 

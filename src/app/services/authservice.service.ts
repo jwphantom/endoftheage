@@ -220,7 +220,7 @@ export class AuthService {
             password: response['cred']
           };
 
-          emailjs.send('service_end_of_the_age', 'template_b200vbv', templateParams, 'user_SZkYtq4YKmK5GGrGDmP4s')
+          emailjs.send('service_on11x8n', 'template_9n7400e', templateParams, 'user_yn1JMY7CtM4tXFI7FnkIf')
             .then((r) => {
 
               console.log('SUCCESS!', r.status, r.text);

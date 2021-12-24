@@ -99,8 +99,16 @@
 
                         </div>
                         <h6>{{ post.title }}</h6>
-                        <div [innerHtml]="URLReplacer(post.content) "></div>
+                        <div class="sContent-{{post._id}} sCTrue-{{post._id}}">
+                            {{ post.content | truncate:[40] }}..... <span class="link" (click)="readmore(post._id)">Read  More </span>
+                        </div>
 
+                        <div class="fContent-{{post._id}}" style="display: none">
+                            <div [innerHtml]="URLReplacer(post.content) ">
+                            </div>
+                            <span class="link" (click)="minimize(post._id)">Reduce</span>
+
+                        </div>
 
                         <div>
                             <img *ngIf="post.img_url!.length > 0" src="{{post.img_url}}" class="img-fluid">
@@ -228,6 +236,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <br>
+            <div *ngIf="sliceProduct <  lengthProduct" class="bCenter" (click)="addSlice()">
+                <span>
+                    <i class="fas fa-eye"></i>  Read More
+                </span>
             </div>
 
 
