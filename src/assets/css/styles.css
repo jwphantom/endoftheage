@@ -2913,8 +2913,8 @@ img.u-pull-left {
  * ------------------------------------------------------------------- */
 .bricks {
     --brick-padding : 2rem;
-    padding-top     : var(--vspace-3);
-    padding-bottom  : var(--vspace-3);
+    padding-top     : 30px;
+    padding-bottom  : 10px;
 }
 
 .bricks--half-top-padding {
@@ -4788,7 +4788,7 @@ body.search-is-visible .s-header__search-inner {
 
 @media screen and (max-width: 400px) {
     .s-footer {
-        padding-top : var(--vspace-3_5);
+        padding-top : 20px;
     }
 
     .s-footer h2 {
