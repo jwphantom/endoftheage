@@ -131,7 +131,7 @@ export class CatpostComponent implements OnInit {
 
     this.posts = [];
 
-    this.postsSubscription = this.postService.postsSubject.subscribe(
+    this.postsSubscription = this.postService.postsByCatSubject.subscribe(
       (posts: Post[]) => {
         this.lengthProduct = posts.length;
         this.postsAll = posts
@@ -139,7 +139,7 @@ export class CatpostComponent implements OnInit {
       }
     );
 
-    this.postService.getPosts();
+    this.postService.getPostsByCatTheme(cat,theme);
 
     //this.postService.emitPostsByCat();
   }

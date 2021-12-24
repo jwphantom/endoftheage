@@ -1,26 +1,21 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PublishComponent } from 'src/app/static/publish/publish.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddpostComponent } from '../../modal/addpost/addpost.component';
 import { Post } from 'src/app/model/post';
 import { Comment } from 'src/app/model/comment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, observable, Subject, Subscriber, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
-import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/services/authservice.service';
-import getMAC, { isMAC } from 'getmac'
 import { AngularFirestore } from '@angular/fire/firestore';
-import { data, post } from 'jquery';
 import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
 import firebase from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpClient } from '@angular/common/http';
 import { GlobalConstants } from '../../../common/global-constants';
-import { HostListener } from '@angular/core';
 
 
 @Component({
