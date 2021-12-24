@@ -9,3 +9,9 @@
   .card:hover {
     cursor: pointer;
   }
+
+  .bricks {
+    --brick-padding : 2rem;
+    padding-top     : 30px;
+    padding-bottom  : 0px;
+}
